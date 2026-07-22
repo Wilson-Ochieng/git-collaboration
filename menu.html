@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coffee Shop - Menu</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <h1 class="logo">Artisan Roast</h1>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#" class="active">Menu</a></li>
+          <li><a href="#">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="menu-container">
+      <section class="menu-hero">
+        <h2>Our Menu</h2>
+        <p>Crafted with love, brewed to perfection.</p>
+      </section>
+
+      <!-- Category Filter Tabs -->
+      <div class="category-tabs" id="category-tabs">
+        <button class="tab-btn active" data-category="all">All</button>
+        <button class="tab-btn" data-category="coffee">Coffee</button>
+        <button class="tab-btn" data-category="tea">Tea</button>
+        <button class="tab-btn" data-category="pastries">Pastries</button>
+      </div>
+
+      <!-- Menu Grid Container -->
+      <div class="menu-grid" id="menu-grid">
+        <!-- Rendered dynamically via JavaScript -->
+      </div>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
