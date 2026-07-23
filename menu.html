@@ -7,35 +7,38 @@
     <title>Coffee Shop - Menu</title>
     <link rel="stylesheet" href="/src/style.css" />
   </head>
-  <body>
-    <header class="navbar">
-      <h1 class="logo">Artisan Roast</h1>
+  <body class="bg-stone-50 text-stone-800 min-h-screen flex flex-col font-sans">
+    
+    <!-- Navbar -->
+    <header class="bg-white border-b border-stone-200 px-6 py-4 flex justify-between items-center shadow-sm">
+      <h1 class="text-xl font-bold tracking-tight text-amber-800">Artisan Roast</h1>
       <nav>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#" class="active">Menu</a></li>
-          <li><a href="#">About</a></li>
+        <ul class="flex space-x-6 text-sm font-medium text-stone-600">
+          <li><a href="/index.html" class="hover:text-amber-800 transition">Home</a></li>
+          <li><a href="/menu.html" class="text-amber-800 font-semibold underline underline-offset-4">Menu</a></li>
+          <li><a href="/about.html" class="hover:text-amber-800 transition">About</a></li>
         </ul>
       </nav>
     </header>
 
-    <main class="menu-container">
-      <section class="menu-hero">
-        <h2>Our Menu</h2>
-        <p>Crafted with love, brewed to perfection.</p>
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 py-10 flex-grow w-full">
+      <section class="text-center mb-8">
+        <h2 class="text-4xl font-extrabold text-stone-900 tracking-tight">Our Menu</h2>
+        <p class="text-stone-500 mt-2">Crafted with precision, poured with passion.</p>
       </section>
 
-      <!-- Category Filter Tabs -->
-      <div class="category-tabs" id="category-tabs">
-        <button class="tab-btn active" data-category="all">All</button>
-        <button class="tab-btn" data-category="coffee">Coffee</button>
-        <button class="tab-btn" data-category="tea">Tea</button>
-        <button class="tab-btn" data-category="pastries">Pastries</button>
+      <!-- Filter Buttons -->
+      <div class="flex justify-center gap-2 mb-10" id="category-tabs">
+        <button class="tab-btn active px-4 py-2 text-sm font-medium rounded-full border border-amber-800 bg-amber-800 text-white transition-all duration-200" data-category="all">All</button>
+        <button class="tab-btn px-4 py-2 text-sm font-medium rounded-full border border-stone-300 bg-white text-stone-600 hover:border-amber-800 hover:text-amber-800 transition-all duration-200" data-category="coffee">Coffee</button>
+        <button class="tab-btn px-4 py-2 text-sm font-medium rounded-full border border-stone-300 bg-white text-stone-600 hover:border-amber-800 hover:text-amber-800 transition-all duration-200" data-category="tea">Tea</button>
+        <button class="tab-btn px-4 py-2 text-sm font-medium rounded-full border border-stone-300 bg-white text-stone-600 hover:border-amber-800 hover:text-amber-800 transition-all duration-200" data-category="pastries">Pastries</button>
       </div>
 
-      <!-- Menu Grid Container -->
-      <div class="menu-grid" id="menu-grid">
-        <!-- Rendered dynamically via JavaScript -->
+      <!-- Menu Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="menu-grid">
+        <!-- Rendered dynamically by main.js -->
       </div>
     </main>
 
