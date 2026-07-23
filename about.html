@@ -1,0 +1,190 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — Cosy Cup Cafe</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#6F4E37;
+      --dark-brown:#3E2723;
+      --cream:#FFF8E7;
+      --caramel:#C68E17;
+      --white:#FFFFFF;
+      --light-beige:#F5E6D3;
+
+      --espresso:var(--dark-brown);
+      --cinnamon:var(--primary);
+      --gold:var(--caramel);
+      --charcoal:var(--dark-brown);
+    }
+
+    body{
+      font-family:'Poppins', sans-serif;
+      background:var(--cream);
+      color:var(--dark-brown);
+    }
+
+    .font-display{
+      font-family:'Playfair Display', serif;
+    }
+
+    .section-soft{
+      background:var(--light-beige);
+    }
+
+    .ring-divider{
+      width:100%;
+      height:48px;
+      background-image: radial-gradient(circle at 12% 50%, transparent 0 9px, var(--primary) 10px, transparent 11px),
+                        radial-gradient(circle at 12% 50%, transparent 0 15px, var(--caramel) 16px, transparent 17px);
+      background-repeat: repeat-x;
+      background-size: 64px 48px;
+      opacity: 0.35;
+    }
+
+    .focus-ring:focus-visible{
+      outline: 3px solid var(--primary);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+
+<body class="antialiased">
+  <header class="bg-[var(--espresso)] text-[var(--cream)]">
+    <nav class="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+      <a href="index.html" class="font-display text-xl font-semibold focus-ring rounded">Cosy Cup Cafe</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="px-6 py-16 md:py-24">
+      <div class="max-w-4xl mx-auto text-center">
+        <p class="text-sm tracking-widest uppercase text-[var(--cinnamon)] font-medium mb-4">Our Story</p>
+        <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-semibold leading-tight">
+          Every cup starts with<br class="hidden sm:block"> a good conversation.
+        </h1>
+        <p class="mt-6 text-base md:text-lg text-[var(--charcoal)]/75 max-w-2xl mx-auto">
+          Coffee is at the heart of everything we do. For us, it is more than a drink —
+          it is the reason neighbours become regulars and regulars become friends.
+        </p>
+      </div>
+    </section>
+
+    <div class="ring-divider" aria-hidden="true"></div>
+
+    <section class="px-6 py-16 section-soft">
+      <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+        <div class="order-2 md:order-1">
+          <h2 class="font-display text-3xl font-semibold mb-4">How it started</h2>
+          <p class="text-[var(--charcoal)]/80 leading-relaxed mb-4">
+            Cosy Cup Cafe opened its doors in Nairobi with one roaster, four tables,
+            and a stubborn belief that great coffee shouldn’t be complicated. We started
+            by sourcing single-origin beans directly from smallholder farms, roasting in
+            small batches so every cup tastes intentional.
+          </p>
+          <p class="text-[var(--charcoal)]/80 leading-relaxed">
+            Years later, the tables have multiplied, but the standard hasn’t changed:
+            fresh roast, honest prices, and a team that remembers your order.
+          </p>
+        </div>
+        <div class="order-1 md:order-2">
+          <div class="aspect-[4/3] rounded-lg bg-[var(--espresso)]/10 border border-[var(--espresso)]/15 flex items-center justify-center">
+            <span class="font-display text-[var(--espresso)]/40 text-sm">[ shop photo — assets/story.jpg ]</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ring-divider" aria-hidden="true"></div>
+
+    <section class="px-6 py-16 bg-[var(--dark-brown)] text-[var(--white)]">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="font-display text-3xl font-semibold text-center mb-12">What we stand for</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-[var(--white)]/10 border border-[var(--white)]/20 rounded-lg p-6 hover:bg-[var(--white)]/20 transition-colors duration-200">
+            <h3 class="font-display text-xl font-semibold mb-2 text-[var(--caramel)]">Sourced with care</h3>
+            <p class="text-[var(--white)]/80 text-sm leading-relaxed">
+              Direct relationships with growers, fair prices, and full transparency on where every bean comes from.
+            </p>
+          </div>
+          <div class="bg-[var(--white)]/10 border border-[var(--white)]/20 rounded-lg p-6 hover:bg-[var(--white)]/20 transition-colors duration-200">
+            <h3 class="font-display text-xl font-semibold mb-2 text-[var(--caramel)]">Brewed for connection</h3>
+            <p class="text-[var(--white)]/80 text-sm leading-relaxed">
+              A counter designed for lingering — this is where study groups, first dates, and old friends meet.
+            </p>
+          </div>
+          <div class="bg-[var(--white)]/10 border border-[var(--white)]/20 rounded-lg p-6 hover:bg-[var(--white)]/20 transition-colors duration-200 sm:col-span-2 lg:col-span-1">
+            <h3 class="font-display text-xl font-semibold mb-2 text-[var(--caramel)]">Perfected by hand</h3>
+            <p class="text-[var(--white)]/80 text-sm leading-relaxed">
+              Small-batch roasting and baristas trained to taste-test every batch before it reaches your cup.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ring-divider" aria-hidden="true"></div>
+
+    <section class="px-6 py-16 section-soft">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="font-display text-3xl font-semibold text-center mb-12">The people behind the counter</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <article class="group text-center focus-ring rounded-lg" tabindex="0">
+            <div class="aspect-square rounded-full bg-[var(--primary)]/20 flex items-center justify-center mb-4 group-hover:bg-[var(--primary)]/30 transition-colors duration-200">
+              <span class="font-display text-2xl text-[var(--primary)]">AN</span>
+            </div>
+            <h3 class="font-semibold">Victor</h3>
+            <p class="text-sm text-[var(--charcoal)]/60">Head Roaster</p>
+          </article>
+
+          <article class="group text-center focus-ring rounded-lg" tabindex="0">
+            <div class="aspect-square rounded-full bg-[var(--primary)]/20 flex items-center justify-center mb-4 group-hover:bg-[var(--primary)]/30 transition-colors duration-200">
+              <span class="font-display text-2xl text-[var(--primary)]">JK</span>
+            </div>
+            <h3 class="font-semibold">Millicent</h3>
+            <p class="text-sm text-[var(--charcoal)]/60">Founder & Barista</p>
+          </article>
+
+          <article class="group text-center focus-ring rounded-lg" tabindex="0">
+            <div class="aspect-square rounded-full bg-[var(--primary)]/20 flex items-center justify-center mb-4 group-hover:bg-[var(--primary)]/30 transition-colors duration-200">
+              <span class="font-display text-2xl text-[var(--primary)]">LW</span>
+            </div>
+            <h3 class="font-semibold">Mervyn</h3>
+            <p class="text-sm text-[var(--charcoal)]/60">Front of House Lead</p>
+          </article>
+
+          <article class="group text-center focus-ring rounded-lg" tabindex="0">
+            <div class="aspect-square rounded-full bg-[var(--primary)]/20 flex items-center justify-center mb-4 group-hover:bg-[var(--primary)]/30 transition-colors duration-200">
+              <span class="font-display text-2xl text-[var(--primary)]">DM</span>
+            </div>
+            <h3 class="font-semibold">Bedria</h3>
+            <p class="text-sm text-[var(--charcoal)]/60">Pastry Chef</p>
+          </article>
+          <article class="group text-center focus-ring rounded-lg" tabindex="0">
+            <div class="aspect-square rounded-full bg-[var(--primary)]/20 flex items-center justify-center mb-4 group-hover:bg-[var(--primary)]/30 transition-colors duration-200">
+              <span class="font-display text-2xl text-[var(--primary)]">AB</span>
+            </div>
+            <h3 class="font-semibold">Henry</h3>
+            <p class="text-sm text-[var(--charcoal)]/60">Barista</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-[var(--espresso)] text-[var(--white)]/70 text-sm px-6 py-8">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+      <p>&copy; 2026 Cosy Cup Cafe. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="#" class="hover:text-[var(--caramel)] focus-ring rounded">Instagram</a>
+        <a href="#" class="hover:text-[var(--caramel)] focus-ring rounded">Facebook</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
