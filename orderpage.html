@@ -3,527 +3,384 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PurrCoffee - Order Page</title>
+  <title>PurrCoffee - Cart</title>
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+  <link href="/src/style.css" rel="stylesheet">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #6F4E37;
+      --dark-brown: #3E2723;
+      --cream: #FFF8E7;
+      --caramel: #C68E17;
+      --white: #FFFFFF;
+      --light-beige: #F5E6D3;
+    }
+
     body {
-      font-family: 'Inter', sans-serif;
-      background: #F6E1CC;
+      font-family: 'Poppins', sans-serif;
+      background: var(--cream);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
     }
 
-    .bg-main {
-      background: #FFF8F1;
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
     }
 
-    .primary {
-      background: #E89A4A;
+    .cart-container {
+      max-width: 520px;
+      width: 100%;
+      background: var(--white);
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(62, 39, 35, 0.12);
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
     }
 
-    .primary-dark {
-      background: #C47A2C;
+    .cart-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--caramel), var(--primary), var(--caramel));
     }
 
-    .primary-text {
-      color: #E89A4A;
+    .decor-dots {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(3, 6px);
+      gap: 5px;
+      opacity: 0.15;
     }
 
-    .pill-active {
-      background: #F4A259;
-      color: white;
+    .decor-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
     }
 
-    .card-shadow {
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    .cart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 2px solid var(--light-beige);
     }
 
-    .cart-item-enter {
-      animation: slideIn 0.3s ease;
+    .cart-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--dark-brown);
+      letter-spacing: -0.5px;
     }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
+
+    .cart-title .badge {
+      display: inline-block;
+      background: var(--light-beige);
+      color: var(--primary);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+
+    .cart-coffee-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--light-beige);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .order-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .order-tab {
+      padding: 0.7rem 0.5rem;
+      border-radius: 14px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: none;
+      cursor: default;
+      background: var(--light-beige);
+      color: var(--primary);
+    }
+
+    .order-tab.active {
+      background: var(--primary);
+      color: var(--white);
+      box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3);
+    }
+
+    .cart-items {
+      margin-bottom: 1.5rem;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px dashed var(--light-beige);
+    }
+
+    .cart-item:last-of-type {
+      border-bottom: none;
+    }
+
+    .cart-item-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .cart-item-img {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 2px solid var(--light-beige);
+    }
+
+    .cart-item-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--dark-brown);
+    }
+
+    .cart-item-price {
+      font-size: 0.8rem;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .cart-qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--light-beige);
+      border-radius: 999px;
+      padding: 0.3rem 0.6rem;
+    }
+
+    .cart-qty-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: none;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: default;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      color: var(--primary);
+    }
+
+    .cart-qty-value {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--dark-brown);
+      min-width: 18px;
+      text-align: center;
+    }
+
+    .cart-summary {
+      border-top: 2px solid var(--light-beige);
+      padding-top: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0;
+    }
+
+    .summary-label {
+      font-size: 0.9rem;
+      color: #8a7266;
+      font-weight: 400;
+    }
+
+    .summary-value {
+      font-weight: 600;
+      color: var(--dark-brown);
+      font-size: 0.95rem;
+    }
+
+    .summary-divider {
+      height: 1px;
+      background: var(--light-beige);
+      margin: 0.6rem 0;
+    }
+
+    .summary-row.total {
+      padding: 0.6rem 0 0.2rem;
+    }
+
+    .summary-row.total .summary-label {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--dark-brown);
+    }
+
+    .summary-row.total .summary-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--caramel);
+    }
+
+    .discount-amount {
+      color: #2e7d32;
+      font-weight: 600;
+    }
+
+    .place-order-btn {
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      border-radius: 999px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--primary), var(--dark-brown));
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(111, 78, 55, 0.35);
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .place-order-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(111, 78, 55, 0.45);
     }
   </style>
-
 </head>
+<body>
 
-<body class="min-h-screen p-6">
-
-  <div class="max-w-7xl mx-auto bg-main rounded-[28px] card-shadow p-6">
-
-    <!-- Top Search -->
-    <div class="flex flex-col md:flex-row gap-4 md:items-center md:justify-between mb-8">
-
-      <div class="flex-1 relative">
-        <svg class="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35m1.85-5.15a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
-        </svg>
-        <input
-          id="searchInput"
-          type="text"
-          placeholder="Search"
-          class="w-full bg-white border border-gray-200 rounded-full py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-orange-300"
-        />
-      </div>
-
-      <button id="filterBtn" class="primary text-white px-6 py-3 rounded-full flex items-center gap-2 hover:primary-dark transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h18M6 12h12m-9 8h6"/>
-        </svg>
-        Filter
-      </button>
+  <div class="cart-container">
+    <div class="decor-dots">
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
     </div>
 
-    <!-- Title -->
-    <div class="mb-6">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">Coffee menu</h1>
-
-      <!-- Category Pills -->
-      <div class="flex flex-wrap gap-3" id="categoryPills">
-        <button class="category-pill pill-active px-5 py-2 rounded-full font-medium shadow-sm" data-category="all">All</button>
-        <button class="category-pill bg-white border border-gray-200 px-5 py-2 rounded-full font-medium text-gray-700 hover:bg-gray-50" data-category="coffee">Coffee</button>
-        <button class="category-pill bg-white border border-gray-200 px-5 py-2 rounded-full font-medium text-gray-700 hover:bg-gray-50" data-category="non-coffee">Non Coffee</button>
-        <button class="category-pill bg-white border border-gray-200 px-5 py-2 rounded-full font-medium text-gray-700 hover:bg-gray-50" data-category="food">Food</button>
-        <button class="category-pill bg-white border border-gray-200 px-5 py-2 rounded-full font-medium text-gray-700 hover:bg-gray-50" data-category="snack">Snack</button>
-        <button class="category-pill bg-white border border-gray-200 px-5 py-2 rounded-full font-medium text-gray-700 hover:bg-gray-50" data-category="dessert">Dessert</button>
-      </div>
+    <!-- Header -->
+    <div class="cart-header">
+      <h1 class="cart-title">Cart <span class="badge">3</span></h1>
+      <div class="cart-coffee-icon">☕</div>
     </div>
 
-    <!-- Main Content -->
-    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+    <!-- Order Type Tabs -->
+    <div class="order-tabs">
+      <button class="order-tab active">🚚 Delivery</button>
+      <button class="order-tab">🍽️ Dine in</button>
+      <button class="order-tab">🥡 Take away</button>
+    </div>
 
-      <!-- Product Grid -->
-      <div class="xl:col-span-2">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="productGrid">
-          <!-- Products will be rendered by JavaScript -->
+    <!-- Cart Items -->
+    <div class="cart-items">
+
+      <!-- Item 1 -->
+      <div class="cart-item">
+        <div class="cart-item-left">
+          <img class="cart-item-img" src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=800&auto=format&fit=crop" alt="Cappuccino"/>
+          <div>
+            <div class="cart-item-name">Cappuccino</div>
+            <div class="cart-item-price">$1.50</div>
+          </div>
+        </div>
+        <div class="cart-qty-controls">
+          <span class="cart-qty-btn">−</span>
+          <span class="cart-qty-value">2</span>
+          <span class="cart-qty-btn">+</span>
         </div>
       </div>
 
-      <!-- Cart Summary -->
-      <div class="bg-white rounded-[24px] border border-gray-100 p-6 h-fit card-shadow">
-
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Cart summary</h2>
-
-        <!-- Tabs -->
-        <div class="grid grid-cols-3 gap-2 mb-6" id="orderTypeTabs">
-          <button class="order-type-btn bg-[#FFF2E5] border border-orange-200 rounded-2xl py-3 text-sm font-semibold text-orange-700" data-type="delivery">Delivery</button>
-          <button class="order-type-btn bg-[#F6E1CC] rounded-2xl py-3 text-sm font-semibold text-gray-800" data-type="dinein">Dine in</button>
-          <button class="order-type-btn bg-[#FFF2E5] rounded-2xl py-3 text-sm font-semibold text-gray-700" data-type="takeaway">Take away</button>
-        </div>
-
-        <!-- Cart Items -->
-        <div id="cartItems" class="space-y-4 mb-6 min-h-[120px]">
-          <div id="emptyCartMsg" class="text-center py-8 text-gray-400">
-            <p class="text-lg">Your cart is empty</p>
-            <p class="text-sm">Add some items to get started!</p>
+      <!-- Item 2 -->
+      <div class="cart-item">
+        <div class="cart-item-left">
+          <img class="cart-item-img" src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?q=80&w=800&auto=format&fit=crop" alt="Coffee Latte"/>
+          <div>
+            <div class="cart-item-name">Coffee Latte</div>
+            <div class="cart-item-price">$1.60</div>
           </div>
         </div>
-
-        <!-- Totals -->
-        <div class="border-t border-gray-100 pt-4 space-y-3 mb-6">
-
-          <div class="flex justify-between text-gray-600">
-            <span>Price</span>
-            <span class="font-semibold text-gray-900" id="cartPrice">$0.00</span>
-          </div>
-
-          <div class="flex justify-between text-gray-600">
-            <span>Discount applied</span>
-            <span class="font-semibold text-red-500" id="cartDiscount">-$0.00</span>
-          </div>
-
-          <div class="flex justify-between text-lg font-bold pt-2 border-t border-gray-100">
-            <span>Grand total</span>
-            <span id="cartGrandTotal" class="text-orange-700">$0.00</span>
-          </div>
-
+        <div class="cart-qty-controls">
+          <span class="cart-qty-btn">−</span>
+          <span class="cart-qty-value">1</span>
+          <span class="cart-qty-btn">+</span>
         </div>
-
-        <!-- CTA -->
-        <button id="placeOrderBtn" class="w-full primary text-white py-4 rounded-full font-semibold text-lg hover:primary-dark transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-          Place an order
-        </button>
-
       </div>
 
     </div>
 
+    <!-- Summary -->
+    <div class="cart-summary">
+      <div class="summary-row">
+        <span class="summary-label">Subtotal</span>
+        <span class="summary-value">$4.60</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Discount (20%)</span>
+        <span class="summary-value discount-amount">-$0.92</span>
+      </div>
+      <div class="summary-divider"></div>
+      <div class="summary-row total">
+        <span class="summary-label">Grand Total</span>
+        <span class="summary-value">$3.68</span>
+      </div>
+    </div>
+
+    <!-- Place Order Button -->
+    <button class="place-order-btn">
+      <span>Place an Order</span>
+      <span>→</span>
+    </button>
   </div>
-
-  <!-- Order Success Modal -->
-  <div id="orderModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-[24px] p-8 max-w-md mx-4 text-center card-shadow">
-      <span class="text-5xl block mb-4">🎉</span>
-      <h3 class="text-2xl font-bold text-gray-900 mb-2">Order Placed!</h3>
-      <p class="text-gray-500 mb-6">Your order has been placed successfully!</p>
-      <div class="bg-gray-50 rounded-xl p-4 mb-6 text-left">
-        <p class="text-sm text-gray-400 mb-2">Order Summary</p>
-        <div id="modalOrderItems" class="space-y-2 text-sm"></div>
-        <div class="border-t border-gray-200 mt-3 pt-3 flex justify-between font-bold text-gray-900">
-          <span>Total Paid</span>
-          <span class="text-orange-600" id="modalTotal">$0.00</span>
-        </div>
-      </div>
-      <button id="closeModalBtn" class="primary text-white font-bold py-3 px-8 rounded-full">
-        Awesome! 🎊
-      </button>
-    </div>
-  </div>
-
-  <script>
-    // ========== DATA ==========
-    const products = [
-      {
-        id: 1, name: "Cappuccino", price: 1.50, originalPrice: 2.50,
-        image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=800&auto=format&fit=crop",
-        description: "Entire inno coffee with small and home make cappuccino.",
-        category: "coffee", sizes: ["Small", "Large"]
-      },
-      {
-        id: 2, name: "Coffee Latte", price: 1.60, originalPrice: 2.60,
-        image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?q=80&w=800&auto=format&fit=crop",
-        description: "Enticino coffee with assor catmes, best coffee Latte.",
-        category: "coffee", sizes: ["Small", "Large"]
-      },
-      {
-        id: 3, name: "Americano", price: 1.55, originalPrice: 2.55,
-        image: "https://images.unsplash.com/photo-1669872484166-e11b9638b50e?q=80&w=580&auto=format&fit=crop",
-        description: "Fast outunt recent and etion wed coffee ran americano.",
-        category: "coffee", sizes: ["Small", "Large"]
-      },
-      {
-        id: 4, name: "Cappuccino", price: 20.00, originalPrice: 25.00,
-        image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=800&auto=format&fit=crop",
-        description: "Short-test coffee, your smat convection, with cappuccino.",
-        category: "coffee", sizes: ["Small", "Large"]
-      },
-      {
-        id: 5, name: "V60", price: 50.00, originalPrice: 60.00,
-        image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=800&auto=format&fit=crop",
-        description: "High end coffee with convectator annost coffee wnm.",
-        category: "coffee", sizes: ["Small", "Large"]
-      },
-      {
-        id: 6, name: "V60", price: 50.00, originalPrice: 60.00,
-        image: "https://images.unsplash.com/photo-1641962710781-3df076f49e26?q=80&w=388&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        description: "Loner less coffee appreciated coffee sesonets with a.",
-        category: "coffee", sizes: ["Small", "Large"]
-      }
-    ];
-
-    // ========== STATE ==========
-    let cart = [];
-    let activeCategory = "all";
-    let selectedOrderType = "delivery";
-    const DISCOUNT_RATE = 0.20; // 20% discount
-
-    // ========== DOM REFS ==========
-    const productGrid = document.getElementById("productGrid");
-    const searchInput = document.getElementById("searchInput");
-    const filterBtn = document.getElementById("filterBtn");
-    const categoryPills = document.querySelectorAll(".category-pill");
-    const cartItemsContainer = document.getElementById("cartItems");
-    const emptyCartMsg = document.getElementById("emptyCartMsg");
-    const cartPriceEl = document.getElementById("cartPrice");
-    const cartDiscountEl = document.getElementById("cartDiscount");
-    const cartGrandTotalEl = document.getElementById("cartGrandTotal");
-    const placeOrderBtn = document.getElementById("placeOrderBtn");
-    const orderTypeBtns = document.querySelectorAll(".order-type-btn");
-    const orderModal = document.getElementById("orderModal");
-    const modalOrderItems = document.getElementById("modalOrderItems");
-    const modalTotal = document.getElementById("modalTotal");
-    const closeModalBtn = document.getElementById("closeModalBtn");
-
-    // ========== RENDER PRODUCTS ==========
-    function renderProducts(filterText = "", category = "all") {
-      let filtered = products;
-
-      if (category !== "all") {
-        filtered = filtered.filter(p => p.category === category);
-      }
-
-      if (filterText.trim()) {
-        const term = filterText.trim().toLowerCase();
-        filtered = filtered.filter(p =>
-          p.name.toLowerCase().includes(term) ||
-          p.description.toLowerCase().includes(term) ||
-          p.category.toLowerCase().includes(term)
-        );
-      }
-
-      if (filtered.length === 0) {
-        productGrid.innerHTML = `
-          <div class="col-span-full text-center py-16 text-gray-400">
-            <span class="text-5xl block mb-4">🔍</span>
-            <p class="text-xl">No items found</p>
-            <p class="text-sm mt-1">Try a different search or category</p>
-          </div>`;
-        return;
-      }
-
-      productGrid.innerHTML = filtered.map(product => `
-        <div class="bg-white rounded-[22px] border border-gray-100 p-4 card-shadow product-card" data-product-id="${product.id}">
-          <img src="${product.image}" class="w-full h-52 object-cover rounded-2xl mb-4" alt="${product.name}"/>
-
-          <div class="flex justify-between items-start mb-2">
-            <h3 class="font-bold text-lg">${product.name}</h3>
-            <span class="font-bold text-gray-900">$${product.price.toFixed(2)}</span>
-          </div>
-
-          <p class="text-sm text-gray-500 mb-4">${product.description}</p>
-
-          <div class="mb-4">
-            <p class="text-sm font-semibold mb-2">Size</p>
-            <div class="flex gap-2" data-product-id="${product.id}">
-              ${product.sizes.map((size, idx) => `
-                <button class="size-btn ${idx === 0 ? 'bg-orange-100 text-orange-700' : 'border border-gray-200 text-gray-700'} px-4 py-1 rounded-full text-sm font-medium" data-size="${size.toLowerCase()}">${size}</button>
-              `).join("")}
-            </div>
-          </div>
-
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3 bg-[#FFF2E5] rounded-full px-3 py-2">
-              <button class="qty-minus text-gray-500 text-xl leading-none" data-product-id="${product.id}">−</button>
-              <span class="qty-value font-semibold" data-product-id="${product.id}">1</span>
-              <button class="qty-plus text-orange-600 text-xl leading-none" data-product-id="${product.id}">+</button>
-            </div>
-
-            <button class="add-to-cart primary text-white px-5 py-2 rounded-full font-medium hover:primary-dark transition" data-product-id="${product.id}">Add to Cart</button>
-          </div>
-        </div>
-      `).join("");
-
-      // Attach event listeners to newly rendered buttons
-      document.querySelectorAll(".qty-minus").forEach(btn => {
-        btn.addEventListener("click", handleQtyMinus);
-      });
-      document.querySelectorAll(".qty-plus").forEach(btn => {
-        btn.addEventListener("click", handleQtyPlus);
-      });
-      document.querySelectorAll(".add-to-cart").forEach(btn => {
-        btn.addEventListener("click", handleAddToCart);
-      });
-      document.querySelectorAll(".size-btn").forEach(btn => {
-        btn.addEventListener("click", handleSizeSelect);
-      });
-    }
-
-    // ========== PRODUCT CARD EVENTS ==========
-    function handleQtyMinus(e) {
-      const id = parseInt(e.target.dataset.productId);
-      const span = document.querySelector(`.qty-value[data-product-id="${id}"]`);
-      let val = parseInt(span.textContent);
-      if (val > 1) {
-        val--;
-        span.textContent = val;
-      }
-    }
-
-    function handleQtyPlus(e) {
-      const id = parseInt(e.target.dataset.productId);
-      const span = document.querySelector(`.qty-value[data-product-id="${id}"]`);
-      let val = parseInt(span.textContent);
-      val++;
-      span.textContent = val;
-    }
-
-    function handleSizeSelect(e) {
-      const parent = e.target.closest('[data-product-id]');
-      const productId = parent.dataset.productId;
-      const btns = parent.querySelectorAll(".size-btn");
-      btns.forEach(b => {
-        b.classList.remove("bg-orange-100", "text-orange-700");
-        b.classList.add("border", "border-gray-200", "text-gray-700");
-      });
-      e.target.classList.remove("border", "border-gray-200", "text-gray-700");
-      e.target.classList.add("bg-orange-100", "text-orange-700");
-    }
-
-    function handleAddToCart(e) {
-      const id = parseInt(e.target.dataset.productId);
-      const product = products.find(p => p.id === id);
-      if (!product) return;
-
-      const qtySpan = document.querySelector(`.qty-value[data-product-id="${id}"]`);
-      const qty = parseInt(qtySpan.textContent);
-
-      const existing = cart.find(c => c.id === id);
-      if (existing) {
-        existing.quantity += qty;
-      } else {
-        cart.push({ ...product, quantity: qty });
-      }
-
-      // Reset quantity back to 1
-      qtySpan.textContent = "1";
-      updateCartUI();
-    }
-
-    // ========== CART UI ==========
-    function updateCartUI() {
-      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-
-      if (cart.length === 0) {
-        cartItemsContainer.innerHTML = `
-          <div class="text-center py-8 text-gray-400">
-            <p class="text-lg">Your cart is empty</p>
-            <p class="text-sm">Add some items to get started!</p>
-          </div>`;
-        cartPriceEl.textContent = "$0.00";
-        cartDiscountEl.textContent = "-$0.00";
-        cartGrandTotalEl.textContent = "$0.00";
-        placeOrderBtn.disabled = true;
-        return;
-      }
-
-      placeOrderBtn.disabled = false;
-
-      cartItemsContainer.innerHTML = cart.map(item => `
-        <div class="cart-item-enter flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <img src="${item.image}" class="w-14 h-14 rounded-xl object-cover" alt="${item.name}"/>
-            <div>
-              <p class="font-semibold">${item.name}</p>
-              <p class="text-sm text-gray-500">$${item.price.toFixed(2)}</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-3 bg-[#FFF2E5] rounded-full px-3 py-2">
-            <button class="cart-qty-minus text-gray-500" data-cart-id="${item.id}">−</button>
-            <span class="cart-qty-value font-semibold">${item.quantity}</span>
-            <button class="cart-qty-plus text-orange-600" data-cart-id="${item.id}">+</button>
-          </div>
-        </div>
-      `).join("");
-
-      // Attach cart quantity listeners
-      document.querySelectorAll(".cart-qty-minus").forEach(btn => {
-        btn.addEventListener("click", handleCartQtyMinus);
-      });
-      document.querySelectorAll(".cart-qty-plus").forEach(btn => {
-        btn.addEventListener("click", handleCartQtyPlus);
-      });
-
-      updateTotals();
-    }
-
-    function handleCartQtyMinus(e) {
-      const id = parseInt(e.target.dataset.cartId);
-      const item = cart.find(c => c.id === id);
-      if (item) {
-        if (item.quantity > 1) {
-          item.quantity--;
-        } else {
-          cart = cart.filter(c => c.id !== id);
-        }
-        updateCartUI();
-      }
-    }
-
-    function handleCartQtyPlus(e) {
-      const id = parseInt(e.target.dataset.cartId);
-      const item = cart.find(c => c.id === id);
-      if (item) {
-        item.quantity++;
-        updateCartUI();
-      }
-    }
-
-    function updateTotals() {
-      const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      const discount = subtotal * DISCOUNT_RATE;
-      const grandTotal = subtotal - discount;
-
-      cartPriceEl.textContent = `$${subtotal.toFixed(2)}`;
-      cartDiscountEl.textContent = `-$${discount.toFixed(2)}`;
-      cartGrandTotalEl.textContent = `$${grandTotal.toFixed(2)}`;
-    }
-
-    // ========== CATEGORY PILLS ==========
-    categoryPills.forEach(pill => {
-      pill.addEventListener("click", function() {
-        categoryPills.forEach(p => {
-          p.classList.remove("pill-active");
-          p.classList.add("bg-white", "border", "border-gray-200", "text-gray-700");
-        });
-        this.classList.remove("bg-white", "border", "border-gray-200", "text-gray-700");
-        this.classList.add("pill-active");
-
-        activeCategory = this.dataset.category;
-        renderProducts(searchInput.value, activeCategory);
-      });
-    });
-
-    // ========== SEARCH ==========
-    searchInput.addEventListener("input", function() {
-      renderProducts(this.value, activeCategory);
-    });
-
-    // ========== FILTER BUTTON ==========
-    filterBtn.addEventListener("click", function() {
-      // Toggle: clear search if active, or focus search
-      if (searchInput.value.trim()) {
-        searchInput.value = "";
-        renderProducts("", activeCategory);
-      } else {
-        searchInput.focus();
-      }
-    });
-
-    // ========== ORDER TYPE TABS ==========
-    orderTypeBtns.forEach(btn => {
-      btn.addEventListener("click", function() {
-        orderTypeBtns.forEach(b => {
-          b.classList.remove("border", "border-orange-200", "text-orange-700", "bg-[#FFF2E5]");
-          b.classList.add("bg-[#F6E1CC]", "text-gray-800");
-        });
-        this.classList.add("border", "border-orange-200", "text-orange-700", "bg-[#FFF2E5]");
-        this.classList.remove("bg-[#F6E1CC]", "text-gray-800");
-
-        selectedOrderType = this.dataset.type;
-      });
-    });
-
-    // ========== PLACE ORDER ==========
-    placeOrderBtn.addEventListener("click", function() {
-      if (cart.length === 0) return;
-
-      const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      const discount = subtotal * DISCOUNT_RATE;
-      const grandTotal = subtotal - discount;
-
-      const itemsHtml = cart.map(item =>
-        `<div class="flex justify-between">
-          <span>${item.name} × ${item.quantity}</span>
-          <span class="text-orange-600">$${(item.price * item.quantity).toFixed(2)}</span>
-        </div>`
-      ).join("");
-
-      modalOrderItems.innerHTML = itemsHtml;
-      modalTotal.textContent = `$${grandTotal.toFixed(2)}`;
-      orderModal.classList.remove("hidden");
-    });
-
-    closeModalBtn.addEventListener("click", function() {
-      orderModal.classList.add("hidden");
-      cart = [];
-      updateCartUI();
-    });
-
-    orderModal.addEventListener("click", function(e) {
-      if (e.target === this) {
-        this.classList.add("hidden");
-        cart = [];
-        updateCartUI();
-      }
-    });
-
-    // ========== INIT ==========
-    renderProducts("", "all");
-    updateCartUI();
-  </script>
 
 </body>
 </html>
