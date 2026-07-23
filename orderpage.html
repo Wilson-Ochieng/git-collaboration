@@ -79,6 +79,14 @@
       background: var(--primary);
     }
 
+    /* ── Hidden inputs for CSS-only interactivity ── */
+    .hidden-input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ── Cart Header ── */
     .cart-header {
       display: flex;
       align-items: center;
@@ -120,6 +128,7 @@
       font-size: 1.3rem;
     }
 
+    /* ── Order Type Tabs (CSS-only - labels toggle hidden radio inputs) ── */
     .order-tabs {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -128,23 +137,60 @@
     }
 
     .order-tab {
+      display: block;
+      text-align: center;
       padding: 0.7rem 0.5rem;
       border-radius: 14px;
       font-family: 'Poppins', sans-serif;
       font-size: 0.8rem;
       font-weight: 600;
-      border: none;
-      cursor: default;
       background: var(--light-beige);
       color: var(--primary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
     }
 
-    .order-tab.active {
+    .order-tab:hover {
+      background: #e8d5c0;
+    }
+
+    /* Highlight the active tab based on which radio is checked */
+    #delivery:checked ~ .order-tabs .order-tab[for="delivery"],
+    #dine-in:checked ~ .order-tabs .order-tab[for="dine-in"],
+    #take-away:checked ~ .order-tabs .order-tab[for="take-away"] {
       background: var(--primary);
       color: var(--white);
       box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3);
     }
 
+    /* ── Order type indicator text ── */
+    .order-type-indicator {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #8a7266;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      background: var(--light-beige);
+      border-radius: 10px;
+      font-weight: 500;
+      min-height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .order-type-indicator .type-text-delivery,
+    .order-type-indicator .type-text-dinein,
+    .order-type-indicator .type-text-takeaway {
+      display: none;
+    }
+
+    #delivery:checked ~ .order-type-indicator .type-text-delivery { display: inline; }
+    #dine-in:checked ~ .order-type-indicator .type-text-dinein { display: inline; }
+    #take-away:checked ~ .order-type-indicator .type-text-takeaway { display: inline; }
+
+    /* ── Cart Items ── */
     .cart-items {
       margin-bottom: 1.5rem;
     }
@@ -203,7 +249,6 @@
       border: none;
       font-size: 1rem;
       font-weight: 700;
-      cursor: default;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -219,6 +264,189 @@
       text-align: center;
     }
 
+    /* ── Countdown Timer ── */
+    .countdown-container {
+      margin-bottom: 1.25rem;
+      padding: 1rem 1.25rem;
+      background: var(--light-beige);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .countdown-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .countdown-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--dark-brown);
+    }
+
+    .countdown-time {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary);
+      font-family: 'Playfair Display', serif;
+      position: relative;
+      min-width: 5rem;
+      text-align: right;
+    }
+
+    /* Default text when order not placed */
+    .countdown-time .time-default { display: inline; }
+    .countdown-time .t-5min,
+    .countdown-time .t-4min,
+    .countdown-time .t-3min,
+    .countdown-time .t-2min,
+    .countdown-time .t-1min,
+    .countdown-time .t-30sec,
+    .countdown-time .t-ready {
+      display: none;
+    }
+
+    /* Show time labels sequentially when order is placed, using animation-delay
+       Total animation duration = 300s (5 minutes)
+       Each phase has an animation that shows it for a portion then hides */
+    .countdown-time .t-5min,
+    .countdown-time .t-4min,
+    .countdown-time .t-3min,
+    .countdown-time .t-2min,
+    .countdown-time .t-1min,
+    .countdown-time .t-30sec,
+    .countdown-time .t-ready {
+      animation-name: showTime;
+      animation-duration: 300s;
+      animation-timing-function: steps(1);
+      animation-fill-mode: forwards;
+      animation-play-state: paused;
+    }
+
+    #order-success:checked ~ .countdown-container .countdown-time .t-5min,
+    #order-success:checked ~ .countdown-container .countdown-time .t-4min,
+    #order-success:checked ~ .countdown-container .countdown-time .t-3min,
+    #order-success:checked ~ .countdown-container .countdown-time .t-2min,
+    #order-success:checked ~ .countdown-container .countdown-time .t-1min,
+    #order-success:checked ~ .countdown-container .countdown-time .t-30sec,
+    #order-success:checked ~ .countdown-container .countdown-time .t-ready {
+      animation-play-state: running;
+    }
+
+    /* Default hidden for all time labels when animation is running */
+    #order-success:checked ~ .countdown-container .countdown-time .time-default {
+      display: none;
+    }
+
+    /* Each time span becomes visible at its start keyframe */
+    @keyframes showTime {
+      0%, 100% { display: inline; }
+    }
+
+    /* t-5min: visible from 0% to 20% (0-60s) */
+    .countdown-time .t-5min { animation-delay: 0s; }
+    #order-success:checked ~ .countdown-container .countdown-time .t-5min {
+      animation: showTimeStep1 300s steps(1) forwards;
+    }
+    @keyframes showTimeStep1 {
+      0%, 19.999% { display: inline; }
+      20% { display: none; }
+    }
+
+    /* t-4min: visible from 20% to 40% (60-120s) */
+    #order-success:checked ~ .countdown-container .countdown-time .t-4min {
+      display: none;
+      animation: showTimeStep2 300s steps(1) forwards;
+    }
+    @keyframes showTimeStep2 {
+      0%, 19.999% { display: none; }
+      20%, 39.999% { display: inline; }
+      40% { display: none; }
+    }
+
+    /* t-3min: visible from 40% to 60% (120-180s) */
+    #order-success:checked ~ .countdown-container .countdown-time .t-3min {
+      display: none;
+      animation: showTimeStep3 300s steps(1) forwards;
+    }
+    @keyframes showTimeStep3 {
+      0%, 39.999% { display: none; }
+      40%, 59.999% { display: inline; }
+      60% { display: none; }
+    }
+
+    /* t-2min: visible from 60% to 80% (180-240s) */
+    #order-success:checked ~ .countdown-container .countdown-time .t-2min {
+      display: none;
+      animation: showTimeStep4 300s steps(1) forwards;
+    }
+    @keyframes showTimeStep4 {
+      0%, 59.999% { display: none; }
+      60%, 79.999% { display: inline; }
+      80% { display: none; }
+    }
+
+    /* t-1min: visible from 80% to 95% (240-285s) */
+    #order-success:checked ~ .countdown-container .countdown-time .t-1min {
+      display: none;
+      animation: showTimeStep5 300s steps(1) forwards;
+    }
+    @keyframes showTimeStep5 {
+      0%, 79.999% { display: none; }
+      80%, 94.999% { display: inline; }
+      95% { display: none; }
+    }
+
+    /* t-30sec: visible from 95% to 99% (285-297s) */
+    #order-success:checked ~ .countdown-container .countdown-time .t-30sec {
+      display: none;
+      animation: showTimeStep6 300s steps(1) forwards;
+    }
+    @keyframes showTimeStep6 {
+      0%, 94.999% { display: none; }
+      95%, 98.999% { display: inline; }
+      99% { display: none; }
+    }
+
+    /* t-ready: visible from 99% to 100% (297-300s) */
+    #order-success:checked ~ .countdown-container .countdown-time .t-ready {
+      display: none;
+      animation: showTimeStep7 300s steps(1) forwards;
+    }
+    @keyframes showTimeStep7 {
+      0%, 98.999% { display: none; }
+      99%, 100% { display: inline; }
+    }
+
+    .countdown-track {
+      width: 100%;
+      height: 8px;
+      background: var(--cream);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .countdown-bar {
+      height: 100%;
+      width: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--caramel), var(--primary));
+    }
+
+    /* When order is placed, animate the bar */
+    #order-success:checked ~ .countdown-container .countdown-bar {
+      animation: countdownShrink 300s linear forwards;
+    }
+
+    @keyframes countdownShrink {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+
+    /* ── Cart Summary ── */
     .cart-summary {
       border-top: 2px solid var(--light-beige);
       padding-top: 1.25rem;
@@ -273,7 +501,9 @@
       font-weight: 600;
     }
 
+    /* ── Place Order Button (label for the hidden checkbox) ── */
     .place-order-btn {
+      display: flex;
       width: 100%;
       padding: 1rem;
       border: none;
@@ -287,21 +517,151 @@
       transition: all 0.3s ease;
       box-shadow: 0 6px 20px rgba(111, 78, 55, 0.35);
       letter-spacing: 0.5px;
-      display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
+      user-select: none;
     }
 
     .place-order-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 10px 28px rgba(111, 78, 55, 0.45);
     }
+
+    .place-order-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Hide the button once order is placed */
+    #order-success:checked ~ .place-order-btn {
+      display: none;
+    }
+
+    /* ── Success Overlay ── */
+    .success-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(62, 39, 35, 0.6);
+      backdrop-filter: blur(6px);
+      border-radius: 28px;
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    #order-success:checked ~ .success-overlay {
+      display: flex;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .success-modal {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      max-width: 360px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    #order-success:checked ~ .success-overlay .success-modal {
+      animation: scaleIn 0.4s ease;
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .success-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+    }
+
+    #order-success:checked ~ .success-overlay .success-icon {
+      animation: bounce 0.6s ease;
+    }
+
+    @keyframes bounce {
+      0%   { transform: scale(0); }
+      50%  { transform: scale(1.2); }
+      70%  { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+
+    .success-modal h2 {
+      font-size: 1.5rem;
+      color: var(--dark-brown);
+      margin-bottom: 0.5rem;
+    }
+
+    .success-modal p {
+      font-size: 0.9rem;
+      color: #8a7266;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .success-modal .order-type-confirm {
+      font-size: 0.8rem;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      padding: 0.5rem;
+      background: var(--light-beige);
+      border-radius: 10px;
+    }
+
+    /* Show the correct order type in the success modal */
+    .success-modal .order-type-confirm .confirm-delivery,
+    .success-modal .order-type-confirm .confirm-dinein,
+    .success-modal .order-type-confirm .confirm-takeaway {
+      display: none;
+    }
+
+    #delivery:checked ~ .success-overlay .confirm-delivery { display: inline; }
+    #dine-in:checked ~ .success-overlay .confirm-dinein { display: inline; }
+    #take-away:checked ~ .success-overlay .confirm-takeaway { display: inline; }
+
+    /* ── Close button inside modal ── */
+    .close-btn {
+      display: inline-block;
+      padding: 0.8rem 2.5rem;
+      border-radius: 999px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--primary), var(--dark-brown));
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(111, 78, 55, 0.3);
+      user-select: none;
+    }
+
+    .close-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(111, 78, 55, 0.4);
+    }
   </style>
 </head>
 <body>
 
   <div class="cart-container">
+
+    <!-- ── Hidden inputs for CSS-only interactivity ── -->
+    <input type="radio" name="order-type" id="delivery" class="hidden-input" checked>
+    <input type="radio" name="order-type" id="dine-in" class="hidden-input">
+    <input type="radio" name="order-type" id="take-away" class="hidden-input">
+    <input type="checkbox" id="order-success" class="hidden-input">
+
     <div class="decor-dots">
       <span></span><span></span><span></span>
       <span></span><span></span><span></span>
@@ -314,11 +674,18 @@
       <div class="cart-coffee-icon">☕</div>
     </div>
 
-    <!-- Order Type Tabs -->
+    <!-- Order Type Tabs (CSS-only: labels toggle hidden radio inputs) -->
     <div class="order-tabs">
-      <button class="order-tab active">🚚 Delivery</button>
-      <button class="order-tab">🍽️ Dine in</button>
-      <button class="order-tab">🥡 Take away</button>
+      <label for="delivery" class="order-tab">🚚 Delivery</label>
+      <label for="dine-in" class="order-tab">🍽️ Dine in</label>
+      <label for="take-away" class="order-tab">🥡 Take away</label>
+    </div>
+
+    <!-- Order type indicator -->
+    <div class="order-type-indicator">
+      <span class="type-text-delivery">🚚 Your order will be delivered</span>
+      <span class="type-text-dinein">🍽️ You'll dine in at our café</span>
+      <span class="type-text-takeaway">🥡 You'll pick up your order</span>
     </div>
 
     <!-- Cart Items -->
@@ -358,6 +725,26 @@
 
     </div>
 
+    <!-- Countdown Timer (animated with CSS when order is placed) -->
+    <div class="countdown-container">
+      <div class="countdown-header">
+        <span class="countdown-label">⏱️ Estimated wait time</span>
+        <span class="countdown-time">
+          <span class="time-default">Waiting...</span>
+          <span class="t-5min">~5 min</span>
+          <span class="t-4min">~4 min</span>
+          <span class="t-3min">~3 min</span>
+          <span class="t-2min">~2 min</span>
+          <span class="t-1min">~1 min</span>
+          <span class="t-30sec">~30 sec</span>
+          <span class="t-ready">Ready! ☕</span>
+        </span>
+      </div>
+      <div class="countdown-track">
+        <div class="countdown-bar"></div>
+      </div>
+    </div>
+
     <!-- Summary -->
     <div class="cart-summary">
       <div class="summary-row">
@@ -375,11 +762,27 @@
       </div>
     </div>
 
-    <!-- Place Order Button -->
-    <button class="place-order-btn">
+    <!-- Place Order Button (label for the hidden #order-success checkbox) -->
+    <label for="order-success" class="place-order-btn">
       <span>Place an Order</span>
       <span>→</span>
-    </button>
+    </label>
+
+    <!-- Success Overlay (shown when #order-success is checked) -->
+    <div class="success-overlay">
+      <div class="success-modal">
+        <div class="success-icon">✅</div>
+        <h2>Order Placed Successfully!</h2>
+        <p>Your order has been received and is being prepared. Thank you for choosing PurrCoffee! ☕</p>
+        <div class="order-type-confirm">
+          <span class="confirm-delivery">🚚 Your order will be delivered to your address</span>
+          <span class="confirm-dinein">🍽️ Your table will be ready shortly — please wait to be seated</span>
+          <span class="confirm-takeaway">🥡 Your order will be ready for pickup at the counter</span>
+        </div>
+        <label for="order-success" class="close-btn">Continue</label>
+      </div>
+    </div>
+
   </div>
 
 </body>
