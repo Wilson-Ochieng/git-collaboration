@@ -1,60 +1,81 @@
-import './style.css'
-import javascriptLogo from '../assets/javascript.svg'
-import viteLogo from '../assets/vite.svg'
-import heroImg from '../assets/hero.png'
-import { setupCounter } from './counter.js'
+const menuItems = [
+  {
+    id: 1,
+    title: 'Espresso',
+    category: 'coffee',
+    price: '$3.50',
+    description: 'Rich and concentrated shot made from our house single-origin beans.'
+  },
+  {
+    id: 2,
+    title: 'Oat Milk Latte',
+    category: 'coffee',
+    price: '$5.00',
+    description: 'Smooth double espresso paired with creamy steamed oat milk.'
+  },
+  {
+    id: 3,
+    title: 'Matcha Latte',
+    category: 'tea',
+    price: '$4.50',
+    description: 'Ceremonial grade matcha whisked with lightly sweetened oat milk.'
+  },
+  {
+    id: 4,
+    title: 'Almond Croissant',
+    category: 'pastries',
+    price: '$4.00',
+    description: 'Flaky buttery pastry filled with rich almond frangipane.'
+  }
+];
 
-document.querySelector('#app').innerHTML = `
-<section id="center">
-  <div class="hero">
-    <img src="${heroImg}" class="base" width="170" height="179">
-    <img src="${javascriptLogo}" class="framework" alt="JavaScript logo"/>
-    <img src="${viteLogo}" class="vite" alt="Vite logo" />
-  </div>
-  <div>
-    <h1>Get started</h1>
-    <p>Edit <code>src/main.js</code> and save to test <code>HMR</code></p>
-  </div>
-  <button id="counter" type="button" class="counter"></button>
-</section>
+const menuGrid = document.getElementById('menu-grid');
+const tabButtons = document.querySelectorAll('.tab-btn');
 
-<div class="ticks"></div>
+function renderMenuItems(items) {
+  menuGrid.innerHTML = items
+    .map(
+      (item) => `
+    <article class="bg-white border border-stone-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col justify-between">
+      <div>
+        <div class="flex justify-between items-baseline mb-2">
+          <h3 class="font-bold text-lg text-stone-900">${item.title}</h3>
+          <span class="font-bold text-amber-800">${item.price}</span>
+        </div>
+        <p class="text-stone-500 text-sm leading-relaxed">${item.description}</p>
+      </div>
+    </article>
+  `
+    )
+    .join('');
+}
 
-<section id="next-steps">
-  <div id="docs">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#documentation-icon"></use></svg>
-    <h2>Documentation</h2>
-    <p>Your questions, answered</p>
-    <ul>
-      <li>
-        <a href="https://vite.dev/" target="_blank">
-          <img class="logo" src="${viteLogo}" alt="" />
-          Explore Vite
-        </a>
-      </li>
-      <li>
-        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-          <img class="button-icon" src="${javascriptLogo}" alt="">
-          Learn more
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div id="social">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#social-icon"></use></svg>
-    <h2>Connect with us</h2>
-    <p>Join the Vite community</p>
-    <ul>
-      <li><a href="https://github.com/vitejs/vite" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#github-icon"></use></svg>GitHub</a></li>
-      <li><a href="https://chat.vite.dev/" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#discord-icon"></use></svg>Discord</a></li>
-      <li><a href="https://x.com/vite_js" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#x-icon"></use></svg>X.com</a></li>
-      <li><a href="https://bsky.app/profile/vite.dev" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#bluesky-icon"></use></svg>Bluesky</a></li>
-    </ul>
-  </div>
-</section>
+// Active styling toggle classes
+const activeClasses = ['bg-amber-800', 'text-white', 'border-amber-800'];
+const inactiveClasses = ['bg-white', 'text-stone-600', 'border-stone-300', 'hover:border-amber-800', 'hover:text-amber-800'];
 
-<div class="ticks"></div>
-<section id="spacer"></section>
-`
+tabButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    // Reset buttons styling
+    tabButtons.forEach((btn) => {
+      btn.classList.remove(...activeClasses);
+      btn.classList.add(...inactiveClasses);
+    });
 
-setupCounter(document.querySelector('#counter'))
+    // Set active button styling
+    button.classList.remove(...inactiveClasses);
+    button.classList.add(...activeClasses);
+
+    // Filter items
+    const category = button.dataset.category;
+    if (category === 'all') {
+      renderMenuItems(menuItems);
+    } else {
+      const filtered = menuItems.filter((item) => item.category === category);
+      renderMenuItems(filtered);
+    }
+  });
+});
+
+// Initial render
+renderMenuItems(menuItems);
