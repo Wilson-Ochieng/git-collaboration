@@ -3,427 +3,527 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coffee Shop - Order Page</title>
+  <title>PurrCoffee - Order Page</title>
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
     body {
-      background: linear-gradient(135deg, #1a0a00 0%, #2d1810 50%, #1a0a00 100%);
-      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: #F6E1CC;
     }
-    .coffee-card {
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    .bg-main {
+      background: #FFF8F1;
     }
-    .coffee-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+
+    .primary {
+      background: #E89A4A;
     }
-    .menu-item {
-      transition: all 0.2s ease;
+
+    .primary-dark {
+      background: #C47A2C;
     }
-    .menu-item:hover {
-      background: rgba(255, 255, 255, 0.08);
+
+    .primary-text {
+      color: #E89A4A;
     }
-    .order-item-enter {
+
+    .pill-active {
+      background: #F4A259;
+      color: white;
+    }
+
+    .card-shadow {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    .cart-item-enter {
       animation: slideIn 0.3s ease;
     }
     @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateX(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-    .coffee-badge {
-      background: linear-gradient(135deg, #c47a3c, #a85f2a);
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, #c47a3c, #a85f2a);
-      transition: all 0.2s ease;
-    }
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #d4884c, #b86f3a);
-      transform: scale(1.02);
-    }
-    .btn-primary:active {
-      transform: scale(0.98);
-    }
-    .cart-badge {
-      background: linear-gradient(135deg, #e74c3c, #c0392b);
-    }
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #1a0a00;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #c47a3c;
-      border-radius: 4px;
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
     }
   </style>
+
 </head>
-<body class="text-white font-sans">
-  <div class="max-w-7xl mx-auto px-4 py-8">
-    <!-- Header -->
-    <header class="text-center mb-12">
-      <div class="flex items-center justify-center gap-3 mb-4">
-        <span class="text-5xl">☕</span>
-        <h1 class="text-5xl md:text-6xl font-bold tracking-tight">
-          <span class="text-amber-500">Coffee</span>
-          <span class="text-white">Shop</span>
-        </h1>
-      </div>
-      <p class="text-gray-400 text-lg">Craft your perfect cup — order online and skip the line!</p>
-    </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <!-- Menu Section -->
-      <div class="lg:col-span-2">
-        <!-- Category Tabs -->
-        <div class="flex flex-wrap gap-3 mb-8" id="categoryTabs">
-          <button class="category-btn px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 bg-amber-600 text-white shadow-lg shadow-amber-900/30" data-category="all">
-            All
-          </button>
-          <button class="category-btn px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 bg-gray-800 text-gray-300 hover:bg-gray-700" data-category="hot">
-            ☕ Hot Coffee
-          </button>
-          <button class="category-btn px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 bg-gray-800 text-gray-300 hover:bg-gray-700" data-category="cold">
-            🧊 Cold Brew
-          </button>
-          <button class="category-btn px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 bg-gray-800 text-gray-300 hover:bg-gray-700" data-category="special">
-            ✨ Specials
-          </button>
-        </div>
+<body class="min-h-screen p-6">
 
-        <!-- Menu Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5" id="menuGrid">
-          <!-- Menu items will be rendered by JavaScript -->
-        </div>
+  <div class="max-w-7xl mx-auto bg-main rounded-[28px] card-shadow p-6">
+
+    <!-- Top Search -->
+    <div class="flex flex-col md:flex-row gap-4 md:items-center md:justify-between mb-8">
+
+      <div class="flex-1 relative">
+        <svg class="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35m1.85-5.15a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+        </svg>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Search"
+          class="w-full bg-white border border-gray-200 rounded-full py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-orange-300"
+        />
       </div>
 
-      <!-- Cart Section -->
-      <div class="lg:col-span-1">
-        <div class="sticky top-8">
-          <div class="bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-gray-800 p-6 shadow-xl">
-            <div class="flex items-center justify-between mb-6">
-              <h2 class="text-2xl font-bold flex items-center gap-2">
-                🛒 Your Order
-              </h2>
-              <span class="cart-badge text-white text-sm font-bold px-3 py-1 rounded-full" id="cartCount">0</span>
-            </div>
+      <button id="filterBtn" class="primary text-white px-6 py-3 rounded-full flex items-center gap-2 hover:primary-dark transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h18M6 12h12m-9 8h6"/>
+        </svg>
+        Filter
+      </button>
+    </div>
 
-            <!-- Cart Items -->
-            <div id="cartItems" class="space-y-3 min-h-[200px] max-h-[400px] overflow-y-auto mb-6">
-              <div class="text-gray-500 text-center py-8" id="emptyCart">
-                <span class="text-4xl block mb-3">☕</span>
-                <p class="text-lg">Your cart is empty</p>
-                <p class="text-sm text-gray-600 mt-1">Add some delicious coffee!</p>
-              </div>
-            </div>
+    <!-- Title -->
+    <div class="mb-6">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">Coffee menu</h1>
 
-            <!-- Order Summary -->
-            <div class="border-t border-gray-800 pt-4 space-y-2">
-              <div class="flex justify-between text-gray-400">
-                <span>Subtotal</span>
-                <span id="subtotal">$0.00</span>
-              </div>
-              <div class="flex justify-between text-gray-400">
-                <span>Tax (8%)</span>
-                <span id="tax">$0.00</span>
-              </div>
-              <div class="flex justify-between text-xl font-bold pt-2 border-t border-gray-800">
-                <span>Total</span>
-                <span id="total" class="text-amber-400">$0.00</span>
-              </div>
-            </div>
-
-            <!-- Place Order Button -->
-            <button id="placeOrderBtn" class="btn-primary w-full mt-6 text-white font-bold py-3.5 px-6 rounded-xl text-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-              ☕ Place Order
-            </button>
-          </div>
-        </div>
+      <!-- Category Pills -->
+      <div class="flex flex-wrap gap-3" id="categoryPills">
+        <button class="category-pill pill-active px-5 py-2 rounded-full font-medium shadow-sm" data-category="all">All</button>
+        <button class="category-pill bg-white border border-gray-200 px-5 py-2 rounded-full font-medium text-gray-700 hover:bg-gray-50" data-category="coffee">Coffee</button>
+        <button class="category-pill bg-white border border-gray-200 px-5 py-2 rounded-full font-medium text-gray-700 hover:bg-gray-50" data-category="non-coffee">Non Coffee</button>
+        <button class="category-pill bg-white border border-gray-200 px-5 py-2 rounded-full font-medium text-gray-700 hover:bg-gray-50" data-category="food">Food</button>
+        <button class="category-pill bg-white border border-gray-200 px-5 py-2 rounded-full font-medium text-gray-700 hover:bg-gray-50" data-category="snack">Snack</button>
+        <button class="category-pill bg-white border border-gray-200 px-5 py-2 rounded-full font-medium text-gray-700 hover:bg-gray-50" data-category="dessert">Dessert</button>
       </div>
     </div>
-  </div>
 
-  <!-- Success Modal -->
-  <div id="orderModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 hidden">
-    <div class="bg-gray-900 rounded-2xl p-8 max-w-md mx-4 text-center border border-gray-800 shadow-2xl animate-bounce-in">
-      <span class="text-6xl block mb-4">🎉</span>
-      <h3 class="text-2xl font-bold mb-2">Order Placed Successfully!</h3>
-      <p class="text-gray-400 mb-6">Your coffee is being prepared. We'll notify you when it's ready!</p>
-      <div class="bg-gray-800 rounded-xl p-4 mb-6 text-left">
-        <p class="text-sm text-gray-400 mb-2">Order Summary</p>
-        <div id="modalOrderItems" class="space-y-2 text-sm"></div>
-        <div class="border-t border-gray-700 mt-3 pt-3 flex justify-between font-bold">
-          <span>Total Paid</span>
-          <span class="text-amber-400" id="modalTotal">$0.00</span>
+    <!-- Main Content -->
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+
+      <!-- Product Grid -->
+      <div class="xl:col-span-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="productGrid">
+          <!-- Products will be rendered by JavaScript -->
         </div>
       </div>
-      <button id="closeModalBtn" class="btn-primary text-white font-bold py-3 px-8 rounded-xl">
+
+      <!-- Cart Summary -->
+      <div class="bg-white rounded-[24px] border border-gray-100 p-6 h-fit card-shadow">
+
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Cart summary</h2>
+
+        <!-- Tabs -->
+        <div class="grid grid-cols-3 gap-2 mb-6" id="orderTypeTabs">
+          <button class="order-type-btn bg-[#FFF2E5] border border-orange-200 rounded-2xl py-3 text-sm font-semibold text-orange-700" data-type="delivery">Delivery</button>
+          <button class="order-type-btn bg-[#F6E1CC] rounded-2xl py-3 text-sm font-semibold text-gray-800" data-type="dinein">Dine in</button>
+          <button class="order-type-btn bg-[#FFF2E5] rounded-2xl py-3 text-sm font-semibold text-gray-700" data-type="takeaway">Take away</button>
+        </div>
+
+        <!-- Cart Items -->
+        <div id="cartItems" class="space-y-4 mb-6 min-h-[120px]">
+          <div id="emptyCartMsg" class="text-center py-8 text-gray-400">
+            <p class="text-lg">Your cart is empty</p>
+            <p class="text-sm">Add some items to get started!</p>
+          </div>
+        </div>
+
+        <!-- Totals -->
+        <div class="border-t border-gray-100 pt-4 space-y-3 mb-6">
+
+          <div class="flex justify-between text-gray-600">
+            <span>Price</span>
+            <span class="font-semibold text-gray-900" id="cartPrice">$0.00</span>
+          </div>
+
+          <div class="flex justify-between text-gray-600">
+            <span>Discount applied</span>
+            <span class="font-semibold text-red-500" id="cartDiscount">-$0.00</span>
+          </div>
+
+          <div class="flex justify-between text-lg font-bold pt-2 border-t border-gray-100">
+            <span>Grand total</span>
+            <span id="cartGrandTotal" class="text-orange-700">$0.00</span>
+          </div>
+
+        </div>
+
+        <!-- CTA -->
+        <button id="placeOrderBtn" class="w-full primary text-white py-4 rounded-full font-semibold text-lg hover:primary-dark transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+          Place an order
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Order Success Modal -->
+  <div id="orderModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-[24px] p-8 max-w-md mx-4 text-center card-shadow">
+      <span class="text-5xl block mb-4">🎉</span>
+      <h3 class="text-2xl font-bold text-gray-900 mb-2">Order Placed!</h3>
+      <p class="text-gray-500 mb-6">Your order has been placed successfully!</p>
+      <div class="bg-gray-50 rounded-xl p-4 mb-6 text-left">
+        <p class="text-sm text-gray-400 mb-2">Order Summary</p>
+        <div id="modalOrderItems" class="space-y-2 text-sm"></div>
+        <div class="border-t border-gray-200 mt-3 pt-3 flex justify-between font-bold text-gray-900">
+          <span>Total Paid</span>
+          <span class="text-orange-600" id="modalTotal">$0.00</span>
+        </div>
+      </div>
+      <button id="closeModalBtn" class="primary text-white font-bold py-3 px-8 rounded-full">
         Awesome! 🎊
       </button>
     </div>
   </div>
 
   <script>
-    // Coffee Menu Data
-    const menuItems = [
+    // ========== DATA ==========
+    const products = [
       {
-        id: 1,
-        name: "Classic Espresso",
-        description: "Rich, bold single-origin espresso shot",
-        price: 3.50,
-        category: "hot",
-        icon: "☕",
-        popular: true
+        id: 1, name: "Cappuccino", price: 1.50, originalPrice: 2.50,
+        image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=800&auto=format&fit=crop",
+        description: "Entire inno coffee with small and home make cappuccino.",
+        category: "coffee", sizes: ["Small", "Large"]
       },
       {
-        id: 2,
-        name: "Caramel Macchiato",
-        description: "Vanilla steamed milk with espresso & caramel drizzle",
-        price: 5.25,
-        category: "hot",
-        icon: "☕",
-        popular: true
+        id: 2, name: "Coffee Latte", price: 1.60, originalPrice: 2.60,
+        image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?q=80&w=800&auto=format&fit=crop",
+        description: "Enticino coffee with assor catmes, best coffee Latte.",
+        category: "coffee", sizes: ["Small", "Large"]
       },
       {
-        id: 3,
-        name: "Cappuccino",
-        description: "Espresso with steamed milk foam & cocoa dusting",
-        price: 4.75,
-        category: "hot",
-        icon: "☕"
+        id: 3, name: "Americano", price: 1.55, originalPrice: 2.55,
+        image: "https://images.unsplash.com/photo-1669872484166-e11b9638b50e?q=80&w=580&auto=format&fit=crop",
+        description: "Fast outunt recent and etion wed coffee ran americano.",
+        category: "coffee", sizes: ["Small", "Large"]
       },
       {
-        id: 4,
-        name: "Iced Latte",
-        description: "Chilled espresso over ice with cold milk",
-        price: 4.50,
-        category: "cold",
-        icon: "🧊"
+        id: 4, name: "Cappuccino", price: 20.00, originalPrice: 25.00,
+        image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=800&auto=format&fit=crop",
+        description: "Short-test coffee, your smat convection, with cappuccino.",
+        category: "coffee", sizes: ["Small", "Large"]
       },
       {
-        id: 5,
-        name: "Cold Brew",
-        description: "Slow-steeped 24hr cold brew, smooth & strong",
-        price: 5.00,
-        category: "cold",
-        icon: "🧊",
-        popular: true
+        id: 5, name: "V60", price: 50.00, originalPrice: 60.00,
+        image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=800&auto=format&fit=crop",
+        description: "High end coffee with convectator annost coffee wnm.",
+        category: "coffee", sizes: ["Small", "Large"]
       },
       {
-        id: 6,
-        name: "Mocha Frappé",
-        description: "Blended chocolate & coffee with whipped cream",
-        price: 6.00,
-        category: "cold",
-        icon: "🧊"
-      },
-      {
-        id: 7,
-        name: "Irish Coffee",
-        description: "Hot coffee with Irish whiskey & cream",
-        price: 7.50,
-        category: "special",
-        icon: "✨"
-      },
-      {
-        id: 8,
-        name: "Affogato",
-        description: "Vanilla gelato drowned in hot espresso",
-        price: 6.50,
-        category: "special",
-        icon: "✨",
-        popular: true
-      },
-      {
-        id: 9,
-        name: "Honey Cinnamon Latte",
-        description: "Warm latte with honey & cinnamon spice",
-        price: 5.75,
-        category: "special",
-        icon: "✨"
+        id: 6, name: "V60", price: 50.00, originalPrice: 60.00,
+        image: "https://images.unsplash.com/photo-1641962710781-3df076f49e26?q=80&w=388&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        description: "Loner less coffee appreciated coffee sesonets with a.",
+        category: "coffee", sizes: ["Small", "Large"]
       }
     ];
 
-    // State
+    // ========== STATE ==========
     let cart = [];
     let activeCategory = "all";
+    let selectedOrderType = "delivery";
+    const DISCOUNT_RATE = 0.20; // 20% discount
 
-    // DOM Elements
-    const menuGrid = document.getElementById("menuGrid");
-    const cartItems = document.getElementById("cartItems");
-    const emptyCart = document.getElementById("emptyCart");
-    const cartCount = document.getElementById("cartCount");
-    const subtotalEl = document.getElementById("subtotal");
-    const taxEl = document.getElementById("tax");
-    const totalEl = document.getElementById("total");
+    // ========== DOM REFS ==========
+    const productGrid = document.getElementById("productGrid");
+    const searchInput = document.getElementById("searchInput");
+    const filterBtn = document.getElementById("filterBtn");
+    const categoryPills = document.querySelectorAll(".category-pill");
+    const cartItemsContainer = document.getElementById("cartItems");
+    const emptyCartMsg = document.getElementById("emptyCartMsg");
+    const cartPriceEl = document.getElementById("cartPrice");
+    const cartDiscountEl = document.getElementById("cartDiscount");
+    const cartGrandTotalEl = document.getElementById("cartGrandTotal");
     const placeOrderBtn = document.getElementById("placeOrderBtn");
+    const orderTypeBtns = document.querySelectorAll(".order-type-btn");
     const orderModal = document.getElementById("orderModal");
     const modalOrderItems = document.getElementById("modalOrderItems");
     const modalTotal = document.getElementById("modalTotal");
     const closeModalBtn = document.getElementById("closeModalBtn");
 
-    // Render Menu
-    function renderMenu(category = "all") {
-      const filtered = category === "all"
-        ? menuItems
-        : menuItems.filter(item => item.category === category);
+    // ========== RENDER PRODUCTS ==========
+    function renderProducts(filterText = "", category = "all") {
+      let filtered = products;
 
-      menuGrid.innerHTML = filtered.map(item => `
-        <div class="menu-item bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-800 p-5 coffee-card">
-          <div class="flex items-start justify-between mb-3">
-            <div>
-              <span class="text-3xl">${item.icon}</span>
-              <h3 class="text-lg font-bold mt-1">${item.name}</h3>
-            </div>
-            <span class="text-amber-400 font-bold text-lg">$${item.price.toFixed(2)}</span>
+      if (category !== "all") {
+        filtered = filtered.filter(p => p.category === category);
+      }
+
+      if (filterText.trim()) {
+        const term = filterText.trim().toLowerCase();
+        filtered = filtered.filter(p =>
+          p.name.toLowerCase().includes(term) ||
+          p.description.toLowerCase().includes(term) ||
+          p.category.toLowerCase().includes(term)
+        );
+      }
+
+      if (filtered.length === 0) {
+        productGrid.innerHTML = `
+          <div class="col-span-full text-center py-16 text-gray-400">
+            <span class="text-5xl block mb-4">🔍</span>
+            <p class="text-xl">No items found</p>
+            <p class="text-sm mt-1">Try a different search or category</p>
+          </div>`;
+        return;
+      }
+
+      productGrid.innerHTML = filtered.map(product => `
+        <div class="bg-white rounded-[22px] border border-gray-100 p-4 card-shadow product-card" data-product-id="${product.id}">
+          <img src="${product.image}" class="w-full h-52 object-cover rounded-2xl mb-4" alt="${product.name}"/>
+
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-bold text-lg">${product.name}</h3>
+            <span class="font-bold text-gray-900">$${product.price.toFixed(2)}</span>
           </div>
-          <p class="text-gray-400 text-sm mb-4">${item.description}</p>
-          <div class="flex items-center gap-2">
-            <button onclick="addToCart(${item.id})" class="btn-primary text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-1.5">
-              <span>+</span> Add to Order
-            </button>
-            ${item.popular ? '<span class="coffee-badge text-xs font-bold px-2 py-1 rounded-full text-white">🔥 Popular</span>' : ''}
+
+          <p class="text-sm text-gray-500 mb-4">${product.description}</p>
+
+          <div class="mb-4">
+            <p class="text-sm font-semibold mb-2">Size</p>
+            <div class="flex gap-2" data-product-id="${product.id}">
+              ${product.sizes.map((size, idx) => `
+                <button class="size-btn ${idx === 0 ? 'bg-orange-100 text-orange-700' : 'border border-gray-200 text-gray-700'} px-4 py-1 rounded-full text-sm font-medium" data-size="${size.toLowerCase()}">${size}</button>
+              `).join("")}
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3 bg-[#FFF2E5] rounded-full px-3 py-2">
+              <button class="qty-minus text-gray-500 text-xl leading-none" data-product-id="${product.id}">−</button>
+              <span class="qty-value font-semibold" data-product-id="${product.id}">1</span>
+              <button class="qty-plus text-orange-600 text-xl leading-none" data-product-id="${product.id}">+</button>
+            </div>
+
+            <button class="add-to-cart primary text-white px-5 py-2 rounded-full font-medium hover:primary-dark transition" data-product-id="${product.id}">Add to Cart</button>
           </div>
         </div>
       `).join("");
+
+      // Attach event listeners to newly rendered buttons
+      document.querySelectorAll(".qty-minus").forEach(btn => {
+        btn.addEventListener("click", handleQtyMinus);
+      });
+      document.querySelectorAll(".qty-plus").forEach(btn => {
+        btn.addEventListener("click", handleQtyPlus);
+      });
+      document.querySelectorAll(".add-to-cart").forEach(btn => {
+        btn.addEventListener("click", handleAddToCart);
+      });
+      document.querySelectorAll(".size-btn").forEach(btn => {
+        btn.addEventListener("click", handleSizeSelect);
+      });
     }
 
-    // Add to Cart
-    function addToCart(itemId) {
-      const item = menuItems.find(i => i.id === itemId);
-      const existing = cart.find(c => c.id === itemId);
+    // ========== PRODUCT CARD EVENTS ==========
+    function handleQtyMinus(e) {
+      const id = parseInt(e.target.dataset.productId);
+      const span = document.querySelector(`.qty-value[data-product-id="${id}"]`);
+      let val = parseInt(span.textContent);
+      if (val > 1) {
+        val--;
+        span.textContent = val;
+      }
+    }
 
+    function handleQtyPlus(e) {
+      const id = parseInt(e.target.dataset.productId);
+      const span = document.querySelector(`.qty-value[data-product-id="${id}"]`);
+      let val = parseInt(span.textContent);
+      val++;
+      span.textContent = val;
+    }
+
+    function handleSizeSelect(e) {
+      const parent = e.target.closest('[data-product-id]');
+      const productId = parent.dataset.productId;
+      const btns = parent.querySelectorAll(".size-btn");
+      btns.forEach(b => {
+        b.classList.remove("bg-orange-100", "text-orange-700");
+        b.classList.add("border", "border-gray-200", "text-gray-700");
+      });
+      e.target.classList.remove("border", "border-gray-200", "text-gray-700");
+      e.target.classList.add("bg-orange-100", "text-orange-700");
+    }
+
+    function handleAddToCart(e) {
+      const id = parseInt(e.target.dataset.productId);
+      const product = products.find(p => p.id === id);
+      if (!product) return;
+
+      const qtySpan = document.querySelector(`.qty-value[data-product-id="${id}"]`);
+      const qty = parseInt(qtySpan.textContent);
+
+      const existing = cart.find(c => c.id === id);
       if (existing) {
-        existing.quantity += 1;
+        existing.quantity += qty;
       } else {
-        cart.push({ ...item, quantity: 1 });
+        cart.push({ ...product, quantity: qty });
       }
 
-      updateCart();
+      // Reset quantity back to 1
+      qtySpan.textContent = "1";
+      updateCartUI();
     }
 
-    // Remove from Cart
-    function removeFromCart(itemId) {
-      const existing = cart.find(c => c.id === itemId);
-      if (existing) {
-        if (existing.quantity > 1) {
-          existing.quantity -= 1;
-        } else {
-          cart = cart.filter(c => c.id !== itemId);
-        }
-      }
-      updateCart();
-    }
-
-    // Update Cart UI
-    function updateCart() {
+    // ========== CART UI ==========
+    function updateCartUI() {
       const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-      cartCount.textContent = totalItems;
 
       if (cart.length === 0) {
-        cartItems.innerHTML = `
-          <div class="text-gray-500 text-center py-8" id="emptyCart">
-            <span class="text-4xl block mb-3">☕</span>
+        cartItemsContainer.innerHTML = `
+          <div class="text-center py-8 text-gray-400">
             <p class="text-lg">Your cart is empty</p>
-            <p class="text-sm text-gray-600 mt-1">Add some delicious coffee!</p>
+            <p class="text-sm">Add some items to get started!</p>
           </div>`;
-        subtotalEl.textContent = "$0.00";
-        taxEl.textContent = "$0.00";
-        totalEl.textContent = "$0.00";
+        cartPriceEl.textContent = "$0.00";
+        cartDiscountEl.textContent = "-$0.00";
+        cartGrandTotalEl.textContent = "$0.00";
         placeOrderBtn.disabled = true;
         return;
       }
 
       placeOrderBtn.disabled = false;
 
-      cartItems.innerHTML = cart.map(item => `
-        <div class="order-item-enter flex items-center justify-between bg-gray-800/50 rounded-xl p-3 border border-gray-700/50">
+      cartItemsContainer.innerHTML = cart.map(item => `
+        <div class="cart-item-enter flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <span class="text-2xl">${item.icon}</span>
+            <img src="${item.image}" class="w-14 h-14 rounded-xl object-cover" alt="${item.name}"/>
             <div>
-              <p class="font-semibold text-sm">${item.name}</p>
-              <p class="text-amber-400 text-sm font-medium">$${(item.price * item.quantity).toFixed(2)}</p>
+              <p class="font-semibold">${item.name}</p>
+              <p class="text-sm text-gray-500">$${item.price.toFixed(2)}</p>
             </div>
           </div>
-          <div class="flex items-center gap-2">
-            <button onclick="removeFromCart(${item.id})" class="w-7 h-7 rounded-full bg-gray-700 hover:bg-red-600 flex items-center justify-center text-sm transition-colors">
-              −
-            </button>
-            <span class="font-bold text-sm w-6 text-center">${item.quantity}</span>
-            <button onclick="addToCart(${item.id})" class="w-7 h-7 rounded-full bg-gray-700 hover:bg-green-600 flex items-center justify-center text-sm transition-colors">
-              +
-            </button>
+          <div class="flex items-center gap-3 bg-[#FFF2E5] rounded-full px-3 py-2">
+            <button class="cart-qty-minus text-gray-500" data-cart-id="${item.id}">−</button>
+            <span class="cart-qty-value font-semibold">${item.quantity}</span>
+            <button class="cart-qty-plus text-orange-600" data-cart-id="${item.id}">+</button>
           </div>
         </div>
       `).join("");
 
-      // Update totals
-      const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      const tax = subtotal * 0.08;
-      const total = subtotal + tax;
+      // Attach cart quantity listeners
+      document.querySelectorAll(".cart-qty-minus").forEach(btn => {
+        btn.addEventListener("click", handleCartQtyMinus);
+      });
+      document.querySelectorAll(".cart-qty-plus").forEach(btn => {
+        btn.addEventListener("click", handleCartQtyPlus);
+      });
 
-      subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
-      taxEl.textContent = `$${tax.toFixed(2)}`;
-      totalEl.textContent = `$${total.toFixed(2)}`;
+      updateTotals();
     }
 
-    // Category Filtering
-    document.querySelectorAll(".category-btn").forEach(btn => {
-      btn.addEventListener("click", function() {
-        document.querySelectorAll(".category-btn").forEach(b => {
-          b.classList.remove("bg-amber-600", "text-white", "shadow-lg", "shadow-amber-900/30");
-          b.classList.add("bg-gray-800", "text-gray-300");
+    function handleCartQtyMinus(e) {
+      const id = parseInt(e.target.dataset.cartId);
+      const item = cart.find(c => c.id === id);
+      if (item) {
+        if (item.quantity > 1) {
+          item.quantity--;
+        } else {
+          cart = cart.filter(c => c.id !== id);
+        }
+        updateCartUI();
+      }
+    }
+
+    function handleCartQtyPlus(e) {
+      const id = parseInt(e.target.dataset.cartId);
+      const item = cart.find(c => c.id === id);
+      if (item) {
+        item.quantity++;
+        updateCartUI();
+      }
+    }
+
+    function updateTotals() {
+      const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const discount = subtotal * DISCOUNT_RATE;
+      const grandTotal = subtotal - discount;
+
+      cartPriceEl.textContent = `$${subtotal.toFixed(2)}`;
+      cartDiscountEl.textContent = `-$${discount.toFixed(2)}`;
+      cartGrandTotalEl.textContent = `$${grandTotal.toFixed(2)}`;
+    }
+
+    // ========== CATEGORY PILLS ==========
+    categoryPills.forEach(pill => {
+      pill.addEventListener("click", function() {
+        categoryPills.forEach(p => {
+          p.classList.remove("pill-active");
+          p.classList.add("bg-white", "border", "border-gray-200", "text-gray-700");
         });
-        this.classList.remove("bg-gray-800", "text-gray-300");
-        this.classList.add("bg-amber-600", "text-white", "shadow-lg", "shadow-amber-900/30");
+        this.classList.remove("bg-white", "border", "border-gray-200", "text-gray-700");
+        this.classList.add("pill-active");
 
         activeCategory = this.dataset.category;
-        renderMenu(activeCategory);
+        renderProducts(searchInput.value, activeCategory);
       });
     });
 
-    // Place Order
+    // ========== SEARCH ==========
+    searchInput.addEventListener("input", function() {
+      renderProducts(this.value, activeCategory);
+    });
+
+    // ========== FILTER BUTTON ==========
+    filterBtn.addEventListener("click", function() {
+      // Toggle: clear search if active, or focus search
+      if (searchInput.value.trim()) {
+        searchInput.value = "";
+        renderProducts("", activeCategory);
+      } else {
+        searchInput.focus();
+      }
+    });
+
+    // ========== ORDER TYPE TABS ==========
+    orderTypeBtns.forEach(btn => {
+      btn.addEventListener("click", function() {
+        orderTypeBtns.forEach(b => {
+          b.classList.remove("border", "border-orange-200", "text-orange-700", "bg-[#FFF2E5]");
+          b.classList.add("bg-[#F6E1CC]", "text-gray-800");
+        });
+        this.classList.add("border", "border-orange-200", "text-orange-700", "bg-[#FFF2E5]");
+        this.classList.remove("bg-[#F6E1CC]", "text-gray-800");
+
+        selectedOrderType = this.dataset.type;
+      });
+    });
+
+    // ========== PLACE ORDER ==========
     placeOrderBtn.addEventListener("click", function() {
-      const modalItems = cart.map(item =>
+      if (cart.length === 0) return;
+
+      const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const discount = subtotal * DISCOUNT_RATE;
+      const grandTotal = subtotal - discount;
+
+      const itemsHtml = cart.map(item =>
         `<div class="flex justify-between">
-          <span>${item.icon} ${item.name} × ${item.quantity}</span>
-          <span class="text-amber-400">$${(item.price * item.quantity).toFixed(2)}</span>
+          <span>${item.name} × ${item.quantity}</span>
+          <span class="text-orange-600">$${(item.price * item.quantity).toFixed(2)}</span>
         </div>`
       ).join("");
 
-      const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      const total = subtotal + subtotal * 0.08;
-
-      modalOrderItems.innerHTML = modalItems;
-      modalTotal.textContent = `$${total.toFixed(2)}`;
+      modalOrderItems.innerHTML = itemsHtml;
+      modalTotal.textContent = `$${grandTotal.toFixed(2)}`;
       orderModal.classList.remove("hidden");
     });
 
-    // Close Modal
     closeModalBtn.addEventListener("click", function() {
       orderModal.classList.add("hidden");
       cart = [];
-      updateCart();
+      updateCartUI();
     });
 
-    // Close modal on outside click
     orderModal.addEventListener("click", function(e) {
       if (e.target === this) {
         this.classList.add("hidden");
         cart = [];
-        updateCart();
+        updateCartUI();
       }
     });
 
-    // Initial Render
-    renderMenu("all");
+    // ========== INIT ==========
+    renderProducts("", "all");
+    updateCartUI();
   </script>
+
 </body>
 </html>
