@@ -13,6 +13,10 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
+<<<<<<< HEAD
+=======
+    "@tailwindplus/elements": "^1.0.22",
+>>>>>>> a3192796d0a0159a2e028e8984a5e6377893436a
     "tailwindcss": "^4.3.3"
   }
 }
