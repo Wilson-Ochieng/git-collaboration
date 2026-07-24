@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Coffee Shop</title>
+    <title>Contact Us | Cosy Cup Cafe</title>
 
-    <!-- Tailwind CDN (if your project already has Tailwind installed, remove this) -->
-       <link href="/src/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="./src/style.css">
 
 </head>
+
 
 <body class="bg-stone-50 text-stone-800">
 
 
-<!-- Navigation -->
-<header class="bg-white">
+    <!-- Navigation -->
+    <header class="bg-white">
   <nav aria-label="Global" class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
     <div class="flex lg:flex-1">
       <a href="#" class="-m-1.5 p-1.5">
@@ -189,41 +189,45 @@
       </div>
     </dialog>
   </el-dialog>
-</header>
-
-
-
-<!-- Hero Section -->
-<section class="bg-amber-800 text-white text-center py-20">
-
-    <h2 class="text-5xl font-bold mb-4">
-        Contact Us
-    </h2>
-
-    <p class="text-lg">
-        We'd love to hear from you. Visit our coffee shop or send us a message.
-    </p>
-
-</section>
+</header> 
 
 
 
 
-<!-- Map Section -->
-<section class="max-w-7xl mx-auto px-6 py-12">
 
-    <h2 class="text-3xl font-bold text-center mb-8">
-        Find Our Location
-    </h2>
+    <!-- Hero Section -->
+
+<section 
+class="relative bg-[url('/src/images/coffee7.jpeg')] bg-cover bg-center h-112.5">
 
 
-    <div class="rounded-xl overflow-hidden shadow-lg">
+    <!-- Dark Overlay -->
+    <div class="absolute inset-0 bg-black/50"></div>
 
+
+
+    <!-- Hero Content -->
+    <div class="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-6">
+
+
+        <h2 class="text-5xl font-bold mb-4">
+            Contact Us
+        </h2>
+
+
+        <p class="text-lg max-w-2xl">
+            We'd love to hear from you. Visit Cosy Cup Cafe,
+            enjoy your favourite coffee, or send us a message.
+        </p>
+
+<<<<<<< HEAD
+=======
         <iframe
-        class="w-full h-[450px]"
+        class="w-full h-112.5"
         src="https://maps.google.com/maps?q=Nairobi%20Kenya&t=&z=13&ie=UTF8&iwloc=&output=embed"
         loading="lazy">
         </iframe>
+>>>>>>> homepage
 
     </div>
 
@@ -234,172 +238,242 @@
 
 
 
-<!-- Contact Information + Form -->
-
-<section class="max-w-7xl mx-auto px-6 py-12">
-
-
-<div class="grid md:grid-cols-2 gap-10">
-
-
-
-<!-- Contact Information -->
-
-<div class="bg-white rounded-xl shadow-lg p-8">
-
-
-<h2 class="text-3xl font-bold mb-6 text-amber-900">
-    Contact Information
-</h2>
-
-
-<div class="space-y-5">
-
-
-<p>
-<strong>📍 Address:</strong><br>
-Moi Avenue, Nairobi Kenya
-</p>
-
-
-<p>
-<strong>☎ Phone:</strong><br>
-+254 700 123 456
-</p>
-
-
-<p>
-<strong>✉ Email:</strong><br>
-info@brewhaven.com
-</p>
-
-
-<p>
-<strong>🕒 Opening Hours:</strong><br>
-Monday - Friday: 7AM - 9PM
-<br>
-Saturday - Sunday: 8AM - 10PM
-</p>
-
-
-</div>
-
-
-</div>
 
 
 
 
+    <!-- Contact Information and Form -->
+     <section class="relative bg-[url('/src/images/coffee6.jpeg')] bg-cover bg-center py-16">
 
-<!-- Contact Form -->
-
-<div class="bg-white rounded-xl shadow-lg p-8">
-
-
-<h2 class="text-3xl font-bold mb-6 text-amber-900">
-    Send Us A Message
-</h2>
+    <!-- Dark overlay -->
+    <div class="absolute inset-0 bg-black/40"></div>
 
 
+    <!-- Content -->
+    <div class="relative z-10 max-w-7xl mx-auto px-6">
 
-<form class="space-y-5">
 
-
-<input 
-type="text"
-placeholder="Your Name"
-class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-700">
+        <div class="grid md:grid-cols-2 gap-10">
 
 
 
-<input 
-type="email"
-placeholder="Your Email"
-class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-700">
+            <!-- Contact Information -->
+
+            <div class="bg-white/90 rounded-xl shadow-lg p-8">
+
+
+                <h2 class="text-3xl font-bold mb-6 text-amber-900">
+                    Contact Information
+                </h2>
+
+
+                <div class="space-y-6">
+
+
+                    <p>
+                        <span class="font-semibold">
+                            📍 Address:
+                        </span>
+                        <br>
+                        Kenyatta Avenue, Nairobi, Kenya
+                    </p>
+
+
+                    <p>
+                        <span class="font-semibold">
+                            ☎ Phone:
+                        </span>
+                        <br>
+                        +254 700 123 456
+                    </p>
+
+
+                    <p>
+                        <span class="font-semibold">
+                            ✉ Email:
+                        </span>
+                        <br>
+                        info@cosycupcafe.com
+                    </p>
+
+
+                    <p>
+                        <span class="font-semibold">
+                            🕒 Opening Hours:
+                        </span>
+                        <br>
+                        Monday - Friday: 7AM - 9PM
+                        <br>
+                        Saturday - Sunday: 8AM - 10PM
+                    </p>
+
+
+                </div>
+
+
+            </div>
 
 
 
-<input 
-type="text"
-placeholder="Subject"
-class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-700">
+
+
+            <!-- Contact Form -->
+
+            <div class="bg-white/90 rounded-xl shadow-lg p-8">
+
+
+                <h2 class="text-3xl font-bold mb-6 text-amber-900">
+                    Send Us A Message
+                </h2>
+
+
+                <form class="space-y-5">
+
+
+                    <input 
+                    type="text"
+                    placeholder="Full Name"
+                    class="w-full border border-gray-300 rounded-lg p-3">
+
+
+                    <input 
+                    type="email"
+                    placeholder="Email Address"
+                    class="w-full border border-gray-300 rounded-lg p-3">
+
+
+                    <input 
+                    type="text"
+                    placeholder="Subject"
+                    class="w-full border border-gray-300 rounded-lg p-3">
+
+
+                    <textarea
+                    rows="5"
+                    placeholder="Your Message"
+                    class="w-full border border-gray-300 rounded-lg p-3"></textarea>
+
+
+                    <button
+                    class="bg-amber-800 text-white px-8 py-3 rounded-lg hover:bg-amber-900">
+
+                        Send Message
+
+                    </button>
+
+
+                </form>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+    
+    <!-- Map Section -->
+
+<section 
+class="relative bg-cover bg-center py-16"
+style="background-image: url('/src/images/coffee-call.jpeg');">
+
+
+    <!-- Dark Overlay -->
+    <div class="absolute inset-0 bg-black/40"></div>
 
 
 
-<textarea
-rows="5"
-placeholder="Your Message"
-class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-700"></textarea>
+    <!-- Map Content -->
+
+    <div class="relative z-10 max-w-7xl mx-auto px-6">
+
+
+        <h2 class="text-3xl font-bold text-center mb-8 text-white">
+            Find Cosy Cup Cafe
+        </h2>
 
 
 
-
-<button
-class="bg-amber-800 text-white px-8 py-3 rounded-lg hover:bg-amber-900 transition">
-
-Send Message
-
-</button>
+        <div class="rounded-xl overflow-hidden shadow-lg">
 
 
+            <iframe 
+            class="w-full h-112.5"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.816043016825!2d36.819765774829214!3d-1.2842929987035039!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f11eb883941b3%3A0x8cacd67f5f26ef68!2sArtcaff%C3%A9%20Restaurant%20Kenyatta%20Avenue!5e0!3m2!1sen!2ske!4v1784804553953!5m2!1sen!2ske" 
+            loading="lazy" referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+        </div>
 
-</form>
 
+    </div>
 
-</div>
-
-
-</div>
 
 </section>
 
 
 
-
-
-
-<!-- Social Links -->
+<!-- Social Links Footer -->
 
 <footer class="bg-amber-900 text-white py-10 text-center">
 
 
-<h2 class="text-3xl font-bold mb-5">
-Follow Us
-</h2>
+    <h2 class="text-3xl font-bold mb-6">
+        Follow Us
+    </h2>
 
 
-<div class="flex justify-center gap-8 text-lg">
+
+    <div class="flex justify-center gap-8 text-lg">
 
 
-<a href="#" class="hover:text-amber-300">
-Facebook
-</a>
+        <a href="#" class="hover:text-amber-300 transition">
+            Facebook
+        </a>
 
 
-<a href="#" class="hover:text-amber-300">
-Instagram
-</a>
+        <a href="#" class="hover:text-amber-300 transition">
+            Instagram
+        </a>
 
 
-<a href="#" class="hover:text-amber-300">
-X (Twitter)
-</a>
+        <a href="#" class="hover:text-amber-300 transition">
+            X (Twitter)
+        </a>
 
 
-<a href="#" class="hover:text-amber-300">
-TikTok
-</a>
+        <a href="#" class="hover:text-amber-300 transition">
+            TikTok
+        </a>
 
 
-</div>
+    </div>
 
 
-<p class="mt-6">
-© 2026 Brew Haven Coffee. All rights reserved.
-</p>
+
+    <p class="mt-6 text-sm">
+        © 2026 Cosy Cup Cafe. All rights reserved.
+    </p>
+
 
 
 </footer>
+
+    <!-- Social Links Footer -->
+
+
+
+
+
+
+
+
 
 
 </body>
