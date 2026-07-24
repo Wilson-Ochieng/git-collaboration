@@ -13,10 +13,6 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
-<<<<<<< HEAD
-    "@tailwindplus/elements": "^1.0.22",
-=======
->>>>>>> menu
     "tailwindcss": "^4.3.3"
   }
 }
