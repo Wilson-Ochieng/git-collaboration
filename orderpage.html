@@ -785,5 +785,70 @@
 
   </div>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const items = [
+        { id: 'cappuccino', price: 1.50, qtyEl: null, minusEl: null, plusEl: null },
+        { id: 'latte', price: 1.60, qtyEl: null, minusEl: null, plusEl: null },
+      ];
+
+      // DOM elements
+      const badgeEl = document.querySelector('.badge');
+      const subtotalEl = document.querySelector('.summary-row:nth-child(1) .summary-value');
+      const discountEl = document.querySelector('.discount-amount');
+      const totalEl = document.querySelector('.summary-row.total .summary-value');
+
+      // Gather quantity controls for each item
+      const cartItemEls = document.querySelectorAll('.cart-item');
+      cartItemEls.forEach((item, index) => {
+        const qtyEl = item.querySelector('.cart-qty-value');
+        const minusEl = item.querySelector('.cart-qty-btn:first-child');
+        const plusEl = item.querySelector('.cart-qty-btn:last-child');
+        items[index].qtyEl = qtyEl;
+        items[index].minusEl = minusEl;
+        items[index].plusEl = plusEl;
+      });
+
+      function updateCart() {
+        let subtotal = 0;
+        let totalQty = 0;
+
+        items.forEach(item => {
+          const qty = parseInt(item.qtyEl.textContent, 10);
+          subtotal += qty * item.price;
+          totalQty += qty;
+        });
+
+        const discount = subtotal * 0.20;
+        const total = subtotal - discount;
+
+        // Update badge
+        badgeEl.textContent = totalQty;
+
+        // Update summary
+        subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+        discountEl.textContent = `-$${discount.toFixed(2)}`;
+        totalEl.textContent = `$${total.toFixed(2)}`;
+      }
+
+      items.forEach(item => {
+        item.minusEl.addEventListener('click', function(e) {
+          let qty = parseInt(item.qtyEl.textContent, 10);
+          if (qty > 0) {
+            qty--;
+            item.qtyEl.textContent = qty;
+            updateCart();
+          }
+        });
+
+        item.plusEl.addEventListener('click', function(e) {
+          let qty = parseInt(item.qtyEl.textContent, 10);
+          qty++;
+          item.qtyEl.textContent = qty;
+          updateCart();
+        });
+      });
+    });
+  </script>
 </body>
 </html>
