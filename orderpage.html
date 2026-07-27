@@ -34,7 +34,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 2rem;
+      padding: 1rem;
     }
 
     h1, h2, h3, h4 {
@@ -47,9 +47,10 @@
       background: var(--white);
       border-radius: 28px;
       box-shadow: 0 20px 60px rgba(62, 39, 35, 0.12);
-      padding: 2.5rem 2rem;
+      padding: 2rem 1.5rem;
       position: relative;
       overflow: hidden;
+      transition: max-width 0.3s ease, padding 0.3s ease;
     }
 
     .cart-container::before {
@@ -91,14 +92,14 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 2rem;
-      padding-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
       border-bottom: 2px solid var(--light-beige);
     }
 
     .cart-title {
       font-family: 'Playfair Display', serif;
-      font-size: 1.75rem;
+      font-size: clamp(1.4rem, 4vw, 1.75rem);
       font-weight: 700;
       color: var(--dark-brown);
       letter-spacing: -0.5px;
@@ -126,6 +127,7 @@
       align-items: center;
       justify-content: center;
       font-size: 1.3rem;
+      flex-shrink: 0;
     }
 
     /* ── Order Type Tabs (CSS-only - labels toggle hidden radio inputs) ── */
@@ -133,7 +135,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 0.5rem;
-      margin-bottom: 1.75rem;
+      margin-bottom: 1.5rem;
     }
 
     .order-tab {
@@ -142,13 +144,14 @@
       padding: 0.7rem 0.5rem;
       border-radius: 14px;
       font-family: 'Poppins', sans-serif;
-      font-size: 0.8rem;
+      font-size: clamp(0.7rem, 2vw, 0.8rem);
       font-weight: 600;
       background: var(--light-beige);
       color: var(--primary);
       cursor: pointer;
       transition: all 0.3s ease;
       user-select: none;
+      white-space: nowrap;
     }
 
     .order-tab:hover {
@@ -201,6 +204,7 @@
       justify-content: space-between;
       padding: 1rem 0;
       border-bottom: 1px dashed var(--light-beige);
+      gap: 0.75rem;
     }
 
     .cart-item:last-of-type {
@@ -210,7 +214,13 @@
     .cart-item-left {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 0.75rem;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .cart-item-left > div {
+      min-width: 0;
     }
 
     .cart-item-img {
@@ -219,12 +229,16 @@
       border-radius: 14px;
       object-fit: cover;
       border: 2px solid var(--light-beige);
+      flex-shrink: 0;
     }
 
     .cart-item-name {
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: clamp(0.85rem, 2.5vw, 0.95rem);
       color: var(--dark-brown);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .cart-item-price {
@@ -240,6 +254,7 @@
       background: var(--light-beige);
       border-radius: 999px;
       padding: 0.3rem 0.6rem;
+      flex-shrink: 0;
     }
 
     .cart-qty-btn {
@@ -254,6 +269,16 @@
       justify-content: center;
       background: transparent;
       color: var(--primary);
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .cart-qty-btn:hover {
+      background: rgba(111, 78, 55, 0.1);
+    }
+
+    .cart-qty-btn:active {
+      background: rgba(111, 78, 55, 0.2);
     }
 
     .cart-qty-value {
@@ -279,22 +304,24 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 0.5rem;
     }
 
     .countdown-label {
-      font-size: 0.8rem;
+      font-size: clamp(0.75rem, 2vw, 0.8rem);
       font-weight: 600;
       color: var(--dark-brown);
     }
 
     .countdown-time {
-      font-size: 0.85rem;
+      font-size: clamp(0.8rem, 2.5vw, 0.85rem);
       font-weight: 700;
       color: var(--primary);
       font-family: 'Playfair Display', serif;
       position: relative;
       min-width: 5rem;
       text-align: right;
+      white-space: nowrap;
     }
 
     /* Default text when order not placed */
@@ -461,7 +488,7 @@
     }
 
     .summary-label {
-      font-size: 0.9rem;
+      font-size: clamp(0.8rem, 2.5vw, 0.9rem);
       color: #8a7266;
       font-weight: 400;
     }
@@ -469,7 +496,7 @@
     .summary-value {
       font-weight: 600;
       color: var(--dark-brown);
-      font-size: 0.95rem;
+      font-size: clamp(0.85rem, 2.5vw, 0.95rem);
     }
 
     .summary-divider {
@@ -484,14 +511,14 @@
 
     .summary-row.total .summary-label {
       font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
+      font-size: clamp(1rem, 3vw, 1.1rem);
       font-weight: 700;
       color: var(--dark-brown);
     }
 
     .summary-row.total .summary-value {
       font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
+      font-size: clamp(1.1rem, 3.5vw, 1.25rem);
       font-weight: 700;
       color: var(--caramel);
     }
@@ -509,7 +536,7 @@
       border: none;
       border-radius: 999px;
       font-family: 'Poppins', sans-serif;
-      font-size: 1rem;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
       font-weight: 700;
       color: var(--white);
       background: linear-gradient(135deg, var(--primary), var(--dark-brown));
@@ -544,11 +571,12 @@
       inset: 0;
       background: rgba(62, 39, 35, 0.6);
       backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       border-radius: 28px;
       z-index: 100;
       align-items: center;
       justify-content: center;
-      padding: 2rem;
+      padding: 1.5rem;
     }
 
     #order-success:checked ~ .success-overlay {
@@ -564,7 +592,7 @@
     .success-modal {
       background: var(--white);
       border-radius: 24px;
-      padding: 2.5rem 2rem;
+      padding: 2rem 1.5rem;
       text-align: center;
       max-width: 360px;
       width: 100%;
@@ -581,7 +609,7 @@
     }
 
     .success-icon {
-      font-size: 3.5rem;
+      font-size: clamp(2.5rem, 8vw, 3.5rem);
       margin-bottom: 1rem;
     }
 
@@ -597,20 +625,20 @@
     }
 
     .success-modal h2 {
-      font-size: 1.5rem;
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
       color: var(--dark-brown);
       margin-bottom: 0.5rem;
     }
 
     .success-modal p {
-      font-size: 0.9rem;
+      font-size: clamp(0.8rem, 2.5vw, 0.9rem);
       color: #8a7266;
       margin-bottom: 1.5rem;
       line-height: 1.5;
     }
 
     .success-modal .order-type-confirm {
-      font-size: 0.8rem;
+      font-size: clamp(0.75rem, 2vw, 0.8rem);
       color: var(--primary);
       font-weight: 600;
       margin-bottom: 1.5rem;
@@ -636,7 +664,7 @@
       padding: 0.8rem 2.5rem;
       border-radius: 999px;
       font-family: 'Poppins', sans-serif;
-      font-size: 0.9rem;
+      font-size: clamp(0.8rem, 2.5vw, 0.9rem);
       font-weight: 700;
       color: var(--white);
       background: linear-gradient(135deg, var(--primary), var(--dark-brown));
@@ -649,6 +677,466 @@
     .close-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(111, 78, 55, 0.4);
+    }
+
+    /* ============================================================
+       RESPONSIVE MEDIA QUERIES
+       ============================================================ */
+
+    /* ── Very small phones (≤ 400px) ── */
+    @media (max-width: 400px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .cart-container {
+        padding: 1.5rem 1rem;
+        border-radius: 20px;
+      }
+
+      .cart-header {
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+      }
+
+      .cart-coffee-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+      }
+
+      .order-tabs {
+        gap: 0.35rem;
+      }
+
+      .order-tab {
+        padding: 0.6rem 0.3rem;
+        font-size: 0.7rem;
+        border-radius: 10px;
+      }
+
+      .cart-item {
+        padding: 0.75rem 0;
+        flex-wrap: wrap;
+      }
+
+      .cart-item-img {
+        width: 44px;
+        height: 44px;
+      }
+
+      .cart-qty-controls {
+        padding: 0.25rem 0.5rem;
+      }
+
+      .cart-qty-btn {
+        width: 22px;
+        height: 22px;
+        font-size: 0.85rem;
+      }
+
+      .countdown-container {
+        padding: 0.75rem 1rem;
+      }
+
+      .success-overlay {
+        padding: 1rem;
+      }
+
+      .success-modal {
+        padding: 1.5rem 1rem;
+      }
+
+      .success-modal h2 {
+        font-size: 1.1rem;
+      }
+
+      .close-btn {
+        padding: 0.7rem 2rem;
+      }
+    }
+
+    /* ── Tablets and small desktops (768px+) ── */
+    @media (min-width: 768px) {
+      body {
+        padding: 2rem;
+      }
+
+      .cart-container {
+        max-width: 600px;
+        padding: 2.5rem 2.5rem;
+        border-radius: 32px;
+      }
+
+      .cart-container::before {
+        height: 8px;
+      }
+
+      .cart-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1.25rem;
+      }
+
+      .cart-title {
+        font-size: 2rem;
+      }
+
+      .cart-coffee-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+      }
+
+      .order-tabs {
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+      }
+
+      .order-tab {
+        padding: 0.85rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 16px;
+      }
+
+      .cart-item {
+        padding: 1.25rem 0;
+      }
+
+      .cart-item-left {
+        gap: 1.25rem;
+      }
+
+      .cart-item-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+      }
+
+      .cart-item-name {
+        font-size: 1.05rem;
+      }
+
+      .cart-item-price {
+        font-size: 0.9rem;
+      }
+
+      .cart-qty-controls {
+        padding: 0.4rem 0.8rem;
+        gap: 0.75rem;
+      }
+
+      .cart-qty-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 1.1rem;
+      }
+
+      .cart-qty-value {
+        font-size: 1rem;
+        min-width: 22px;
+      }
+
+      .countdown-container {
+        padding: 1.25rem 1.5rem;
+        border-radius: 18px;
+      }
+
+      .countdown-label {
+        font-size: 0.9rem;
+      }
+
+      .countdown-time {
+        font-size: 0.95rem;
+      }
+
+      .countdown-track {
+        height: 10px;
+      }
+
+      .cart-summary {
+        padding-top: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .summary-row {
+        padding: 0.5rem 0;
+      }
+
+      .summary-label {
+        font-size: 1rem;
+      }
+
+      .summary-value {
+        font-size: 1.05rem;
+      }
+
+      .summary-row.total .summary-label {
+        font-size: 1.2rem;
+      }
+
+      .summary-row.total .summary-value {
+        font-size: 1.35rem;
+      }
+
+      .place-order-btn {
+        padding: 1.15rem;
+        font-size: 1.1rem;
+        border-radius: 999px;
+      }
+
+      .success-modal {
+        padding: 2.5rem 2rem;
+        max-width: 400px;
+      }
+
+      .success-icon {
+        font-size: 4rem;
+      }
+
+      .success-modal h2 {
+        font-size: 1.6rem;
+      }
+
+      .success-modal p {
+        font-size: 0.95rem;
+      }
+
+      .close-btn {
+        padding: 0.9rem 3rem;
+        font-size: 1rem;
+      }
+    }
+
+    /* ── Large desktops (1024px+) ── */
+    @media (min-width: 1024px) {
+      body {
+        padding: 3rem;
+      }
+
+      .cart-container {
+        max-width: 680px;
+        padding: 3rem 3rem;
+        border-radius: 36px;
+        box-shadow: 0 30px 80px rgba(62, 39, 35, 0.15);
+      }
+
+      .cart-container::before {
+        height: 8px;
+      }
+
+      .decor-dots {
+        top: 2rem;
+        right: 2rem;
+        grid-template-columns: repeat(3, 8px);
+        gap: 6px;
+      }
+
+      .decor-dots span {
+        width: 8px;
+        height: 8px;
+      }
+
+      .cart-header {
+        margin-bottom: 2.25rem;
+        padding-bottom: 1.5rem;
+      }
+
+      .cart-title {
+        font-size: 2.25rem;
+      }
+
+      .cart-title .badge {
+        font-size: 0.95rem;
+        padding: 0.2rem 0.75rem;
+      }
+
+      .cart-coffee-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 1.6rem;
+      }
+
+      .order-tabs {
+        gap: 1rem;
+        margin-bottom: 2.25rem;
+      }
+
+      .order-tab {
+        padding: 1rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 18px;
+      }
+
+      .order-type-indicator {
+        font-size: 0.95rem;
+        padding: 0.65rem;
+        margin-bottom: 1.25rem;
+        border-radius: 12px;
+      }
+
+      .cart-item {
+        padding: 1.5rem 0;
+      }
+
+      .cart-item-left {
+        gap: 1.5rem;
+      }
+
+      .cart-item-img {
+        width: 68px;
+        height: 68px;
+        border-radius: 18px;
+        border-width: 3px;
+      }
+
+      .cart-item-name {
+        font-size: 1.15rem;
+      }
+
+      .cart-item-price {
+        font-size: 0.95rem;
+      }
+
+      .cart-qty-controls {
+        padding: 0.5rem 1rem;
+        gap: 0.85rem;
+      }
+
+      .cart-qty-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 1.2rem;
+      }
+
+      .cart-qty-value {
+        font-size: 1.1rem;
+        min-width: 24px;
+      }
+
+      .countdown-container {
+        padding: 1.5rem 1.75rem;
+        border-radius: 20px;
+        gap: 0.75rem;
+      }
+
+      .countdown-label {
+        font-size: 1rem;
+      }
+
+      .countdown-time {
+        font-size: 1.05rem;
+        min-width: 6rem;
+      }
+
+      .countdown-track {
+        height: 12px;
+        border-radius: 999px;
+      }
+
+      .cart-summary {
+        padding-top: 1.75rem;
+        margin-bottom: 2.25rem;
+      }
+
+      .summary-row {
+        padding: 0.6rem 0;
+      }
+
+      .summary-label {
+        font-size: 1.05rem;
+      }
+
+      .summary-value {
+        font-size: 1.1rem;
+      }
+
+      .summary-divider {
+        margin: 0.75rem 0;
+      }
+
+      .summary-row.total .summary-label {
+        font-size: 1.3rem;
+      }
+
+      .summary-row.total .summary-value {
+        font-size: 1.5rem;
+      }
+
+      .place-order-btn {
+        padding: 1.25rem;
+        font-size: 1.15rem;
+        letter-spacing: 0.75px;
+        gap: 0.75rem;
+      }
+
+      .success-overlay {
+        border-radius: 36px;
+        padding: 2rem;
+      }
+
+      .success-modal {
+        padding: 3rem 2.5rem;
+        max-width: 440px;
+        border-radius: 28px;
+      }
+
+      .success-icon {
+        font-size: 4.5rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .success-modal h2 {
+        font-size: 1.8rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .success-modal p {
+        font-size: 1rem;
+        margin-bottom: 1.75rem;
+      }
+
+      .success-modal .order-type-confirm {
+        font-size: 0.85rem;
+        padding: 0.65rem;
+        margin-bottom: 1.75rem;
+        border-radius: 12px;
+      }
+
+      .close-btn {
+        padding: 1rem 3.5rem;
+        font-size: 1.05rem;
+      }
+    }
+
+    /* ── Extra large screens (1440px+) ── */
+    @media (min-width: 1440px) {
+      .cart-container {
+        max-width: 740px;
+        padding: 3.5rem 3.5rem;
+      }
+
+      .cart-title {
+        font-size: 2.5rem;
+      }
+
+      .order-tab {
+        font-size: 1.05rem;
+        padding: 1.1rem 1.5rem;
+      }
+
+      .cart-item-img {
+        width: 76px;
+        height: 76px;
+      }
+
+      .cart-item-name {
+        font-size: 1.25rem;
+      }
+
+      .place-order-btn {
+        padding: 1.35rem;
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
