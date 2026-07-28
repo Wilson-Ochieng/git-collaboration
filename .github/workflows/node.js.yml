@@ -3,30 +3,23 @@ name: Coffee Shop CI/CD
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [24.x]
-
     steps:
     - uses: actions/checkout@v4
     
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: '24.x'
         cache: 'npm'
     
     - name: Install dependencies
       run: npm ci
     
-    - name: Build the application
+    - name: Build
       run: npm run build --if-present
 
   deploy:
@@ -41,8 +34,28 @@ jobs:
       run: npm ci
     
     - name: Deploy to Vercel
+      id: deploy
       env:
         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       run: |
-        npx vercel@latest --version
-        npx vercel@latest --prod --yes
+        echo " Deploying to Vercel..."
+        DEPLOY_OUTPUT=$(npx vercel@latest --prod --yes 2>&1)
+        echo "$DEPLOY_OUTPUT"
+        
+        # Extract URL from output
+        URL=$(echo "$DEPLOY_OUTPUT" | grep -Eo 'https://[^[:space:]]+' | grep -E '\.vercel\.app|\.app' | head -1)
+        
+        if [ -n "$URL" ]; then
+          echo "DEPLOY_URL=$URL" >> $GITHUB_OUTPUT
+        else
+          # Default to project name
+          echo "DEPLOY_URL=https://cicd.vercel.app" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Show Deployment URL
+      run: |
+        echo " Deployment Successful!"
+        echo " Live URL: ${{ steps.deploy.outputs.DEPLOY_URL }}"
+        echo ""
+        echo "You can access your application at:"
+        echo "${{ steps.deploy.outputs.DEPLOY_URL }}"
