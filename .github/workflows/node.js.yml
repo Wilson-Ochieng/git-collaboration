@@ -1,7 +1,5 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Coffee Shop CI
+# This workflow uses the official Vercel GitHub Action for deployment
+name: Coffee Shop Deployment 1
 
 on:
   push:
@@ -11,29 +9,42 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    
     strategy:
       matrix:
-        node-version: [24.18]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [24.x]
 
     steps:
     - uses: actions/checkout@v4
+    
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
     
-   
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build the application
+      run: npm run build --if-present
+    
+    - name: Run tests
+      run: npm test --if-present
+
   deploy:
     needs: build
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    
     steps:
-     - uses: actions/checkout@v4
-     - run: npx vercel --token="${{secrets.VERCEL_TOKEN}}" --prod --yes
-      
+    - uses: actions/checkout@v4
+    
+    - name: Deploy to Vercel
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        vercel-args: '--prod'
