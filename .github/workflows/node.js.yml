@@ -46,4 +46,4 @@ jobs:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
         vercel-org-id: team_72o1IU7rcS9VYTX0hZQgJWMY
         vercel-project-id: prj_cr86X0MLhoAkXaWkPtDHGbI5JBT0
-        vercel-args: '--prod --yes'
+        vercel-args: '--prod'
