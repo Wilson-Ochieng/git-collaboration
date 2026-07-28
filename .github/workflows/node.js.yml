@@ -35,5 +35,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
      - uses: actions/checkout@v4
-     - run: npx vercel --token=${{secrets.VERCEL_TOKEN}} --prod --yes
+     - run: npx vercel --token=$VERCEL_TOKEN --prod --yes
       
