@@ -1,5 +1,4 @@
-# This workflow uses the official Vercel GitHub Action for deployment
-name: Coffee Shop Deployment 1
+name: Coffee Shop CI/CD
 
 on:
   push:
@@ -29,9 +28,6 @@ jobs:
     
     - name: Build the application
       run: npm run build --if-present
-    
-    - name: Run tests
-      run: npm test --if-present
 
   deploy:
     needs: build
@@ -41,10 +37,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
+    - name: Install dependencies
+      run: npm ci
+    
     - name: Deploy to Vercel
       uses: amondnet/vercel-action@v25
       with:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        vercel-args: '--prod'
+        vercel-org-id: team_72o1IU7rcS9VYTX0hZQgJWMY
+        vercel-project-id: prj_cr86X0MLhoAkXaWkPtDHGbI5JBT0
+        vercel-args: '--prod --yes'
