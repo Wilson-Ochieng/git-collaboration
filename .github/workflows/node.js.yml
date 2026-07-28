@@ -26,6 +26,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
     - run: npm run build --if-present
    
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v4
+     - run: npx vercel --token=${{secrets.VERCEL_TOKEN}} --prod --yes
+      
