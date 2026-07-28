@@ -1,4 +1,4 @@
-name: Coffee Shop CI/CD
+name: Coffee Shop CI/CD 3
 
 on:
   push:
