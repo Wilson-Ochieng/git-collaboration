@@ -1,4 +1,4 @@
-name: Coffee Shop CI/CD 3
+name: Coffee Shop CI/CD
 
 on:
   push:
@@ -41,9 +41,8 @@ jobs:
       run: npm ci
     
     - name: Deploy to Vercel
-      uses: amondnet/vercel-action@v25
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: team_72o1IU7rcS9VYTX0hZQgJWMY
-        vercel-project-id: prj_cr86X0MLhoAkXaWkPtDHGbI5JBT0
-        vercel-args: '--prod'
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      run: |
+        npx vercel@latest --version
+        npx vercel@latest --prod --yes
