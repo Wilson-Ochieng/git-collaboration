@@ -41,24 +41,29 @@
         min-height: 100vh;
         display: flex;
         flex-direction: column;
+        overflow-x: hidden;
       }
 
       .font-heading {
         font-family: var(--font-heading);
       }
 
-      /* --- Main Layout --- */
-      main {
-        max-width: 72rem;
-        margin: 0 auto;
-        padding: 3rem 1rem;
-        flex-grow: 1;
-        width: 100%;
+      /* --- Entrance Animations --- */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       .hero-section {
         text-align: center;
         margin-bottom: 2.5rem;
+        animation: fadeInUp 0.8s ease-out forwards;
       }
 
       .hero-title {
@@ -80,49 +85,98 @@
         margin-top: 0.5rem;
       }
 
-      /* --- Filter Controls --- */
-      .filter-form {
+      /* --- Animated Filter Segment Control --- */
+      .filter-wrapper {
         display: flex;
-        flex-wrap: wrap;
         justify-content: center;
-        gap: 0.75rem;
         margin-bottom: 2.5rem;
+        animation: fadeInUp 0.8s ease-out 0.15s forwards;
+        opacity: 0;
+      }
+
+      .filter-form {
+        position: relative;
+        display: inline-flex;
+        background-color: rgba(255, 248, 231, 0.85);
+        backdrop-filter: blur(8px);
+        padding: 0.375rem;
+        border-radius: 9999px;
+        border: 1px solid rgba(111, 78, 55, 0.15);
+        box-shadow: 0 4px 12px rgba(62, 39, 35, 0.05);
       }
 
       .filter-label {
+        position: relative;
+        z-index: 10; /* Ensures label text remains above background glider */
         cursor: pointer;
         user-select: none;
       }
 
       .filter-input {
-        display: none;
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
       }
 
       .filter-pill {
         display: inline-block;
         padding: 0.5rem 1.25rem;
         font-size: 0.875rem;
-        font-weight: 500;
+        font-weight: 600;
         border-radius: 9999px;
-        border: 1px solid rgba(111, 78, 55, 0.2);
-        background-color: var(--color-cream);
         color: var(--color-dark-brown);
-        transition: all 0.2s ease;
+        transition: color 0.3s ease;
       }
 
       .filter-label:hover .filter-pill {
-        border-color: var(--color-caramel);
         color: var(--color-caramel);
       }
 
-      .filter-input:checked + .filter-pill {
+      /* Sliding Pill Background Indicator */
+      .filter-glider {
+        position: absolute;
+        top: 0.375rem;
+        left: 0.375rem;
+        height: calc(100% - 0.75rem);
         background-color: var(--color-caramel);
-        color: var(--color-cream);
-        border-color: var(--color-caramel);
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        border-radius: 9999px;
+        z-index: 1; /* Kept underneath text (z-index: 10) */
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(198, 142, 23, 0.3);
       }
 
-      /* --- Menu Grid & CSS-Only Filter Logic --- */
+      /* Dynamic Glider Positioning via CSS Selector Logic */
+      .filter-form:has(#filter-all:checked) .filter-glider {
+        width: 62px;
+        transform: translateX(0);
+      }
+      .filter-form:has(#filter-coffee:checked) .filter-glider {
+        width: 86px;
+        transform: translateX(62px);
+      }
+      .filter-form:has(#filter-tea:checked) .filter-glider {
+        width: 63px;
+        transform: translateX(148px);
+      }
+      .filter-form:has(#filter-pastries:checked) .filter-glider {
+        width: 95px;
+        transform: translateX(211px);
+      }
+
+      .filter-input:checked + .filter-pill {
+        color: var(--color-cream);
+      }
+
+      /* --- Main Layout --- */
+      main {
+        max-width: 72rem;
+        margin: 0 auto;
+        padding: 3rem 1rem;
+        flex-grow: 1;
+        width: 100%;
+      }
+
+      /* --- Menu Grid & Filter Logic --- */
       .menu-grid {
         width: 100%;
         display: grid;
@@ -143,37 +197,50 @@
         }
       }
 
-      /* Pure CSS filtering using body:has() */
-      body:has(#filter-coffee:checked) .menu-card:not([data-category='coffee']) {
-        display: none;
-      }
-      body:has(#filter-tea:checked) .menu-card:not([data-category='tea']) {
-        display: none;
-      }
-      body:has(#filter-pastries:checked) .menu-card:not([data-category='pastries']) {
-        display: none;
-      }
-
-      /* --- Menu Cards --- */
       .menu-card {
         background-color: var(--color-cream);
-        border: 1px solid rgba(111, 78, 55, 0.1);
-        border-radius: 1rem;
+        border: 1px solid rgba(111, 78, 55, 0.12);
+        border-radius: 1.25rem;
         overflow: hidden;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
         display: flex;
         flex-direction: column;
+        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                    box-shadow 0.35s ease, 
+                    border-color 0.35s ease,
+                    opacity 0.3s ease;
+        animation: fadeInUp 0.6s ease-out forwards;
       }
 
+      .menu-card:nth-child(1) { animation-delay: 0.1s; }
+      .menu-card:nth-child(2) { animation-delay: 0.18s; }
+      .menu-card:nth-child(3) { animation-delay: 0.26s; }
+      .menu-card:nth-child(4) { animation-delay: 0.34s; }
+      .menu-card:nth-child(5) { animation-delay: 0.42s; }
+      .menu-card:nth-child(6) { animation-delay: 0.50s; }
+      .menu-card:nth-child(7) { animation-delay: 0.58s; }
+
       .menu-card:hover {
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transform: translateY(-6px) scale(1.01);
+        box-shadow: 0 12px 24px -6px rgba(62, 39, 35, 0.12);
+        border-color: rgba(198, 142, 23, 0.3);
+      }
+
+      .card-img-wrapper {
+        position: relative;
+        overflow: hidden;
+        height: 13rem;
       }
 
       .card-img {
         width: 100%;
-        height: 12rem;
+        height: 100%;
         object-fit: cover;
+        transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+      }
+
+      .menu-card:hover .card-img {
+        transform: scale(1.08);
       }
 
       .card-body {
@@ -199,17 +266,23 @@
 
       .item-price {
         font-size: 0.875rem;
-        font-weight: 600;
+        font-weight: 700;
         color: var(--color-caramel);
         background-color: var(--color-beige);
-        padding: 0.25rem 0.625rem;
+        padding: 0.25rem 0.75rem;
         border-radius: 9999px;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+      }
+
+      .menu-card:hover .item-price {
+        transform: scale(1.05);
+        background-color: #ebd3b7;
       }
 
       .item-description {
         font-size: 0.875rem;
-        color: rgba(62, 39, 35, 0.7);
-        line-height: 1.625;
+        color: rgba(62, 39, 35, 0.75);
+        line-height: 1.6;
       }
 
       .card-footer {
@@ -230,21 +303,53 @@
       }
 
       .order-link {
-        font-size: 0.75rem;
+        font-size: 0.8125rem;
         font-weight: 600;
         color: var(--color-dark-brown);
         text-decoration: none;
-        transition: color 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        transition: color 0.2s ease, transform 0.2s ease;
       }
 
       .order-link:hover {
         color: var(--color-caramel);
+        transform: translateX(3px);
+      }
+
+      /* Pure CSS Filtering Toggle Rules */
+      body:has(#filter-coffee:checked) .menu-card:not([data-category='coffee']),
+      body:has(#filter-tea:checked) .menu-card:not([data-category='tea']),
+      body:has(#filter-pastries:checked) .menu-card:not([data-category='pastries']) {
+        display: none;
+      }
+
+      /* --- Mobile Menu Drawer Animation --- */
+      #mobile-menu {
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        transform-origin: top;
+      }
+
+      #mobile-menu.hidden {
+        opacity: 0;
+        transform: scaleY(0);
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        pointer-events: none;
+      }
+
+      #mobile-menu:not(.hidden) {
+        opacity: 1;
+        transform: scaleY(1);
+        max-height: 300px;
       }
     </style>
   </head>
   <body>
 
-    <!-- Modern Tailwind CSS Header -->
+    <!-- Header -->
     <header class="sticky top-0 z-50 bg-[#FFF8E7]/90 backdrop-blur-md border-b border-[#6F4E37]/15 shadow-sm">
       <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Top">
         <div class="w-full py-4 flex items-center justify-between">
@@ -252,7 +357,7 @@
           <!-- Logo -->
           <div class="flex items-center">
             <a href="index.html" class="font-heading text-2xl font-extrabold text-[#3E2723] tracking-tight hover:opacity-90 transition-opacity">
-              Cosy Cup <span class="text-[#C68E17]">Cafe ☕</span>
+              Cosy Cup <span class="text-[#C68E17] inline-block hover:rotate-12 transition-transform">Cafe ☕</span>
             </a>
           </div>
 
@@ -266,16 +371,16 @@
 
           <!-- CTA Button & Mobile Menu Trigger -->
           <div class="flex items-center space-x-4">
-            <a href="orderpage.html" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-semibold text-[#FFF8E7] bg-[#6F4E37] hover:bg-[#3E2723] transition-all transform hover:-translate-y-0.5">
+            <a href="orderpage.html" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-semibold text-[#FFF8E7] bg-[#6F4E37] hover:bg-[#3E2723] transition-all transform hover:-translate-y-0.5 active:translate-y-0">
               Order Online
             </a>
 
             <!-- Mobile Hamburger Button -->
-            <button id="mobile-menu-btn" type="button" class="md:hidden p-2 rounded-lg text-[#3E2723] hover:bg-[#F5E6D3] focus:outline-none" aria-label="Toggle Menu">
-              <svg id="menu-icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <button id="mobile-menu-btn" type="button" class="md:hidden p-2 rounded-lg text-[#3E2723] hover:bg-[#F5E6D3] focus:outline-none transition-colors" aria-label="Toggle Menu" aria-expanded="false">
+              <svg id="menu-icon-open" class="h-6 w-6 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
-              <svg id="menu-icon-close" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg id="menu-icon-close" class="hidden h-6 w-6 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -283,11 +388,11 @@
         </div>
 
         <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden md:hidden border-t border-[#6F4E37]/10 py-3 space-y-2">
-          <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-[#3E2723] hover:bg-[#F5E6D3]">Home</a>
+        <div id="mobile-menu" class="hidden md:hidden border-t border-[#6F4E37]/10 py-3 space-y-2 overflow-hidden">
+          <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-[#3E2723] hover:bg-[#F5E6D3] transition-colors">Home</a>
           <a href="menu.html" class="block px-3 py-2 rounded-md text-base font-semibold text-[#C68E17] bg-[#F5E6D3]/50">Menu</a>
-          <a href="aboutus.html" class="block px-3 py-2 rounded-md text-base font-medium text-[#3E2723] hover:bg-[#F5E6D3]">About Us</a>
-          <a href="contactus.html" class="block px-3 py-2 rounded-md text-base font-medium text-[#3E2723] hover:bg-[#F5E6D3]">Contact</a>
+          <a href="aboutus.html" class="block px-3 py-2 rounded-md text-base font-medium text-[#3E2723] hover:bg-[#F5E6D3] transition-colors">About Us</a>
+          <a href="contactus.html" class="block px-3 py-2 rounded-md text-base font-medium text-[#3E2723] hover:bg-[#F5E6D3] transition-colors">Contact</a>
         </div>
       </nav>
     </header>
@@ -299,169 +404,188 @@
         <p class="hero-subtitle">Crafted with precision, poured with passion.</p>
       </section>
 
-      <!-- CSS-Only Interactive Filter System -->
-      <div style="width: 100%;">
-        
-        <!-- Filter Pills & Controller Container -->
+      <!-- Animated CSS-Only Filter Component -->
+      <div class="filter-wrapper">
         <form class="filter-form">
+          <!-- Glider is inside the form container with z-index: 1 -->
+          <div class="filter-glider"></div>
           
-          <!-- Filter: All -->
+          <!-- Filter Labels are given z-index: 10 to always sit above the glider -->
           <label class="filter-label">
             <input type="radio" id="filter-all" name="menu-filter" value="all" class="filter-input" checked />
             <span class="filter-pill">All</span>
           </label>
 
-          <!-- Filter: Coffee -->
           <label class="filter-label">
             <input type="radio" id="filter-coffee" name="menu-filter" value="coffee" class="filter-input" />
             <span class="filter-pill">Coffee</span>
           </label>
 
-          <!-- Filter: Tea -->
           <label class="filter-label">
             <input type="radio" id="filter-tea" name="menu-filter" value="tea" class="filter-input" />
             <span class="filter-pill">Tea</span>
           </label>
 
-          <!-- Filter: Pastries -->
           <label class="filter-label">
             <input type="radio" id="filter-pastries" name="menu-filter" value="pastries" class="filter-input" />
             <span class="filter-pill">Pastries</span>
           </label>
-
-          <!-- Menu Grid -->
-          <div class="menu-grid">
-            
-            <!-- Item 1: Coffee -->
-            <div data-category="coffee" class="menu-card">
-              <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&q=80&w=600" alt="Artisan Espresso" class="card-img" />
-              <div class="card-body">
-                <div>
-                  <div class="card-header">
-                    <h3 class="item-title font-heading">Artisan Espresso</h3>
-                    <span class="item-price">$3.50</span>
-                  </div>
-                  <p class="item-description">Rich, bold double shot with notes of dark chocolate and caramel.</p>
-                </div>
-                <div class="card-footer">
-                  <span class="category-tag">Coffee</span>
-                  <a href="orderpage.html" class="order-link">+ Order</a>
-                </div>
-              </div>
-            </div>
-
-            <!-- Item 2: Coffee -->
-            <div data-category="coffee" class="menu-card">
-              <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&q=80&w=600" alt="Vanilla Oat Latte" class="card-img" />
-              <div class="card-body">
-                <div>
-                  <div class="card-header">
-                    <h3 class="item-title font-heading">Vanilla Oat Latte</h3>
-                    <span class="item-price">$5.25</span>
-                  </div>
-                  <p class="item-description">Smooth espresso paired with steamed oat milk and house-made vanilla bean syrup.</p>
-                </div>
-                <div class="card-footer">
-                  <span class="category-tag">Coffee</span>
-                  <a href="orderpage.html" class="order-link">+ Order</a>
-                </div>
-              </div>
-            </div>
-
-            <!-- Item 3: Coffee -->
-            <div data-category="coffee" class="menu-card">
-              <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=600" alt="Pour Over Single Origin" class="card-img" />
-              <div class="card-body">
-                <div>
-                  <div class="card-header">
-                    <h3 class="item-title font-heading">Pour Over Single Origin</h3>
-                    <span class="item-price">$4.75</span>
-                  </div>
-                  <p class="item-description">Hand-poured filter coffee featuring bright floral and citrus notes.</p>
-                </div>
-                <div class="card-footer">
-                  <span class="category-tag">Coffee</span>
-                  <a href="orderpage.html" class="order-link">+ Order</a>
-                </div>
-              </div>
-            </div>
-
-            <!-- Item 4: Tea -->
-            <div data-category="tea" class="menu-card">
-              <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&q=80&w=600" alt="Matcha Oat Latte" class="card-img" />
-              <div class="card-body">
-                <div>
-                  <div class="card-header">
-                    <h3 class="item-title font-heading">Matcha Oat Latte</h3>
-                    <span class="item-price">$5.50</span>
-                  </div>
-                  <p class="item-description">Ceremonial grade Japanese green tea whisked with creamy oat milk.</p>
-                </div>
-                <div class="card-footer">
-                  <span class="category-tag">Tea</span>
-                  <a href="orderpage.html" class="order-link">+ Order</a>
-                </div>
-              </div>
-            </div>
-
-            <!-- Item 5: Tea -->
-            <div data-category="tea" class="menu-card">
-              <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&q=80&w=600" alt="Spiced Chai Latte" class="card-img" />
-              <div class="card-body">
-                <div>
-                  <div class="card-header">
-                    <h3 class="item-title font-heading">Spiced Chai Latte</h3>
-                    <span class="item-price">$4.85</span>
-                  </div>
-                  <p class="item-description">Black tea infused with cardamom, cinnamon, ginger, and warm milk.</p>
-                </div>
-                <div class="card-footer">
-                  <span class="category-tag">Tea</span>
-                  <a href="orderpage.html" class="order-link">+ Order</a>
-                </div>
-              </div>
-            </div>
-
-            <!-- Item 6: Pastries -->
-            <div data-category="pastries" class="menu-card">
-              <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=600" alt="Butter Croissant" class="card-img" />
-              <div class="card-body">
-                <div>
-                  <div class="card-header">
-                    <h3 class="item-title font-heading">Butter Croissant</h3>
-                    <span class="item-price">$3.75</span>
-                  </div>
-                  <p class="item-description">Flaky, golden, French-style pastry baked fresh every morning.</p>
-                </div>
-                <div class="card-footer">
-                  <span class="category-tag">Pastries</span>
-                  <a href="orderpage.html" class="order-link">+ Order</a>
-                </div>
-              </div>
-            </div>
-
-            <!-- Item 7: Pastries -->
-            <div data-category="pastries" class="menu-card">
-              <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600" alt="Almond Croissant" class="card-img" />
-              <div class="card-body">
-                <div>
-                  <div class="card-header">
-                    <h3 class="item-title font-heading">Almond Croissant</h3>
-                    <span class="item-price">$4.50</span>
-                  </div>
-                  <p class="item-description">Filled with sweet almond frangipane and topped with toasted sliced almonds.</p>
-                </div>
-                <div class="card-footer">
-                  <span class="category-tag">Pastries</span>
-                  <a href="orderpage.html" class="order-link">+ Order</a>
-                </div>
-              </div>
-            </div>
-
-          </div>
         </form>
       </div>
+
+      <!-- Menu Grid -->
+      <div class="menu-grid">
+        
+        <!-- Item 1: Coffee -->
+        <div data-category="coffee" class="menu-card">
+          <div class="card-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&q=80&w=600" alt="Artisan Espresso" class="card-img" />
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header">
+                <h3 class="item-title font-heading">Artisan Espresso</h3>
+                <span class="item-price">$3.50</span>
+              </div>
+              <p class="item-description">Rich, bold double shot with notes of dark chocolate and caramel.</p>
+            </div>
+            <div class="card-footer">
+              <span class="category-tag">Coffee</span>
+              <a href="orderpage.html" class="order-link">+ Order <span>&rarr;</span></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2: Coffee -->
+        <div data-category="coffee" class="menu-card">
+          <div class="card-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&q=80&w=600" alt="Vanilla Oat Latte" class="card-img" />
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header">
+                <h3 class="item-title font-heading">Vanilla Oat Latte</h3>
+                <span class="item-price">$5.25</span>
+              </div>
+              <p class="item-description">Smooth espresso paired with steamed oat milk and house-made vanilla bean syrup.</p>
+            </div>
+            <div class="card-footer">
+              <span class="category-tag">Coffee</span>
+              <a href="orderpage.html" class="order-link">+ Order <span>&rarr;</span></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3: Coffee -->
+        <div data-category="coffee" class="menu-card">
+          <div class="card-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=600" alt="Pour Over Single Origin" class="card-img" />
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header">
+                <h3 class="item-title font-heading">Pour Over Single Origin</h3>
+                <span class="item-price">$4.75</span>
+              </div>
+              <p class="item-description">Hand-poured filter coffee featuring bright floral and citrus notes.</p>
+            </div>
+            <div class="card-footer">
+              <span class="category-tag">Coffee</span>
+              <a href="orderpage.html" class="order-link">+ Order <span>&rarr;</span></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 4: Tea -->
+        <div data-category="tea" class="menu-card">
+          <div class="card-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&q=80&w=600" alt="Matcha Oat Latte" class="card-img" />
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header">
+                <h3 class="item-title font-heading">Matcha Oat Latte</h3>
+                <span class="item-price">$5.50</span>
+              </div>
+              <p class="item-description">Ceremonial grade Japanese green tea whisked with creamy oat milk.</p>
+            </div>
+            <div class="card-footer">
+              <span class="category-tag">Tea</span>
+              <a href="orderpage.html" class="order-link">+ Order <span>&rarr;</span></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 5: Tea -->
+        <div data-category="tea" class="menu-card">
+          <div class="card-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&q=80&w=600" alt="Spiced Chai Latte" class="card-img" />
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header">
+                <h3 class="item-title font-heading">Spiced Chai Latte</h3>
+                <span class="item-price">$4.85</span>
+              </div>
+              <p class="item-description">Black tea infused with cardamom, cinnamon, ginger, and warm milk.</p>
+            </div>
+            <div class="card-footer">
+              <span class="category-tag">Tea</span>
+              <a href="orderpage.html" class="order-link">+ Order <span>&rarr;</span></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 6: Pastries -->
+        <div data-category="pastries" class="menu-card">
+          <div class="card-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=600" alt="Butter Croissant" class="card-img" />
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header">
+                <h3 class="item-title font-heading">Butter Croissant</h3>
+                <span class="item-price">$3.75</span>
+              </div>
+              <p class="item-description">Flaky, golden, French-style pastry baked fresh every morning.</p>
+            </div>
+            <div class="card-footer">
+              <span class="category-tag">Pastries</span>
+              <a href="orderpage.html" class="order-link">+ Order <span>&rarr;</span></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 7: Pastries -->
+        <div data-category="pastries" class="menu-card">
+          <div class="card-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600" alt="Almond Croissant" class="card-img" />
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header">
+                <h3 class="item-title font-heading">Almond Croissant</h3>
+                <span class="item-price">$4.50</span>
+              </div>
+              <p class="item-description">Filled with sweet almond frangipane and topped with toasted sliced almonds.</p>
+            </div>
+            <div class="card-footer">
+              <span class="category-tag">Pastries</span>
+              <a href="orderpage.html" class="order-link">+ Order <span>&rarr;</span></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#3E2723] text-[#FFF8E7] py-8 border-t border-[#6F4E37]/30 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
+        <p class="font-heading text-lg font-semibold text-[#C68E17] mb-2">Cosy Cup Cafe</p>
+        <p class="text-[#FFF8E7]/70">&copy; 2026 Cosy Cup Cafe. All rights reserved.</p>
+      </div>
+    </footer>
 
     <!-- Mobile Menu Toggle Script -->
     <script>
@@ -471,6 +595,8 @@
       const iconClose = document.getElementById('menu-icon-close');
 
       btn.addEventListener('click', () => {
+        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', !isExpanded);
         menu.classList.toggle('hidden');
         iconOpen.classList.toggle('hidden');
         iconClose.classList.toggle('hidden');
