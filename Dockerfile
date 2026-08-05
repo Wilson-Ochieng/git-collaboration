@@ -1,4 +1,4 @@
-FROM dhi.io/node:26-alpine-dev AS builder
+FROM dhi.io/node:24-alpine-dev AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
