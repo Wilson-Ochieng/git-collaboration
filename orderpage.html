@@ -25,6 +25,9 @@
       --caramel: #C68E17;
       --white: #FFFFFF;
       --light-beige: #F5E6D3;
+      --charcoal: #3E2723;
+      --gold: #C68E17;
+      --espresso: #3E2723;
     }
 
     body {
@@ -32,13 +35,150 @@
       background: var(--cream);
       min-height: 100vh;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
+      flex-direction: column;
+      padding: 0;
     }
 
     h1, h2, h3, h4 {
       font-family: 'Playfair Display', serif;
+    }
+
+    /* --- Header Styles --- */
+    .header {
+      background-color: rgba(255, 248, 231, 0.95);
+      backdrop-filter: blur(4px);
+      border-bottom: 1px solid rgba(111, 78, 55, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+    }
+
+    .nav-container {
+      max-width: 80rem;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 9999px;
+      object-fit: cover;
+      border: 1px solid var(--caramel);
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--dark-brown);
+    }
+
+    .nav-desktop {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: rgba(62, 39, 35, 0.8);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--caramel);
+    }
+
+    .nav-link-active {
+      color: var(--caramel);
+    }
+
+    .order-btn {
+      background-color: var(--primary);
+      color: var(--cream);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.625rem 1.25rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .order-btn:hover {
+      background-color: var(--dark-brown);
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.875rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--dark-brown);
+    }
+
+    .mobile-menu {
+      display: none;
+      background-color: var(--cream);
+      border-top: 1px solid rgba(111, 78, 55, 0.15);
+      padding: 1rem 1.5rem;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(111, 78, 55, 0.1);
+      font-weight: 500;
+      text-decoration: none;
+      color: var(--dark-brown);
+    }
+
+    .mobile-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .mobile-menu a:hover {
+      color: var(--caramel);
+    }
+
+    .mobile-menu .active {
+      color: var(--caramel);
+    }
+
+    @media (max-width: 768px) {
+      .nav-desktop {
+        display: none;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .mobile-menu.open {
+        display: block;
+      }
+    }
+
+    /* --- Cart Container Styles --- */
+    .cart-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      flex-grow: 1;
     }
 
     .cart-container {
@@ -254,6 +394,7 @@
       justify-content: center;
       background: transparent;
       color: var(--primary);
+      cursor: pointer;
     }
 
     .cart-qty-value {
@@ -654,138 +795,189 @@
 </head>
 <body>
 
-  <div class="cart-container">
+  <!-- ===== Header / Nav ===== -->
+  <header class="header">
+    <nav class="nav-container">
+      <a href="index.html" class="logo-link">
+        <img src="assets/images/logo.png" alt="Cosy Cup Cafe logo" class="logo-img" />
+        <span class="logo-text">Cosy Cup Cafe</span>
+      </a>
 
-    <!-- ── Hidden inputs for CSS-only interactivity ── -->
-    <input type="radio" name="order-type" id="delivery" class="hidden-input" checked>
-    <input type="radio" name="order-type" id="dine-in" class="hidden-input">
-    <input type="radio" name="order-type" id="take-away" class="hidden-input">
-    <input type="checkbox" id="order-success" class="hidden-input">
+      <!-- Desktop Navigation -->
+      <div class="nav-desktop">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="menu.html" class="nav-link">Menu</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="orderpage.html" class="order-btn">Order Online</a>
+      </div>
 
-    <div class="decor-dots">
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
+      <!-- Mobile Menu Toggle Button -->
+      <button id="menuBtn" class="menu-toggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Toggle navigation menu">
+        ☰
+      </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="orderpage.html" style="font-weight: 600; color: var(--caramel);">Order Online →</a>
     </div>
+  </header>
 
-    <!-- Header -->
-    <div class="cart-header">
-      <h1 class="cart-title">Cart <span class="badge">3</span></h1>
-      <div class="cart-coffee-icon">☕</div>
-    </div>
+  <div class="cart-wrapper">
+    <div class="cart-container">
 
-    <!-- Order Type Tabs (CSS-only: labels toggle hidden radio inputs) -->
-    <div class="order-tabs">
-      <label for="delivery" class="order-tab">🚚 Delivery</label>
-      <label for="dine-in" class="order-tab">🍽️ Dine in</label>
-      <label for="take-away" class="order-tab">🥡 Take away</label>
-    </div>
+      <!-- ── Hidden inputs for CSS-only interactivity ── -->
+      <input type="radio" name="order-type" id="delivery" class="hidden-input" checked>
+      <input type="radio" name="order-type" id="dine-in" class="hidden-input">
+      <input type="radio" name="order-type" id="take-away" class="hidden-input">
+      <input type="checkbox" id="order-success" class="hidden-input">
 
-    <!-- Order type indicator -->
-    <div class="order-type-indicator">
-      <span class="type-text-delivery">🚚 Your order will be delivered</span>
-      <span class="type-text-dinein">🍽️ You'll dine in at our café</span>
-      <span class="type-text-takeaway">🥡 You'll pick up your order</span>
-    </div>
+      <div class="decor-dots">
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+      </div>
 
-    <!-- Cart Items -->
-    <div class="cart-items">
+      <!-- Header -->
+      <div class="cart-header">
+        <h1 class="cart-title">Cart <span class="badge">3</span></h1>
+        <div class="cart-coffee-icon">☕</div>
+      </div>
 
-      <!-- Item 1 -->
-      <div class="cart-item">
-        <div class="cart-item-left">
-          <img class="cart-item-img" src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=800&auto=format&fit=crop" alt="Cappuccino"/>
-          <div>
-            <div class="cart-item-name">Cappuccino</div>
-            <div class="cart-item-price">$1.50</div>
+      <!-- Order Type Tabs (CSS-only: labels toggle hidden radio inputs) -->
+      <div class="order-tabs">
+        <label for="delivery" class="order-tab">🚚 Delivery</label>
+        <label for="dine-in" class="order-tab">🍽️ Dine in</label>
+        <label for="take-away" class="order-tab">🥡 Take away</label>
+      </div>
+
+      <!-- Order type indicator -->
+      <div class="order-type-indicator">
+        <span class="type-text-delivery">🚚 Your order will be delivered</span>
+        <span class="type-text-dinein">🍽️ You'll dine in at our café</span>
+        <span class="type-text-takeaway">🥡 You'll pick up your order</span>
+      </div>
+
+      <!-- Cart Items -->
+      <div class="cart-items">
+
+        <!-- Item 1 -->
+        <div class="cart-item">
+          <div class="cart-item-left">
+            <img class="cart-item-img" src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=800&auto=format&fit=crop" alt="Cappuccino"/>
+            <div>
+              <div class="cart-item-name">Cappuccino</div>
+              <div class="cart-item-price">$1.50</div>
+            </div>
+          </div>
+          <div class="cart-qty-controls">
+            <span class="cart-qty-btn">−</span>
+            <span class="cart-qty-value">2</span>
+            <span class="cart-qty-btn">+</span>
           </div>
         </div>
-        <div class="cart-qty-controls">
-          <span class="cart-qty-btn">−</span>
-          <span class="cart-qty-value">2</span>
-          <span class="cart-qty-btn">+</span>
-        </div>
-      </div>
 
-      <!-- Item 2 -->
-      <div class="cart-item">
-        <div class="cart-item-left">
-          <img class="cart-item-img" src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?q=80&w=800&auto=format&fit=crop" alt="Coffee Latte"/>
-          <div>
-            <div class="cart-item-name">Coffee Latte</div>
-            <div class="cart-item-price">$1.60</div>
+        <!-- Item 2 -->
+        <div class="cart-item">
+          <div class="cart-item-left">
+            <img class="cart-item-img" src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?q=80&w=800&auto=format&fit=crop" alt="Coffee Latte"/>
+            <div>
+              <div class="cart-item-name">Coffee Latte</div>
+              <div class="cart-item-price">$1.60</div>
+            </div>
+          </div>
+          <div class="cart-qty-controls">
+            <span class="cart-qty-btn">−</span>
+            <span class="cart-qty-value">1</span>
+            <span class="cart-qty-btn">+</span>
           </div>
         </div>
-        <div class="cart-qty-controls">
-          <span class="cart-qty-btn">−</span>
-          <span class="cart-qty-value">1</span>
-          <span class="cart-qty-btn">+</span>
+
+      </div>
+
+      <!-- Countdown Timer (animated with CSS when order is placed) -->
+      <div class="countdown-container">
+        <div class="countdown-header">
+          <span class="countdown-label">⏱️ Estimated wait time</span>
+          <span class="countdown-time">
+            <span class="time-default">Waiting...</span>
+            <span class="t-5min">~5 min</span>
+            <span class="t-4min">~4 min</span>
+            <span class="t-3min">~3 min</span>
+            <span class="t-2min">~2 min</span>
+            <span class="t-1min">~1 min</span>
+            <span class="t-30sec">~30 sec</span>
+            <span class="t-ready">Ready! ☕</span>
+          </span>
+        </div>
+        <div class="countdown-track">
+          <div class="countdown-bar"></div>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="cart-summary">
+        <div class="summary-row">
+          <span class="summary-label">Subtotal</span>
+          <span class="summary-value">$4.60</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Discount (20%)</span>
+          <span class="summary-value discount-amount">-$0.92</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-row total">
+          <span class="summary-label">Grand Total</span>
+          <span class="summary-value">$3.68</span>
+        </div>
+      </div>
+
+      <!-- Place Order Button (label for the hidden #order-success checkbox) -->
+      <label for="order-success" class="place-order-btn">
+        <span>Place an Order</span>
+        <span>→</span>
+      </label>
+
+      <!-- Success Overlay (shown when #order-success is checked) -->
+      <div class="success-overlay">
+        <div class="success-modal">
+          <div class="success-icon">✅</div>
+          <h2>Order Placed Successfully!</h2>
+          <p>Your order has been received and is being prepared. Thank you for choosing PurrCoffee! ☕</p>
+          <div class="order-type-confirm">
+            <span class="confirm-delivery">🚚 Your order will be delivered to your address</span>
+            <span class="confirm-dinein">🍽️ Your table will be ready shortly — please wait to be seated</span>
+            <span class="confirm-takeaway">🥡 Your order will be ready for pickup at the counter</span>
+          </div>
+          <label for="order-success" class="close-btn">Continue</label>
         </div>
       </div>
 
     </div>
-
-    <!-- Countdown Timer (animated with CSS when order is placed) -->
-    <div class="countdown-container">
-      <div class="countdown-header">
-        <span class="countdown-label">⏱️ Estimated wait time</span>
-        <span class="countdown-time">
-          <span class="time-default">Waiting...</span>
-          <span class="t-5min">~5 min</span>
-          <span class="t-4min">~4 min</span>
-          <span class="t-3min">~3 min</span>
-          <span class="t-2min">~2 min</span>
-          <span class="t-1min">~1 min</span>
-          <span class="t-30sec">~30 sec</span>
-          <span class="t-ready">Ready! ☕</span>
-        </span>
-      </div>
-      <div class="countdown-track">
-        <div class="countdown-bar"></div>
-      </div>
-    </div>
-
-    <!-- Summary -->
-    <div class="cart-summary">
-      <div class="summary-row">
-        <span class="summary-label">Subtotal</span>
-        <span class="summary-value">$4.60</span>
-      </div>
-      <div class="summary-row">
-        <span class="summary-label">Discount (20%)</span>
-        <span class="summary-value discount-amount">-$0.92</span>
-      </div>
-      <div class="summary-divider"></div>
-      <div class="summary-row total">
-        <span class="summary-label">Grand Total</span>
-        <span class="summary-value">$3.68</span>
-      </div>
-    </div>
-
-    <!-- Place Order Button (label for the hidden #order-success checkbox) -->
-    <label for="order-success" class="place-order-btn">
-      <span>Place an Order</span>
-      <span>→</span>
-    </label>
-
-    <!-- Success Overlay (shown when #order-success is checked) -->
-    <div class="success-overlay">
-      <div class="success-modal">
-        <div class="success-icon">✅</div>
-        <h2>Order Placed Successfully!</h2>
-        <p>Your order has been received and is being prepared. Thank you for choosing PurrCoffee! ☕</p>
-        <div class="order-type-confirm">
-          <span class="confirm-delivery">🚚 Your order will be delivered to your address</span>
-          <span class="confirm-dinein">🍽️ Your table will be ready shortly — please wait to be seated</span>
-          <span class="confirm-takeaway">🥡 Your order will be ready for pickup at the counter</span>
-        </div>
-        <label for="order-success" class="close-btn">Continue</label>
-      </div>
-    </div>
-
   </div>
 
+  <!-- Mobile Menu Toggle Script -->
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuBtn = document.getElementById("menuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      
+      if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener("click", function() {
+          const isOpen = mobileMenu.classList.contains("open");
+          mobileMenu.classList.toggle("open");
+          menuBtn.setAttribute("aria-expanded", String(!isOpen));
+          menuBtn.textContent = isOpen ? "☰" : "✕";
+        });
+      }
+    });
+
+    // Cart functionality
     document.addEventListener('DOMContentLoaded', function() {
       const items = [
         { id: 'cappuccino', price: 1.50, qtyEl: null, minusEl: null, plusEl: null },
@@ -819,36 +1011,4 @@
           totalQty += qty;
         });
 
-        const discount = subtotal * 0.20;
-        const total = subtotal - discount;
-
-        // Update badge
-        badgeEl.textContent = totalQty;
-
-        // Update summary
-        subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
-        discountEl.textContent = `-$${discount.toFixed(2)}`;
-        totalEl.textContent = `$${total.toFixed(2)}`;
-      }
-
-      items.forEach(item => {
-        item.minusEl.addEventListener('click', function(e) {
-          let qty = parseInt(item.qtyEl.textContent, 10);
-          if (qty > 0) {
-            qty--;
-            item.qtyEl.textContent = qty;
-            updateCart();
-          }
-        });
-
-        item.plusEl.addEventListener('click', function(e) {
-          let qty = parseInt(item.qtyEl.textContent, 10);
-          qty++;
-          item.qtyEl.textContent = qty;
-          updateCart();
-        });
-      });
-    });
-  </script>
-</body>
-</html>
+        const discount = subtotal * 0.20
