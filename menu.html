@@ -2,211 +2,407 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Artisan Roast - Menu</title>
-    <link rel="stylesheet" href="/src/style.css" />
-  </head>
-  <body class="bg-beige text-dark-brown min-h-screen flex flex-col font-sans">
     
-    <!-- Navbar Header -->
-    <header class="bg-cream border-b border-coffee/20 shadow-sm sticky top-0 z-40">
-      <nav aria-label="Global" class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
-        <!-- Logo -->
-        <div class="flex lg:flex-1">
-          <a href="/index.html" class="-m-1.5 p-1.5 flex items-center gap-x-2">
-            <span class="sr-only">Artisan Roast</span>
-            <span class="text-2xl font-bold tracking-tight text-dark-brown font-heading">Artisan Roast ☕</span>
-          </a>
-        </div>
+    <!-- Google Fonts Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        <!-- Desktop Navigation Items -->
-        <div class="hidden lg:flex lg:gap-x-12">
-          <a href="/index.html" class="text-sm/6 font-semibold text-dark-brown/80 hover:text-caramel transition">Home</a>
-          <a href="/menu.html" class="text-sm/6 font-semibold text-caramel underline underline-offset-4">Menu</a>
-          <a href="/about.html" class="text-sm/6 font-semibold text-dark-brown/80 hover:text-caramel transition">About</a>
-          <a href="/contact.html" class="text-sm/6 font-semibold text-dark-brown/80 hover:text-caramel transition">Contact</a>
-        </div>
+    <!-- Internal CSS -->
+    <style>
+      /* --- Custom Properties (Theme Variables) --- */
+      :root {
+        --font-heading: 'Playfair Display', serif;
+        --font-sans: 'Poppins', sans-serif;
 
-        <!-- Order Online CTA -->
-        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="/order.html" class="bg-coffee hover:bg-dark-brown text-cream text-sm font-semibold px-5 py-2.5 rounded-full transition shadow-sm">
-            Order Online &rarr;
-          </a>
-        </div>
-      </nav>
-    </header>
+        --color-coffee: #6F4E37;
+        --color-dark-brown: #3E2723;
+        --color-cream: #FFF8E7;
+        --color-caramel: #C68E17;
+        --color-beige: #F5E6D3;
+      }
+
+      /* --- CSS Reset & Global Styles --- */
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--color-beige);
+        color: var(--color-dark-brown);
+        font-family: var(--font-sans);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .font-heading {
+        font-family: var(--font-heading);
+      }
+
+      /* --- Main Layout --- */
+      main {
+        max-width: 72rem;
+        margin: 0 auto;
+        padding: 3rem 1rem;
+        flex-grow: 1;
+        width: 100%;
+      }
+
+      .hero-section {
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .hero-title {
+        font-size: 2.25rem;
+        font-weight: 800;
+        color: var(--color-dark-brown);
+        letter-spacing: -0.025em;
+      }
+
+      @media (min-width: 640px) {
+        .hero-title {
+          font-size: 3rem;
+        }
+      }
+
+      .hero-subtitle {
+        color: var(--color-coffee);
+        font-weight: 500;
+        margin-top: 0.5rem;
+      }
+
+      /* --- Filter Controls --- */
+      .filter-form {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .filter-label {
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .filter-input {
+        display: none;
+      }
+
+      .filter-pill {
+        display: inline-block;
+        padding: 0.5rem 1.25rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-radius: 9999px;
+        border: 1px solid rgba(111, 78, 55, 0.2);
+        background-color: var(--color-cream);
+        color: var(--color-dark-brown);
+        transition: all 0.2s ease;
+      }
+
+      .filter-label:hover .filter-pill {
+        border-color: var(--color-caramel);
+        color: var(--color-caramel);
+      }
+
+      .filter-input:checked + .filter-pill {
+        background-color: var(--color-caramel);
+        color: var(--color-cream);
+        border-color: var(--color-caramel);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      }
+
+      /* --- Menu Grid & CSS-Only Filter Logic --- */
+      .menu-grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+
+      @media (min-width: 640px) {
+        .menu-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .menu-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      /* Pure CSS filtering using body:has() */
+      body:has(#filter-coffee:checked) .menu-card:not([data-category='coffee']) {
+        display: none;
+      }
+      body:has(#filter-tea:checked) .menu-card:not([data-category='tea']) {
+        display: none;
+      }
+      body:has(#filter-pastries:checked) .menu-card:not([data-category='pastries']) {
+        display: none;
+      }
+
+      /* --- Menu Cards --- */
+      .menu-card {
+        background-color: var(--color-cream);
+        border: 1px solid rgba(111, 78, 55, 0.1);
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .menu-card:hover {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      .card-img {
+        width: 100%;
+        height: 12rem;
+        object-fit: cover;
+      }
+
+      .card-body {
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: space-between;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.5rem;
+      }
+
+      .item-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--color-dark-brown);
+      }
+
+      .item-price {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--color-caramel);
+        background-color: var(--color-beige);
+        padding: 0.25rem 0.625rem;
+        border-radius: 9999px;
+      }
+
+      .item-description {
+        font-size: 0.875rem;
+        color: rgba(62, 39, 35, 0.7);
+        line-height: 1.625;
+      }
+
+      .card-footer {
+        margin-top: 1rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid rgba(111, 78, 55, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .category-tag {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: rgba(111, 78, 55, 0.8);
+      }
+
+      .order-link {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--color-dark-brown);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .order-link:hover {
+        color: var(--color-caramel);
+      }
+    </style>
+  </head>
+  <body>
 
     <!-- Main Content -->
-    <main class="max-w-6xl mx-auto px-4 py-10 flex-grow w-full">
-      <section class="text-center mb-10">
-        <h2 class="text-4xl sm:text-5xl font-extrabold text-dark-brown font-heading tracking-tight">Our Menu</h2>
-        <p class="text-coffee font-medium mt-2">Crafted with precision, poured with passion.</p>
+    <main>
+      <section class="hero-section">
+        <h2 class="hero-title font-heading">Our Menu</h2>
+        <p class="hero-subtitle">Crafted with precision, poured with passion.</p>
       </section>
 
       <!-- CSS-Only Interactive Filter System -->
-      <div class="w-full">
+      <div style="width: 100%;">
         
         <!-- Filter Pills & Controller Container -->
-        <form class="flex flex-wrap justify-center gap-3 mb-10">
+        <form class="filter-form">
           
           <!-- Filter: All -->
-          <label class="cursor-pointer select-none">
-            <input type="radio" name="menu-filter" value="all" class="peer/all hidden" checked />
-            <span class="inline-block px-5 py-2 text-sm font-medium rounded-full border border-coffee/20 bg-cream text-dark-brown hover:border-caramel hover:text-caramel transition-all duration-200 peer-checked/all:bg-caramel peer-checked/all:text-cream peer-checked/all:border-caramel peer-checked/all:shadow-sm">
-              All
-            </span>
+          <label class="filter-label">
+            <input type="radio" id="filter-all" name="menu-filter" value="all" class="filter-input" checked />
+            <span class="filter-pill">All</span>
           </label>
 
           <!-- Filter: Coffee -->
-          <label class="cursor-pointer select-none">
-            <input type="radio" name="menu-filter" value="coffee" class="peer/coffee hidden" />
-            <span class="inline-block px-5 py-2 text-sm font-medium rounded-full border border-coffee/20 bg-cream text-dark-brown hover:border-caramel hover:text-caramel transition-all duration-200 peer-checked/coffee:bg-caramel peer-checked/coffee:text-cream peer-checked/coffee:border-caramel peer-checked/coffee:shadow-sm">
-              Coffee
-            </span>
+          <label class="filter-label">
+            <input type="radio" id="filter-coffee" name="menu-filter" value="coffee" class="filter-input" />
+            <span class="filter-pill">Coffee</span>
           </label>
 
           <!-- Filter: Tea -->
-          <label class="cursor-pointer select-none">
-            <input type="radio" name="menu-filter" value="tea" class="peer/tea hidden" />
-            <span class="inline-block px-5 py-2 text-sm font-medium rounded-full border border-coffee/20 bg-cream text-dark-brown hover:border-caramel hover:text-caramel transition-all duration-200 peer-checked/tea:bg-caramel peer-checked/tea:text-cream peer-checked/tea:border-caramel peer-checked/tea:shadow-sm">
-              Tea
-            </span>
+          <label class="filter-label">
+            <input type="radio" id="filter-tea" name="menu-filter" value="tea" class="filter-input" />
+            <span class="filter-pill">Tea</span>
           </label>
 
           <!-- Filter: Pastries -->
-          <label class="cursor-pointer select-none">
-            <input type="radio" name="menu-filter" value="pastries" class="peer/pastries hidden" />
-            <span class="inline-block px-5 py-2 text-sm font-medium rounded-full border border-coffee/20 bg-cream text-dark-brown hover:border-caramel hover:text-caramel transition-all duration-200 peer-checked/pastries:bg-caramel peer-checked/pastries:text-cream peer-checked/pastries:border-caramel peer-checked/pastries:shadow-sm">
-              Pastries
-            </span>
+          <label class="filter-label">
+            <input type="radio" id="filter-pastries" name="menu-filter" value="pastries" class="filter-input" />
+            <span class="filter-pill">Pastries</span>
           </label>
 
-          <!-- Menu Grid (Targeted via CSS :has() relative selector) -->
-          <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 [body:has(.peer\/coffee:checked)_&_[data-category]:not([data-category='coffee'])]:hidden [body:has(.peer\/tea:checked)_&_[data-category]:not([data-category='tea'])]:hidden [body:has(.peer\/pastries:checked)_&_[data-category]:not([data-category='pastries'])]:hidden">
+          <!-- Menu Grid -->
+          <div class="menu-grid">
             
             <!-- Item 1: Coffee -->
-            <div data-category="coffee" class="bg-cream border border-coffee/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition duration-300 flex flex-col">
-              <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&q=80&w=600" alt="Artisan Espresso" class="w-full h-48 object-cover" />
-              <div class="p-5 flex flex-col flex-grow justify-between">
+            <div data-category="coffee" class="menu-card">
+              <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&q=80&w=600" alt="Artisan Espresso" class="card-img" />
+              <div class="card-body">
                 <div>
-                  <div class="flex justify-between items-start mb-2">
-                    <h3 class="text-xl font-bold font-heading text-dark-brown">Artisan Espresso</h3>
-                    <span class="text-sm font-semibold text-caramel bg-beige px-2.5 py-1 rounded-full">$3.50</span>
+                  <div class="card-header">
+                    <h3 class="item-title font-heading">Artisan Espresso</h3>
+                    <span class="item-price">$3.50</span>
                   </div>
-                  <p class="text-sm text-dark-brown/70 leading-relaxed">Rich, bold double shot with notes of dark chocolate and caramel.</p>
+                  <p class="item-description">Rich, bold double shot with notes of dark chocolate and caramel.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-coffee/10 flex justify-between items-center">
-                  <span class="text-xs font-semibold uppercase tracking-wider text-coffee/80">Coffee</span>
-                  <a href="/order.html" class="text-xs font-semibold text-dark-brown hover:text-caramel transition">+ Order</a>
+                <div class="card-footer">
+                  <span class="category-tag">Coffee</span>
+                  <a href="/order.html" class="order-link">+ Order</a>
                 </div>
               </div>
             </div>
 
             <!-- Item 2: Coffee -->
-            <div data-category="coffee" class="bg-cream border border-coffee/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition duration-300 flex flex-col">
-              <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&q=80&w=600" alt="Vanilla Oat Latte" class="w-full h-48 object-cover" />
-              <div class="p-5 flex flex-col flex-grow justify-between">
+            <div data-category="coffee" class="menu-card">
+              <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&q=80&w=600" alt="Vanilla Oat Latte" class="card-img" />
+              <div class="card-body">
                 <div>
-                  <div class="flex justify-between items-start mb-2">
-                    <h3 class="text-xl font-bold font-heading text-dark-brown">Vanilla Oat Latte</h3>
-                    <span class="text-sm font-semibold text-caramel bg-beige px-2.5 py-1 rounded-full">$5.25</span>
+                  <div class="card-header">
+                    <h3 class="item-title font-heading">Vanilla Oat Latte</h3>
+                    <span class="item-price">$5.25</span>
                   </div>
-                  <p class="text-sm text-dark-brown/70 leading-relaxed">Smooth espresso paired with steamed oat milk and house-made vanilla bean syrup.</p>
+                  <p class="item-description">Smooth espresso paired with steamed oat milk and house-made vanilla bean syrup.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-coffee/10 flex justify-between items-center">
-                  <span class="text-xs font-semibold uppercase tracking-wider text-coffee/80">Coffee</span>
-                  <a href="/order.html" class="text-xs font-semibold text-dark-brown hover:text-caramel transition">+ Order</a>
+                <div class="card-footer">
+                  <span class="category-tag">Coffee</span>
+                  <a href="/order.html" class="order-link">+ Order</a>
                 </div>
               </div>
             </div>
 
             <!-- Item 3: Coffee -->
-            <div data-category="coffee" class="bg-cream border border-coffee/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition duration-300 flex flex-col">
-              <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=600" alt="Pour Over Single Origin" class="w-full h-48 object-cover" />
-              <div class="p-5 flex flex-col flex-grow justify-between">
+            <div data-category="coffee" class="menu-card">
+              <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=600" alt="Pour Over Single Origin" class="card-img" />
+              <div class="card-body">
                 <div>
-                  <div class="flex justify-between items-start mb-2">
-                    <h3 class="text-xl font-bold font-heading text-dark-brown">Pour Over Single Origin</h3>
-                    <span class="text-sm font-semibold text-caramel bg-beige px-2.5 py-1 rounded-full">$4.75</span>
+                  <div class="card-header">
+                    <h3 class="item-title font-heading">Pour Over Single Origin</h3>
+                    <span class="item-price">$4.75</span>
                   </div>
-                  <p class="text-sm text-dark-brown/70 leading-relaxed">Hand-poured filter coffee featuring bright floral and citrus notes.</p>
+                  <p class="item-description">Hand-poured filter coffee featuring bright floral and citrus notes.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-coffee/10 flex justify-between items-center">
-                  <span class="text-xs font-semibold uppercase tracking-wider text-coffee/80">Coffee</span>
-                  <a href="/order.html" class="text-xs font-semibold text-dark-brown hover:text-caramel transition">+ Order</a>
+                <div class="card-footer">
+                  <span class="category-tag">Coffee</span>
+                  <a href="/order.html" class="order-link">+ Order</a>
                 </div>
               </div>
             </div>
 
             <!-- Item 4: Tea -->
-            <div data-category="tea" class="bg-cream border border-coffee/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition duration-300 flex flex-col">
-              <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&q=80&w=600" alt="Matcha Oat Latte" class="w-full h-48 object-cover" />
-              <div class="p-5 flex flex-col flex-grow justify-between">
+            <div data-category="tea" class="menu-card">
+              <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&q=80&w=600" alt="Matcha Oat Latte" class="card-img" />
+              <div class="card-body">
                 <div>
-                  <div class="flex justify-between items-start mb-2">
-                    <h3 class="text-xl font-bold font-heading text-dark-brown">Matcha Oat Latte</h3>
-                    <span class="text-sm font-semibold text-caramel bg-beige px-2.5 py-1 rounded-full">$5.50</span>
+                  <div class="card-header">
+                    <h3 class="item-title font-heading">Matcha Oat Latte</h3>
+                    <span class="item-price">$5.50</span>
                   </div>
-                  <p class="text-sm text-dark-brown/70 leading-relaxed">Ceremonial grade Japanese green tea whisked with creamy oat milk.</p>
+                  <p class="item-description">Ceremonial grade Japanese green tea whisked with creamy oat milk.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-coffee/10 flex justify-between items-center">
-                  <span class="text-xs font-semibold uppercase tracking-wider text-coffee/80">Tea</span>
-                  <a href="/order.html" class="text-xs font-semibold text-dark-brown hover:text-caramel transition">+ Order</a>
+                <div class="card-footer">
+                  <span class="category-tag">Tea</span>
+                  <a href="/order.html" class="order-link">+ Order</a>
                 </div>
               </div>
             </div>
 
             <!-- Item 5: Tea -->
-            <div data-category="tea" class="bg-cream border border-coffee/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition duration-300 flex flex-col">
-              <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&q=80&w=600" alt="Spiced Chai Latte" class="w-full h-48 object-cover" />
-              <div class="p-5 flex flex-col flex-grow justify-between">
+            <div data-category="tea" class="menu-card">
+              <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&q=80&w=600" alt="Spiced Chai Latte" class="card-img" />
+              <div class="card-body">
                 <div>
-                  <div class="flex justify-between items-start mb-2">
-                    <h3 class="text-xl font-bold font-heading text-dark-brown">Spiced Chai Latte</h3>
-                    <span class="text-sm font-semibold text-caramel bg-beige px-2.5 py-1 rounded-full">$4.85</span>
+                  <div class="card-header">
+                    <h3 class="item-title font-heading">Spiced Chai Latte</h3>
+                    <span class="item-price">$4.85</span>
                   </div>
-                  <p class="text-sm text-dark-brown/70 leading-relaxed">Black tea infused with cardamom, cinnamon, ginger, and warm milk.</p>
+                  <p class="item-description">Black tea infused with cardamom, cinnamon, ginger, and warm milk.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-coffee/10 flex justify-between items-center">
-                  <span class="text-xs font-semibold uppercase tracking-wider text-coffee/80">Tea</span>
-                  <a href="/order.html" class="text-xs font-semibold text-dark-brown hover:text-caramel transition">+ Order</a>
+                <div class="card-footer">
+                  <span class="category-tag">Tea</span>
+                  <a href="/order.html" class="order-link">+ Order</a>
                 </div>
               </div>
             </div>
 
             <!-- Item 6: Pastries -->
-            <div data-category="pastries" class="bg-cream border border-coffee/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition duration-300 flex flex-col">
-              <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=600" alt="Butter Croissant" class="w-full h-48 object-cover" />
-              <div class="p-5 flex flex-col flex-grow justify-between">
+            <div data-category="pastries" class="menu-card">
+              <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=600" alt="Butter Croissant" class="card-img" />
+              <div class="card-body">
                 <div>
-                  <div class="flex justify-between items-start mb-2">
-                    <h3 class="text-xl font-bold font-heading text-dark-brown">Butter Croissant</h3>
-                    <span class="text-sm font-semibold text-caramel bg-beige px-2.5 py-1 rounded-full">$3.75</span>
+                  <div class="card-header">
+                    <h3 class="item-title font-heading">Butter Croissant</h3>
+                    <span class="item-price">$3.75</span>
                   </div>
-                  <p class="text-sm text-dark-brown/70 leading-relaxed">Flaky, golden, French-style pastry baked fresh every morning.</p>
+                  <p class="item-description">Flaky, golden, French-style pastry baked fresh every morning.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-coffee/10 flex justify-between items-center">
-                  <span class="text-xs font-semibold uppercase tracking-wider text-coffee/80">Pastries</span>
-                  <a href="/order.html" class="text-xs font-semibold text-dark-brown hover:text-caramel transition">+ Order</a>
+                <div class="card-footer">
+                  <span class="category-tag">Pastries</span>
+                  <a href="/order.html" class="order-link">+ Order</a>
                 </div>
               </div>
             </div>
 
             <!-- Item 7: Pastries -->
-            <div data-category="pastries" class="bg-cream border border-coffee/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition duration-300 flex flex-col">
-              <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600" alt="Almond Croissant" class="w-full h-48 object-cover" />
-              <div class="p-5 flex flex-col flex-grow justify-between">
+            <div data-category="pastries" class="menu-card">
+              <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600" alt="Almond Croissant" class="card-img" />
+              <div class="card-body">
                 <div>
-                  <div class="flex justify-between items-start mb-2">
-                    <h3 class="text-xl font-bold font-heading text-dark-brown">Almond Croissant</h3>
-                    <span class="text-sm font-semibold text-caramel bg-beige px-2.5 py-1 rounded-full">$4.50</span>
+                  <div class="card-header">
+                    <h3 class="item-title font-heading">Almond Croissant</h3>
+                    <span class="item-price">$4.50</span>
                   </div>
-                  <p class="text-sm text-dark-brown/70 leading-relaxed">Filled with sweet almond frangipane and topped with toasted sliced almonds.</p>
+                  <p class="item-description">Filled with sweet almond frangipane and topped with toasted sliced almonds.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-coffee/10 flex justify-between items-center">
-                  <span class="text-xs font-semibold uppercase tracking-wider text-coffee/80">Pastries</span>
-                  <a href="/order.html" class="text-xs font-semibold text-dark-brown hover:text-caramel transition">+ Order</a>
+                <div class="card-footer">
+                  <span class="category-tag">Pastries</span>
+                  <a href="/order.html" class="order-link">+ Order</a>
                 </div>
               </div>
             </div>
