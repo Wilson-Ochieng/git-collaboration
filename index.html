@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -11,14 +12,120 @@
 </html>
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Cosy Cup Cafe</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
+      <link href="/src/style.css" rel="stylesheet">
+    <title> Coffee shop</title>
   </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
+  <header
+    class="md:hidden bg-[#3E2723] text-white flex justify-between items-center px-5 py-4">
+
+     <div class="flex items-center gap-3">
+
+        <img
+            src="assets/images/logo (3).png"
+            alt="Coffee Haven Logo"
+         class="w-10 h-10 rounded-full object-cover border border-[#D4A373]">
+
+    <h1 class="text-2xl font-bold">Cosy Cup Cafe</h1>
+    </div>
+
+    <button id="menuBtn" class="text-3xl">☰</button>
+
+    <div id="mobileMenu" class="hidden md:hidden bg-[#4E342E] text-white">
+      <a href="index.html" class="block px-5 py-4 border-b border-white/20">Home</a>
+
+      <a href="menu.html" class="block px-5 py-4 border-b border-white/20">Menu</a>
+
+      <a href="about.html" class="block px-5 py-4 border-b border-white/20">About</a>
+
+      <a href="orderpage.html" class="block px-5 py-4 border-b border-white/20">Order</a>
+
+      <a href="contact.html" class="block px-5 py-4">Contact</a>
+    </div>
+  </header>
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    menuBtn.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+  </script>
+
+  <body class="bg-[#f8f4ef]">
+    <div class="flex min-h-screen">
+
+      <aside
+        class="hidden md:flex w-64 bg-[#4E342E] text-white flex-col justify-between" >
+        <div>
+          <div class="text-center py-10">
+            <div class="flex justify-center mt-8">
+              <img
+                src="assets/images/logo (3).png"
+                alt="Coffee Haven Logo"
+                class="w-24 h-24 rounded-full border-2 border-[#D4A373] object-cover"/>
+            </div>
+
+            <h1 class="mt-4 text-3xl font-bold">Cosy Cup Cafe</h1>
+          </div>
+
+          <nav class="mt-10">
+            <ul class="space-y-7 text-center text-lg">
+              <li><a href="index.html" class="hover:text-yellow-400">Home</a></li>
+              <li><a href="menu.html" class="hover:text-yellow-400">Menu</a></li>
+              <li><a href="about.html" class="hover:text-yellow-400">About</a></li>
+              <li><a href="orderpage.html" class="hover:text-yellow-400">Order</a></li>
+              <li><a href="contact.html" class="hover:text-yellow-400">Contact</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="text-center pb-8">
+          <div class="space-x-5 text-xl">
+          </div>
+        </div>
+      </aside>
+
+
+      <section
+        class="flex-1 bg-cover bg-center relative"
+        style="
+          background-image: url(&quot;assets/images/coffee\ shop.avif&quot;);
+        "
+      >
+        <div class="absolute inset-0 bg-black/45"></div>
+
+        <div class="relative h-full flex items-center">
+          <div class="ml-20 max-w-xl text-white">
+            <p class="uppercase tracking-[6px] text-[#D4A373] mb-4">
+              Premium Coffee
+            </p>
+
+            <h2 class="text-6xl font-bold leading-tight">
+              Fresh Coffee<br />
+              Every Morning
+            </h2>
+
+            <p class="mt-6 text-lg text-gray-200 leading-8">
+              Discover handcrafted coffee made with premium beans, rich flavors,
+              and a warm atmosphere that makes every visit memorable.
+            </p>
+
+            <a
+              href="orderpage.html"
+              class="inline-block mt-10 bg-[#C68642] hover:bg-[#a86d36] px-10 py-4 rounded-full text-lg font-semibold transition"
+            >
+              Order Now
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+
+    <footer class="bg-[#4E342E] text-white py-6 text-center">
+      <p>© 2026 Cosy Cup Cafe. All Rights Reserved.</p>
+    </footer>
   </body>
 </html>
