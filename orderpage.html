@@ -1,659 +1,889 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PurrCoffee - Cart</title>
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <link href="/src/style.css" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --primary: #6F4E37;
-      --dark-brown: #3E2723;
-      --cream: #FFF8E7;
-      --caramel: #C68E17;
-      --white: #FFFFFF;
-      --light-beige: #F5E6D3;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--cream);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
-
-    h1, h2, h3, h4 {
-      font-family: 'Playfair Display', serif;
-    }
-
-    .cart-container {
-      max-width: 520px;
-      width: 100%;
-      background: var(--white);
-      border-radius: 28px;
-      box-shadow: 0 20px 60px rgba(62, 39, 35, 0.12);
-      padding: 2.5rem 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cart-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 6px;
-      background: linear-gradient(90deg, var(--caramel), var(--primary), var(--caramel));
-    }
-
-    .decor-dots {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      display: grid;
-      grid-template-columns: repeat(3, 6px);
-      gap: 5px;
-      opacity: 0.15;
-    }
-
-    .decor-dots span {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--primary);
-    }
-
-    /* ── Hidden inputs for CSS-only interactivity ── */
-    .hidden-input {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* ── Cart Header ── */
-    .cart-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 2rem;
-      padding-bottom: 1.25rem;
-      border-bottom: 2px solid var(--light-beige);
-    }
-
-    .cart-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: var(--dark-brown);
-      letter-spacing: -0.5px;
-    }
-
-    .cart-title .badge {
-      display: inline-block;
-      background: var(--light-beige);
-      color: var(--primary);
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 600;
-      padding: 0.15rem 0.6rem;
-      border-radius: 999px;
-      margin-left: 0.5rem;
-      vertical-align: middle;
-    }
-
-    .cart-coffee-icon {
-      width: 44px;
-      height: 44px;
-      background: var(--light-beige);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-    }
-
-    /* ── Order Type Tabs (CSS-only - labels toggle hidden radio inputs) ── */
-    .order-tabs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.5rem;
-      margin-bottom: 1.75rem;
-    }
-
-    .order-tab {
-      display: block;
-      text-align: center;
-      padding: 0.7rem 0.5rem;
-      border-radius: 14px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 600;
-      background: var(--light-beige);
-      color: var(--primary);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      user-select: none;
-    }
-
-    .order-tab:hover {
-      background: #e8d5c0;
-    }
-
-    /* Highlight the active tab based on which radio is checked */
-    #delivery:checked ~ .order-tabs .order-tab[for="delivery"],
-    #dine-in:checked ~ .order-tabs .order-tab[for="dine-in"],
-    #take-away:checked ~ .order-tabs .order-tab[for="take-away"] {
-      background: var(--primary);
-      color: var(--white);
-      box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3);
-    }
-
-    /* ── Order type indicator text ── */
-    .order-type-indicator {
-      text-align: center;
-      font-size: 0.85rem;
-      color: #8a7266;
-      margin-bottom: 1rem;
-      padding: 0.5rem;
-      background: var(--light-beige);
-      border-radius: 10px;
-      font-weight: 500;
-      min-height: 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .order-type-indicator .type-text-delivery,
-    .order-type-indicator .type-text-dinein,
-    .order-type-indicator .type-text-takeaway {
-      display: none;
-    }
-
-    #delivery:checked ~ .order-type-indicator .type-text-delivery { display: inline; }
-    #dine-in:checked ~ .order-type-indicator .type-text-dinein { display: inline; }
-    #take-away:checked ~ .order-type-indicator .type-text-takeaway { display: inline; }
-
-    /* ── Cart Items ── */
-    .cart-items {
-      margin-bottom: 1.5rem;
-    }
-
-    .cart-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 0;
-      border-bottom: 1px dashed var(--light-beige);
-    }
-
-    .cart-item:last-of-type {
-      border-bottom: none;
-    }
-
-    .cart-item-left {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .cart-item-img {
-      width: 52px;
-      height: 52px;
-      border-radius: 14px;
-      object-fit: cover;
-      border: 2px solid var(--light-beige);
-    }
-
-    .cart-item-name {
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--dark-brown);
-    }
-
-    .cart-item-price {
-      font-size: 0.8rem;
-      color: var(--primary);
-      font-weight: 500;
-    }
-
-    .cart-qty-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--light-beige);
-      border-radius: 999px;
-      padding: 0.3rem 0.6rem;
-    }
-
-    .cart-qty-btn {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      border: none;
-      font-size: 1rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-      color: var(--primary);
-    }
-
-    .cart-qty-value {
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--dark-brown);
-      min-width: 18px;
-      text-align: center;
-    }
-
-    /* ── Countdown Timer ── */
-    .countdown-container {
-      margin-bottom: 1.25rem;
-      padding: 1rem 1.25rem;
-      background: var(--light-beige);
-      border-radius: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .countdown-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .countdown-label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--dark-brown);
-    }
-
-    .countdown-time {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--primary);
-      font-family: 'Playfair Display', serif;
-      position: relative;
-      min-width: 5rem;
-      text-align: right;
-    }
-
-    /* Default text when order not placed */
-    .countdown-time .time-default { display: inline; }
-    .countdown-time .t-5min,
-    .countdown-time .t-4min,
-    .countdown-time .t-3min,
-    .countdown-time .t-2min,
-    .countdown-time .t-1min,
-    .countdown-time .t-30sec,
-    .countdown-time .t-ready {
-      display: none;
-    }
-
-    /* Show time labels sequentially when order is placed, using animation-delay
-       Total animation duration = 300s (5 minutes)
-       Each phase has an animation that shows it for a portion then hides */
-    .countdown-time .t-5min,
-    .countdown-time .t-4min,
-    .countdown-time .t-3min,
-    .countdown-time .t-2min,
-    .countdown-time .t-1min,
-    .countdown-time .t-30sec,
-    .countdown-time .t-ready {
-      animation-name: showTime;
-      animation-duration: 300s;
-      animation-timing-function: steps(1);
-      animation-fill-mode: forwards;
-      animation-play-state: paused;
-    }
-
-    #order-success:checked ~ .countdown-container .countdown-time .t-5min,
-    #order-success:checked ~ .countdown-container .countdown-time .t-4min,
-    #order-success:checked ~ .countdown-container .countdown-time .t-3min,
-    #order-success:checked ~ .countdown-container .countdown-time .t-2min,
-    #order-success:checked ~ .countdown-container .countdown-time .t-1min,
-    #order-success:checked ~ .countdown-container .countdown-time .t-30sec,
-    #order-success:checked ~ .countdown-container .countdown-time .t-ready {
-      animation-play-state: running;
-    }
-
-    /* Default hidden for all time labels when animation is running */
-    #order-success:checked ~ .countdown-container .countdown-time .time-default {
-      display: none;
-    }
-
-    /* Each time span becomes visible at its start keyframe */
-    @keyframes showTime {
-      0%, 100% { display: inline; }
-    }
-
-    /* t-5min: visible from 0% to 20% (0-60s) */
-    .countdown-time .t-5min { animation-delay: 0s; }
-    #order-success:checked ~ .countdown-container .countdown-time .t-5min {
-      animation: showTimeStep1 300s steps(1) forwards;
-    }
-    @keyframes showTimeStep1 {
-      0%, 19.999% { display: inline; }
-      20% { display: none; }
-    }
-
-    /* t-4min: visible from 20% to 40% (60-120s) */
-    #order-success:checked ~ .countdown-container .countdown-time .t-4min {
-      display: none;
-      animation: showTimeStep2 300s steps(1) forwards;
-    }
-    @keyframes showTimeStep2 {
-      0%, 19.999% { display: none; }
-      20%, 39.999% { display: inline; }
-      40% { display: none; }
-    }
-
-    /* t-3min: visible from 40% to 60% (120-180s) */
-    #order-success:checked ~ .countdown-container .countdown-time .t-3min {
-      display: none;
-      animation: showTimeStep3 300s steps(1) forwards;
-    }
-    @keyframes showTimeStep3 {
-      0%, 39.999% { display: none; }
-      40%, 59.999% { display: inline; }
-      60% { display: none; }
-    }
-
-    /* t-2min: visible from 60% to 80% (180-240s) */
-    #order-success:checked ~ .countdown-container .countdown-time .t-2min {
-      display: none;
-      animation: showTimeStep4 300s steps(1) forwards;
-    }
-    @keyframes showTimeStep4 {
-      0%, 59.999% { display: none; }
-      60%, 79.999% { display: inline; }
-      80% { display: none; }
-    }
-
-    /* t-1min: visible from 80% to 95% (240-285s) */
-    #order-success:checked ~ .countdown-container .countdown-time .t-1min {
-      display: none;
-      animation: showTimeStep5 300s steps(1) forwards;
-    }
-    @keyframes showTimeStep5 {
-      0%, 79.999% { display: none; }
-      80%, 94.999% { display: inline; }
-      95% { display: none; }
-    }
-
-    /* t-30sec: visible from 95% to 99% (285-297s) */
-    #order-success:checked ~ .countdown-container .countdown-time .t-30sec {
-      display: none;
-      animation: showTimeStep6 300s steps(1) forwards;
-    }
-    @keyframes showTimeStep6 {
-      0%, 94.999% { display: none; }
-      95%, 98.999% { display: inline; }
-      99% { display: none; }
-    }
-
-    /* t-ready: visible from 99% to 100% (297-300s) */
-    #order-success:checked ~ .countdown-container .countdown-time .t-ready {
-      display: none;
-      animation: showTimeStep7 300s steps(1) forwards;
-    }
-    @keyframes showTimeStep7 {
-      0%, 98.999% { display: none; }
-      99%, 100% { display: inline; }
-    }
-
-    .countdown-track {
-      width: 100%;
-      height: 8px;
-      background: var(--cream);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .countdown-bar {
-      height: 100%;
-      width: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--caramel), var(--primary));
-    }
-
-    /* When order is placed, animate the bar */
-    #order-success:checked ~ .countdown-container .countdown-bar {
-      animation: countdownShrink 300s linear forwards;
-    }
-
-    @keyframes countdownShrink {
-      from { width: 100%; }
-      to { width: 0%; }
-    }
-
-    /* ── Cart Summary ── */
-    .cart-summary {
-      border-top: 2px solid var(--light-beige);
-      padding-top: 1.25rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.4rem 0;
-    }
-
-    .summary-label {
-      font-size: 0.9rem;
-      color: #8a7266;
-      font-weight: 400;
-    }
-
-    .summary-value {
-      font-weight: 600;
-      color: var(--dark-brown);
-      font-size: 0.95rem;
-    }
-
-    .summary-divider {
-      height: 1px;
-      background: var(--light-beige);
-      margin: 0.6rem 0;
-    }
-
-    .summary-row.total {
-      padding: 0.6rem 0 0.2rem;
-    }
-
-    .summary-row.total .summary-label {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--dark-brown);
-    }
-
-    .summary-row.total .summary-value {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--caramel);
-    }
-
-    .discount-amount {
-      color: #2e7d32;
-      font-weight: 600;
-    }
-
-    /* ── Place Order Button (label for the hidden checkbox) ── */
-    .place-order-btn {
-      display: flex;
-      width: 100%;
-      padding: 1rem;
-      border: none;
-      border-radius: 999px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--white);
-      background: linear-gradient(135deg, var(--primary), var(--dark-brown));
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 6px 20px rgba(111, 78, 55, 0.35);
-      letter-spacing: 0.5px;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      user-select: none;
-    }
-
-    .place-order-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(111, 78, 55, 0.45);
-    }
-
-    .place-order-btn:active {
-      transform: translateY(0);
-    }
-
-    /* Hide the button once order is placed */
-    #order-success:checked ~ .place-order-btn {
-      display: none;
-    }
-
-    /* ── Success Overlay ── */
-    .success-overlay {
-      display: none;
-      position: absolute;
-      inset: 0;
-      background: rgba(62, 39, 35, 0.6);
-      backdrop-filter: blur(6px);
-      border-radius: 28px;
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
-
-    #order-success:checked ~ .success-overlay {
-      display: flex;
-      animation: fadeIn 0.4s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .success-modal {
-      background: var(--white);
-      border-radius: 24px;
-      padding: 2.5rem 2rem;
-      text-align: center;
-      max-width: 360px;
-      width: 100%;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-    }
-
-    #order-success:checked ~ .success-overlay .success-modal {
-      animation: scaleIn 0.4s ease;
-    }
-
-    @keyframes scaleIn {
-      from { transform: scale(0.85); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .success-icon {
-      font-size: 3.5rem;
-      margin-bottom: 1rem;
-    }
-
-    #order-success:checked ~ .success-overlay .success-icon {
-      animation: bounce 0.6s ease;
-    }
-
-    @keyframes bounce {
-      0%   { transform: scale(0); }
-      50%  { transform: scale(1.2); }
-      70%  { transform: scale(0.9); }
-      100% { transform: scale(1); }
-    }
-
-    .success-modal h2 {
-      font-size: 1.5rem;
-      color: var(--dark-brown);
-      margin-bottom: 0.5rem;
-    }
-
-    .success-modal p {
-      font-size: 0.9rem;
-      color: #8a7266;
-      margin-bottom: 1.5rem;
-      line-height: 1.5;
-    }
-
-    .success-modal .order-type-confirm {
-      font-size: 0.8rem;
-      color: var(--primary);
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      padding: 0.5rem;
-      background: var(--light-beige);
-      border-radius: 10px;
-    }
-
-    /* Show the correct order type in the success modal */
-    .success-modal .order-type-confirm .confirm-delivery,
-    .success-modal .order-type-confirm .confirm-dinein,
-    .success-modal .order-type-confirm .confirm-takeaway {
-      display: none;
-    }
-
-    #delivery:checked ~ .success-overlay .confirm-delivery { display: inline; }
-    #dine-in:checked ~ .success-overlay .confirm-dinein { display: inline; }
-    #take-away:checked ~ .success-overlay .confirm-takeaway { display: inline; }
-
-    /* ── Close button inside modal ── */
-    .close-btn {
-      display: inline-block;
-      padding: 0.8rem 2.5rem;
-      border-radius: 999px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--white);
-      background: linear-gradient(135deg, var(--primary), var(--dark-brown));
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 16px rgba(111, 78, 55, 0.3);
-      user-select: none;
-    }
-
-    .close-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(111, 78, 55, 0.4);
-    }
-  </style>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>PurrCoffee - Cart</title>
+
+ <!-- Google Fonts -->
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+ <link href="/src/style.css" rel="stylesheet">
+ <style>
+   * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+   }
+
+   :root {
+     --primary: #6F4E37;
+     --dark-brown: #3E2723;
+     --cream: #FFF8E7;
+     --caramel: #C68E17;
+     --white: #FFFFFF;
+     --light-beige: #F5E6D3;
+     --charcoal: #3E2723;
+     --gold: #C68E17;
+     --espresso: #3E2723;
+   }
+
+   body {
+     font-family: 'Poppins', sans-serif;
+     background: var(--cream);
+     min-height: 100vh;
+     display: flex;
+     flex-direction: column;
+     padding: 0;
+   }
+
+   h1, h2, h3, h4 {
+     font-family: 'Playfair Display', serif;
+   }
+
+   /* ===== Header Styles ===== */
+   .header {
+     background-color: rgba(255, 248, 231, 0.95);
+     backdrop-filter: blur(4px);
+     border-bottom: 1px solid rgba(111, 78, 55, 0.15);
+     position: sticky;
+     top: 0;
+     z-index: 50;
+     width: 100%;
+   }
+
+   .nav-container {
+     max-width: 80rem;
+     margin: 0 auto;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     padding: 1rem 1.5rem;
+   }
+
+   .logo-link {
+     display: flex;
+     align-items: center;
+     gap: 0.5rem;
+     text-decoration: none;
+   }
+
+   .logo-img {
+     width: 2.5rem;
+     height: 2.5rem;
+     border-radius: 9999px;
+     object-fit: cover;
+     border: 1px solid var(--caramel);
+   }
+
+   .logo-text {
+     font-family: 'Playfair Display', serif;
+     font-size: 1.25rem;
+     font-weight: 700;
+     color: var(--dark-brown);
+   }
+
+   .nav-desktop {
+     display: flex;
+     align-items: center;
+     gap: 2rem;
+   }
+
+   .nav-link {
+     font-size: 0.875rem;
+     font-weight: 600;
+     color: rgba(62, 39, 35, 0.8);
+     text-decoration: none;
+     transition: color 0.2s ease;
+   }
+
+   .nav-link:hover {
+     color: var(--caramel);
+   }
+
+   .nav-link-active {
+     color: var(--caramel);
+   }
+
+   .order-btn {
+     background-color: var(--primary);
+     color: var(--cream);
+     font-size: 0.875rem;
+     font-weight: 600;
+     padding: 0.625rem 1.25rem;
+     border-radius: 9999px;
+     text-decoration: none;
+     transition: all 0.2s ease;
+     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+   }
+
+   .order-btn:hover {
+     background-color: var(--dark-brown);
+   }
+
+   .menu-toggle {
+     display: none;
+     background: none;
+     border: none;
+     cursor: pointer;
+     padding: 0.5rem;
+     width: 3rem;
+     height: 3rem;
+     position: relative;
+     flex-direction: column;
+     justify-content: space-around;
+     align-items: center;
+   }
+
+   .menu-toggle span {
+     display: block;
+     width: 1.75rem;
+     height: 2px;
+     background-color: var(--dark-brown);
+     transition: all 0.3s ease;
+     transform-origin: center;
+   }
+
+   .menu-toggle.open span:nth-child(1) {
+     transform: rotate(45deg) translate(5px, 5px);
+   }
+
+   .menu-toggle.open span:nth-child(2) {
+     opacity: 0;
+     transform: scaleX(0);
+   }
+
+   .menu-toggle.open span:nth-child(3) {
+     transform: rotate(-45deg) translate(5px, -5px);
+   }
+
+   .mobile-menu {
+     display: none;
+     background-color: var(--cream);
+     border-top: 1px solid rgba(111, 78, 55, 0.15);
+     padding: 1rem 1.5rem;
+     flex-direction: column;
+     gap: 0.25rem;
+   }
+
+   .mobile-menu.open {
+     display: flex;
+   }
+
+   .mobile-menu a {
+     display: block;
+     padding: 0.75rem 0;
+     border-bottom: 1px solid rgba(111, 78, 55, 0.1);
+     font-weight: 500;
+     text-decoration: none;
+     color: var(--dark-brown);
+     transition: color 0.2s ease;
+   }
+
+   .mobile-menu a:last-child {
+     border-bottom: none;
+   }
+
+   .mobile-menu a:hover {
+     color: var(--caramel);
+   }
+
+   .mobile-menu .active {
+     color: var(--caramel);
+   }
+
+   .mobile-order-btn {
+     display: block;
+     margin-top: 0.5rem;
+     padding: 0.75rem;
+     background-color: var(--primary);
+     color: var(--cream);
+     text-align: center;
+     border-radius: 9999px;
+     font-weight: 600;
+     text-decoration: none;
+     transition: all 0.2s ease;
+   }
+
+   .mobile-order-btn:hover {
+     background-color: var(--dark-brown);
+   }
+
+   @media (max-width: 768px) {
+     .nav-desktop {
+       display: none;
+     }
+     .menu-toggle {
+       display: flex;
+     }
+   }
+
+   /* ===== Cart Container Styles ===== */
+   .cart-wrapper {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     padding: 2rem;
+     flex-grow: 1;
+   }
+
+   .cart-container {
+     max-width: 520px;
+     width: 100%;
+     background: var(--white);
+     border-radius: 28px;
+     box-shadow: 0 20px 60px rgba(62, 39, 35, 0.12);
+     padding: 2.5rem 2rem;
+     position: relative;
+     overflow: hidden;
+   }
+
+   .cart-container::before {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: 0;
+     right: 0;
+     height: 6px;
+     background: linear-gradient(90deg, var(--caramel), var(--primary), var(--caramel));
+   }
+
+   .decor-dots {
+     position: absolute;
+     top: 1.5rem;
+     right: 1.5rem;
+     display: grid;
+     grid-template-columns: repeat(3, 6px);
+     gap: 5px;
+     opacity: 0.15;
+   }
+
+   .decor-dots span {
+     width: 6px;
+     height: 6px;
+     border-radius: 50%;
+     background: var(--primary);
+   }
+
+   /* ── Hidden inputs for CSS-only interactivity ── */
+   .hidden-input {
+     position: absolute;
+     opacity: 0;
+     pointer-events: none;
+   }
+
+   /* ── Cart Header ── */
+   .cart-header {
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     margin-bottom: 2rem;
+     padding-bottom: 1.25rem;
+     border-bottom: 2px solid var(--light-beige);
+   }
+
+   .cart-title {
+     font-family: 'Playfair Display', serif;
+     font-size: 1.75rem;
+     font-weight: 700;
+     color: var(--dark-brown);
+     letter-spacing: -0.5px;
+   }
+
+   .cart-title .badge {
+     display: inline-block;
+     background: var(--light-beige);
+     color: var(--primary);
+     font-family: 'Poppins', sans-serif;
+     font-size: 0.85rem;
+     font-weight: 600;
+     padding: 0.15rem 0.6rem;
+     border-radius: 999px;
+     margin-left: 0.5rem;
+     vertical-align: middle;
+   }
+
+   .cart-coffee-icon {
+     width: 44px;
+     height: 44px;
+     background: var(--light-beige);
+     border-radius: 50%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 1.3rem;
+   }
+
+   /* ── Order Type Tabs ── */
+   .order-tabs {
+     display: grid;
+     grid-template-columns: repeat(3, 1fr);
+     gap: 0.5rem;
+     margin-bottom: 1.75rem;
+   }
+
+   .order-tab {
+     display: block;
+     text-align: center;
+     padding: 0.7rem 0.5rem;
+     border-radius: 14px;
+     font-family: 'Poppins', sans-serif;
+     font-size: 0.8rem;
+     font-weight: 600;
+     background: var(--light-beige);
+     color: var(--primary);
+     cursor: pointer;
+     transition: all 0.3s ease;
+     user-select: none;
+   }
+
+   .order-tab:hover {
+     background: #e8d5c0;
+   }
+
+   #delivery:checked ~ .order-tabs .order-tab[for="delivery"],
+   #dine-in:checked ~ .order-tabs .order-tab[for="dine-in"],
+   #take-away:checked ~ .order-tabs .order-tab[for="take-away"] {
+     background: var(--primary);
+     color: var(--white);
+     box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3);
+   }
+
+   /* ── Order type indicator text ── */
+   .order-type-indicator {
+     text-align: center;
+     font-size: 0.85rem;
+     color: #8a7266;
+     margin-bottom: 1rem;
+     padding: 0.5rem;
+     background: var(--light-beige);
+     border-radius: 10px;
+     font-weight: 500;
+     min-height: 2.5rem;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+   }
+
+   .order-type-indicator .type-text-delivery,
+   .order-type-indicator .type-text-dinein,
+   .order-type-indicator .type-text-takeaway {
+     display: none;
+   }
+
+   #delivery:checked ~ .order-type-indicator .type-text-delivery { display: inline; }
+   #dine-in:checked ~ .order-type-indicator .type-text-dinein { display: inline; }
+   #take-away:checked ~ .order-type-indicator .type-text-takeaway { display: inline; }
+
+   /* ── Cart Items ── */
+   .cart-items {
+     margin-bottom: 1.5rem;
+   }
+
+   .cart-item {
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     padding: 1rem 0;
+     border-bottom: 1px dashed var(--light-beige);
+   }
+
+   .cart-item:last-of-type {
+     border-bottom: none;
+   }
+
+   .cart-item-left {
+     display: flex;
+     align-items: center;
+     gap: 1rem;
+   }
+
+   .cart-item-img {
+     width: 52px;
+     height: 52px;
+     border-radius: 14px;
+     object-fit: cover;
+     border: 2px solid var(--light-beige);
+   }
+
+   .cart-item-name {
+     font-weight: 600;
+     font-size: 0.95rem;
+     color: var(--dark-brown);
+   }
+
+   .cart-item-price {
+     font-size: 0.8rem;
+     color: var(--primary);
+     font-weight: 500;
+   }
+
+   .cart-qty-controls {
+     display: flex;
+     align-items: center;
+     gap: 0.5rem;
+     background: var(--light-beige);
+     border-radius: 999px;
+     padding: 0.3rem 0.6rem;
+   }
+
+   .cart-qty-btn {
+     width: 26px;
+     height: 26px;
+     border-radius: 50%;
+     border: none;
+     font-size: 1rem;
+     font-weight: 700;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     background: transparent;
+     color: var(--primary);
+     cursor: pointer;
+   }
+
+   .cart-qty-value {
+     font-weight: 700;
+     font-size: 0.9rem;
+     color: var(--dark-brown);
+     min-width: 18px;
+     text-align: center;
+   }
+
+   /* ── Countdown Timer ── */
+   .countdown-container {
+     margin-bottom: 1.25rem;
+     padding: 1rem 1.25rem;
+     background: var(--light-beige);
+     border-radius: 16px;
+     display: flex;
+     flex-direction: column;
+     gap: 0.5rem;
+   }
+
+   .countdown-header {
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+   }
+
+   .countdown-label {
+     font-size: 0.8rem;
+     font-weight: 600;
+     color: var(--dark-brown);
+   }
+
+   .countdown-time {
+     font-size: 0.85rem;
+     font-weight: 700;
+     color: var(--primary);
+     font-family: 'Playfair Display', serif;
+     position: relative;
+     min-width: 5rem;
+     text-align: right;
+   }
+
+   .countdown-time .time-default { display: inline; }
+   .countdown-time .t-5min,
+   .countdown-time .t-4min,
+   .countdown-time .t-3min,
+   .countdown-time .t-2min,
+   .countdown-time .t-1min,
+   .countdown-time .t-30sec,
+   .countdown-time .t-ready {
+     display: none;
+   }
+
+   .countdown-time .t-5min,
+   .countdown-time .t-4min,
+   .countdown-time .t-3min,
+   .countdown-time .t-2min,
+   .countdown-time .t-1min,
+   .countdown-time .t-30sec,
+   .countdown-time .t-ready {
+     animation-name: showTime;
+     animation-duration: 300s;
+     animation-timing-function: steps(1);
+     animation-fill-mode: forwards;
+     animation-play-state: paused;
+   }
+
+   #order-success:checked ~ .countdown-container .countdown-time .t-5min,
+   #order-success:checked ~ .countdown-container .countdown-time .t-4min,
+   #order-success:checked ~ .countdown-container .countdown-time .t-3min,
+   #order-success:checked ~ .countdown-container .countdown-time .t-2min,
+   #order-success:checked ~ .countdown-container .countdown-time .t-1min,
+   #order-success:checked ~ .countdown-container .countdown-time .t-30sec,
+   #order-success:checked ~ .countdown-container .countdown-time .t-ready {
+     animation-play-state: running;
+   }
+
+   #order-success:checked ~ .countdown-container .countdown-time .time-default {
+     display: none;
+   }
+
+   @keyframes showTime {
+     0%, 100% { display: inline; }
+   }
+
+   .countdown-time .t-5min { animation-delay: 0s; }
+   #order-success:checked ~ .countdown-container .countdown-time .t-5min {
+     animation: showTimeStep1 300s steps(1) forwards;
+   }
+   @keyframes showTimeStep1 {
+     0%, 19.999% { display: inline; }
+     20% { display: none; }
+   }
+
+   #order-success:checked ~ .countdown-container .countdown-time .t-4min {
+     display: none;
+     animation: showTimeStep2 300s steps(1) forwards;
+   }
+   @keyframes showTimeStep2 {
+     0%, 19.999% { display: none; }
+     20%, 39.999% { display: inline; }
+     40% { display: none; }
+   }
+
+   #order-success:checked ~ .countdown-container .countdown-time .t-3min {
+     display: none;
+     animation: showTimeStep3 300s steps(1) forwards;
+   }
+   @keyframes showTimeStep3 {
+     0%, 39.999% { display: none; }
+     40%, 59.999% { display: inline; }
+     60% { display: none; }
+   }
+
+   #order-success:checked ~ .countdown-container .countdown-time .t-2min {
+     display: none;
+     animation: showTimeStep4 300s steps(1) forwards;
+   }
+   @keyframes showTimeStep4 {
+     0%, 59.999% { display: none; }
+     60%, 79.999% { display: inline; }
+     80% { display: none; }
+   }
+
+   #order-success:checked ~ .countdown-container .countdown-time .t-1min {
+     display: none;
+     animation: showTimeStep5 300s steps(1) forwards;
+   }
+   @keyframes showTimeStep5 {
+     0%, 79.999% { display: none; }
+     80%, 94.999% { display: inline; }
+     95% { display: none; }
+   }
+
+   #order-success:checked ~ .countdown-container .countdown-time .t-30sec {
+     display: none;
+     animation: showTimeStep6 300s steps(1) forwards;
+   }
+   @keyframes showTimeStep6 {
+     0%, 94.999% { display: none; }
+     95%, 98.999% { display: inline; }
+     99% { display: none; }
+   }
+
+   #order-success:checked ~ .countdown-container .countdown-time .t-ready {
+     display: none;
+     animation: showTimeStep7 300s steps(1) forwards;
+   }
+   @keyframes showTimeStep7 {
+     0%, 98.999% { display: none; }
+     99%, 100% { display: inline; }
+   }
+
+   .countdown-track {
+     width: 100%;
+     height: 8px;
+     background: var(--cream);
+     border-radius: 999px;
+     overflow: hidden;
+   }
+
+   .countdown-bar {
+     height: 100%;
+     width: 100%;
+     border-radius: 999px;
+     background: linear-gradient(90deg, var(--caramel), var(--primary));
+   }
+
+   #order-success:checked ~ .countdown-container .countdown-bar {
+     animation: countdownShrink 300s linear forwards;
+   }
+
+   @keyframes countdownShrink {
+     from { width: 100%; }
+     to { width: 0%; }
+   }
+
+   /* ── Cart Summary ── */
+   .cart-summary {
+     border-top: 2px solid var(--light-beige);
+     padding-top: 1.25rem;
+     margin-bottom: 1.5rem;
+   }
+
+   .summary-row {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     padding: 0.4rem 0;
+   }
+
+   .summary-label {
+     font-size: 0.9rem;
+     color: #8a7266;
+     font-weight: 400;
+   }
+
+   .summary-value {
+     font-weight: 600;
+     color: var(--dark-brown);
+     font-size: 0.95rem;
+   }
+
+   .summary-divider {
+     height: 1px;
+     background: var(--light-beige);
+     margin: 0.6rem 0;
+   }
+
+   .summary-row.total {
+     padding: 0.6rem 0 0.2rem;
+   }
+
+   .summary-row.total .summary-label {
+     font-family: 'Playfair Display', serif;
+     font-size: 1.1rem;
+     font-weight: 700;
+     color: var(--dark-brown);
+   }
+
+   .summary-row.total .summary-value {
+     font-family: 'Playfair Display', serif;
+     font-size: 1.25rem;
+     font-weight: 700;
+     color: var(--caramel);
+   }
+
+   .discount-amount {
+     color: #2e7d32;
+     font-weight: 600;
+   }
+
+   /* ── Place Order Button ── */
+   .place-order-btn {
+     display: flex;
+     width: 100%;
+     padding: 1rem;
+     border: none;
+     border-radius: 999px;
+     font-family: 'Poppins', sans-serif;
+     font-size: 1rem;
+     font-weight: 700;
+     color: var(--white);
+     background: linear-gradient(135deg, var(--primary), var(--dark-brown));
+     cursor: pointer;
+     transition: all 0.3s ease;
+     box-shadow: 0 6px 20px rgba(111, 78, 55, 0.35);
+     letter-spacing: 0.5px;
+     align-items: center;
+     justify-content: center;
+     gap: 0.5rem;
+     user-select: none;
+   }
+
+   .place-order-btn:hover {
+     transform: translateY(-2px);
+     box-shadow: 0 10px 28px rgba(111, 78, 55, 0.45);
+   }
+
+   .place-order-btn:active {
+     transform: translateY(0);
+   }
+
+   #order-success:checked ~ .place-order-btn {
+     display: none;
+   }
+
+   /* ── Success Overlay ── */
+   .success-overlay {
+     display: none;
+     position: absolute;
+     inset: 0;
+     background: rgba(62, 39, 35, 0.6);
+     backdrop-filter: blur(6px);
+     border-radius: 28px;
+     z-index: 100;
+     align-items: center;
+     justify-content: center;
+     padding: 2rem;
+   }
+
+   #order-success:checked ~ .success-overlay {
+     display: flex;
+     animation: fadeIn 0.4s ease;
+   }
+
+   @keyframes fadeIn {
+     from { opacity: 0; }
+     to { opacity: 1; }
+   }
+
+   .success-modal {
+     background: var(--white);
+     border-radius: 24px;
+     padding: 2.5rem 2rem;
+     text-align: center;
+     max-width: 360px;
+     width: 100%;
+     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+   }
+
+   #order-success:checked ~ .success-overlay .success-modal {
+     animation: scaleIn 0.4s ease;
+   }
+
+   @keyframes scaleIn {
+     from { transform: scale(0.85); opacity: 0; }
+     to { transform: scale(1); opacity: 1; }
+   }
+
+   .success-icon {
+     font-size: 3.5rem;
+     margin-bottom: 1rem;
+   }
+
+   #order-success:checked ~ .success-overlay .success-icon {
+     animation: bounce 0.6s ease;
+   }
+
+   @keyframes bounce {
+     0%   { transform: scale(0); }
+     50%  { transform: scale(1.2); }
+     70%  { transform: scale(0.9); }
+     100% { transform: scale(1); }
+   }
+
+   .success-modal h2 {
+     font-size: 1.5rem;
+     color: var(--dark-brown);
+     margin-bottom: 0.5rem;
+   }
+
+   .success-modal p {
+     font-size: 0.9rem;
+     color: #8a7266;
+     margin-bottom: 1.5rem;
+     line-height: 1.5;
+   }
+
+   .success-modal .order-type-confirm {
+     font-size: 0.8rem;
+     color: var(--primary);
+     font-weight: 600;
+     margin-bottom: 1.5rem;
+     padding: 0.5rem;
+     background: var(--light-beige);
+     border-radius: 10px;
+   }
+
+   .success-modal .order-type-confirm .confirm-delivery,
+   .success-modal .order-type-confirm .confirm-dinein,
+   .success-modal .order-type-confirm .confirm-takeaway {
+     display: none;
+   }
+
+   #delivery:checked ~ .success-overlay .confirm-delivery { display: inline; }
+   #dine-in:checked ~ .success-overlay .confirm-dinein { display: inline; }
+   #take-away:checked ~ .success-overlay .confirm-takeaway { display: inline; }
+
+   .close-btn {
+     display: inline-block;
+     padding: 0.8rem 2.5rem;
+     border-radius: 999px;
+     font-family: 'Poppins', sans-serif;
+     font-size: 0.9rem;
+     font-weight: 700;
+     color: var(--white);
+     background: linear-gradient(135deg, var(--primary), var(--dark-brown));
+     cursor: pointer;
+     transition: all 0.3s ease;
+     box-shadow: 0 4px 16px rgba(111, 78, 55, 0.3);
+     user-select: none;
+   }
+
+   .close-btn:hover {
+     transform: translateY(-2px);
+     box-shadow: 0 8px 24px rgba(111, 78, 55, 0.4);
+   }
+
+   /* ===== Responsive ===== */
+   @media (min-width: 640px) {
+     .cart-wrapper {
+       padding: 2.5rem;
+     }
+     .cart-container {
+       max-width: 540px;
+       padding: 2.75rem 2.25rem;
+       border-radius: 30px;
+     }
+   }
+
+   @media (min-width: 1024px) {
+     .cart-wrapper {
+       padding: 3rem;
+     }
+     .cart-container {
+       max-width: 580px;
+       padding: 3rem 2.5rem;
+       border-radius: 32px;
+     }
+   }
+ </style>
 </head>
 <body>
 
+<!-- ===== Header / Nav ===== -->
+<header class="header">
+  <nav class="nav-container">
+    <a href="index.html" class="logo-link">
+      <img src="assets/images/logo.png" alt="Cosy Cup Cafe logo" class="logo-img" />
+      <span class="logo-text">Cosy Cup Cafe</span>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <div class="nav-desktop">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="menu.html" class="nav-link">Menu</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+      <a href="orderpage.html" class="order-btn">Order Online</a>
+    </div>
+
+    <!-- Hamburger Menu Button -->
+    <button id="menuBtn" class="menu-toggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Toggle navigation menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="menu.html">Menu</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="orderpage.html" class="mobile-order-btn">Order Online →</a>
+  </div>
+</header>
+
+<div class="cart-wrapper">
   <div class="cart-container">
 
     <!-- ── Hidden inputs for CSS-only interactivity ── -->
@@ -668,13 +898,13 @@
       <span></span><span></span><span></span>
     </div>
 
-    <!-- Header -->
+    <!-- Cart Header -->
     <div class="cart-header">
       <h1 class="cart-title">Cart <span class="badge">3</span></h1>
       <div class="cart-coffee-icon">☕</div>
     </div>
 
-    <!-- Order Type Tabs (CSS-only: labels toggle hidden radio inputs) -->
+    <!-- Order Type Tabs -->
     <div class="order-tabs">
       <label for="delivery" class="order-tab">🚚 Delivery</label>
       <label for="dine-in" class="order-tab">🍽️ Dine in</label>
@@ -725,7 +955,26 @@
 
     </div>
 
-   
+    <!-- Countdown Timer -->
+    <div class="countdown-container">
+      <div class="countdown-header">
+        <span class="countdown-label">⏱️ Estimated wait time</span>
+        <span class="countdown-time">
+          <span class="time-default">Waiting...</span>
+          <span class="t-5min">~5 min</span>
+          <span class="t-4min">~4 min</span>
+          <span class="t-3min">~3 min</span>
+          <span class="t-2min">~2 min</span>
+          <span class="t-1min">~1 min</span>
+          <span class="t-30sec">~30 sec</span>
+          <span class="t-ready">Ready! ☕</span>
+        </span>
+      </div>
+      <div class="countdown-track">
+        <div class="countdown-bar"></div>
+      </div>
+    </div>
+
     <!-- Summary -->
     <div class="cart-summary">
       <div class="summary-row">
@@ -743,13 +992,13 @@
       </div>
     </div>
 
-    <!-- Place Order Button (label for the hidden #order-success checkbox) -->
+    <!-- Place Order Button -->
     <label for="order-success" class="place-order-btn">
       <span>Place an Order</span>
       <span>→</span>
     </label>
 
-    <!-- Success Overlay (shown when #order-success is checked) -->
+    <!-- Success Overlay -->
     <div class="success-overlay">
       <div class="success-modal">
         <div class="success-icon">✅</div>
@@ -765,71 +1014,46 @@
     </div>
 
   </div>
+</div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const items = [
-        { id: 'cappuccino', price: 1.50, qtyEl: null, minusEl: null, plusEl: null },
-        { id: 'latte', price: 1.60, qtyEl: null, minusEl: null, plusEl: null },
-      ];
+<script>
+  // ===== Mobile Menu Toggle =====
+  document.addEventListener('DOMContentLoaded', function() {
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
 
-      // DOM elements
-      const badgeEl = document.querySelector('.badge');
-      const subtotalEl = document.querySelector('.summary-row:nth-child(1) .summary-value');
-      const discountEl = document.querySelector('.discount-amount');
-      const totalEl = document.querySelector('.summary-row.total .summary-value');
-
-      // Gather quantity controls for each item
-      const cartItemEls = document.querySelectorAll('.cart-item');
-      cartItemEls.forEach((item, index) => {
-        const qtyEl = item.querySelector('.cart-qty-value');
-        const minusEl = item.querySelector('.cart-qty-btn:first-child');
-        const plusEl = item.querySelector('.cart-qty-btn:last-child');
-        items[index].qtyEl = qtyEl;
-        items[index].minusEl = minusEl;
-        items[index].plusEl = plusEl;
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', function() {
+        const isOpen = mobileMenu.classList.contains('open');
+        mobileMenu.classList.toggle('open');
+        menuBtn.classList.toggle('open');
+        menuBtn.setAttribute('aria-expanded', String(!isOpen));
       });
 
-      function updateCart() {
-        let subtotal = 0;
-        let totalQty = 0;
-
-        items.forEach(item => {
-          const qty = parseInt(item.qtyEl.textContent, 10);
-          subtotal += qty * item.price;
-          totalQty += qty;
-        });
-
-        const discount = subtotal * 0.20;
-        const total = subtotal - discount;
-
-        // Update badge
-        badgeEl.textContent = totalQty;
-
-        // Update summary
-        subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
-        discountEl.textContent = `-$${discount.toFixed(2)}`;
-        totalEl.textContent = `$${total.toFixed(2)}`;
-      }
-
-      items.forEach(item => {
-        item.minusEl.addEventListener('click', function(e) {
-          let qty = parseInt(item.qtyEl.textContent, 10);
-          if (qty > 0) {
-            qty--;
-            item.qtyEl.textContent = qty;
-            updateCart();
-          }
-        });
-
-        item.plusEl.addEventListener('click', function(e) {
-          let qty = parseInt(item.qtyEl.textContent, 10);
-          qty++;
-          item.qtyEl.textContent = qty;
-          updateCart();
+      // Close mobile menu when a link is clicked
+      const mobileLinks = mobileMenu.querySelectorAll('a');
+      mobileLinks.forEach(function(link) {
+        link.addEventListener('click', function() {
+          mobileMenu.classList.remove('open');
+          menuBtn.classList.remove('open');
+          menuBtn.setAttribute('aria-expanded', 'false');
         });
       });
-    });
-  </script>
-</body>
-</html>
+    }
+  });
+
+  // ===== Cart Functionality =====
+  document.addEventListener('DOMContentLoaded', function() {
+    const items = [
+      { id: 'cappuccino', price: 1.50, qtyEl: null, minusEl: null, plusEl: null },
+      { id: 'latte', price: 1.60, qtyEl: null, minusEl: null, plusEl: null },
+    ];
+
+    const badgeEl = document.querySelector('.badge');
+    const subtotalEl = document.querySelector('.summary-row:nth-child(1) .summary-value');
+    const discountEl = document.querySelector('.discount-amount');
+    const totalEl = document.querySelector('.summary-row.total .summary-value');
+
+    const cartItemEls = document.querySelectorAll('.cart-item');
+    cartItemEls.forEach(function(item, index) {
+      const
