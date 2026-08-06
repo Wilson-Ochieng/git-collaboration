@@ -11,37 +11,50 @@
   <link rel="stylesheet" href="./src/style.css">
 
   <style>
-    :root{
-      --primary:#6F4E37;
-      --dark-brown:#3E2723;
-      --cream:#FFF8E7;
-      --caramel:#C68E17;
-      --white:#FFFFFF;
-      --light-beige:#F5E6D3;
-
-      --espresso:var(--dark-brown);
-      --cinnamon:var(--primary);
-      --gold:var(--caramel);
-      --charcoal:var(--dark-brown);
+    :root {
+      --primary: #6F4E37;
+      --dark-brown: #3E2723;
+      --cream: #FFF8E7;
+      --caramel: #C68E17;
+      --white: #FFFFFF;
+      --light-beige: #F5E6D3;
+      --espresso: var(--dark-brown);
+      --cinnamon: var(--primary);
+      --gold: var(--caramel);
+      --charcoal: var(--dark-brown);
     }
 
-    body{
-      font-family:'Poppins', sans-serif;
-      background:var(--cream);
-      color:var(--dark-brown);
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    .font-display{
-      font-family:'Playfair Display', serif;
+    html {
+      font-size: 16px;
     }
 
-    .section-soft{
-      background:var(--light-beige);
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--cream);
+      color: var(--dark-brown);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    .ring-divider{
-      width:100%;
-      height:48px;
+    .font-display {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .section-soft {
+      background: var(--light-beige);
+    }
+
+    .ring-divider {
+      width: 100%;
+      height: 48px;
       background-image: radial-gradient(circle at 12% 50%, transparent 0 9px, var(--primary) 10px, transparent 11px),
                         radial-gradient(circle at 12% 50%, transparent 0 15px, var(--caramel) 16px, transparent 17px);
       background-repeat: repeat-x;
@@ -49,113 +62,641 @@
       opacity: 0.35;
     }
 
-    .focus-ring:focus-visible{
+    .focus-ring:focus-visible {
       outline: 3px solid var(--primary);
       outline-offset: 3px;
+    }
+
+    /* ===== Header Styles ===== */
+    .header {
+      background-color: rgba(255, 248, 231, 0.95);
+      backdrop-filter: blur(4px);
+      border-bottom: 1px solid rgba(111, 78, 55, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-container {
+      max-width: 80rem;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 9999px;
+      object-fit: cover;
+      border: 1px solid var(--caramel);
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--dark-brown);
+    }
+
+    /* Desktop Navigation */
+    .nav-desktop {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: rgba(62, 39, 35, 0.8);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--caramel);
+    }
+
+    .nav-link-active {
+      color: var(--caramel);
+    }
+
+    .order-btn {
+      background-color: var(--primary);
+      color: var(--cream);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.625rem 1.25rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .order-btn:hover {
+      background-color: var(--dark-brown);
+    }
+
+    /* Hamburger Menu Button */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 3rem;
+      height: 3rem;
+      position: relative;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 1.75rem;
+      height: 2px;
+      background-color: var(--dark-brown);
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    .menu-toggle.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .menu-toggle.open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .menu-toggle.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+      background-color: var(--cream);
+      border-top: 1px solid rgba(111, 78, 55, 0.15);
+      padding: 1rem 1.5rem;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(111, 78, 55, 0.1);
+      font-weight: 500;
+      text-decoration: none;
+      color: var(--dark-brown);
+      transition: color 0.2s ease;
+    }
+
+    .mobile-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .mobile-menu a:hover {
+      color: var(--caramel);
+    }
+
+    .mobile-menu .active {
+      color: var(--caramel);
+    }
+
+    .mobile-order-btn {
+      display: block;
+      margin-top: 0.5rem;
+      padding: 0.75rem;
+      background-color: var(--primary);
+      color: var(--cream);
+      text-align: center;
+      border-radius: 9999px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-order-btn:hover {
+      background-color: var(--dark-brown);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-desktop {
+        display: none;
+      }
+      
+      .menu-toggle {
+        display: flex;
+      }
+    }
+
+    /* ===== Main Content - Mobile First ===== */
+    main {
+      flex: 1;
+      padding: 2rem 1.25rem;
+      max-width: 80rem;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      text-align: center;
+      padding: 2rem 0 3rem;
+    }
+
+    .hero-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title br {
+      display: none;
+    }
+
+    .hero-description {
+      font-size: 1rem;
+      color: rgba(62, 39, 35, 0.75);
+      max-width: 42rem;
+      margin: 0 auto;
+    }
+
+    /* Story Section */
+    .story-section {
+      padding: 3rem 0;
+    }
+
+    .story-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .story-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .story-text {
+      color: rgba(62, 39, 35, 0.8);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .story-image {
+      aspect-ratio: 4/3;
+      border-radius: 0.75rem;
+      background: rgba(62, 39, 35, 0.1);
+      border: 1px solid rgba(62, 39, 35, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+    }
+
+    /* Values Section */
+    .values-section {
+      padding: 3rem 0;
+      background: var(--dark-brown);
+      color: var(--white);
+    }
+
+    .values-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .values-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .value-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      transition: background 0.2s ease;
+    }
+
+    .value-card:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .value-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--caramel);
+    }
+
+    .value-description {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    /* Team Section */
+    .team-section {
+      padding: 3rem 0;
+    }
+
+    .team-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .team-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .team-member {
+      text-align: center;
+    }
+
+    .team-avatar {
+      aspect-ratio: 1/1;
+      border-radius: 9999px;
+      background: rgba(111, 78, 55, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      transition: background 0.2s ease;
+      max-width: 120px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .team-member:hover .team-avatar {
+      background: rgba(111, 78, 55, 0.3);
+    }
+
+    .team-avatar span {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--primary);
+    }
+
+    .team-name {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .team-role {
+      font-size: 0.875rem;
+      color: rgba(62, 39, 35, 0.6);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--espresso);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.875rem;
+      padding: 2rem 1.5rem;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      max-width: 80rem;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--caramel);
+    }
+
+    /* ===== Tablet & Desktop Breakpoints ===== */
+    
+    /* Tablet */
+    @media (min-width: 640px) {
+      main {
+        padding: 3rem 2rem;
+      }
+
+      .hero-title {
+        font-size: 3rem;
+      }
+      
+      .hero-title br {
+        display: block;
+      }
+
+      .hero-description {
+        font-size: 1.125rem;
+      }
+
+      .story-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+      }
+
+      .story-image {
+        min-height: 300px;
+      }
+
+      .values-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-content {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    /* Desktop */
+    @media (min-width: 1024px) {
+      main {
+        padding: 4rem 3rem;
+      }
+
+      .hero-section {
+        padding: 4rem 0 5rem;
+      }
+
+      .hero-title {
+        font-size: 4rem;
+      }
+
+      .hero-description {
+        font-size: 1.25rem;
+      }
+
+      .story-section {
+        padding: 4rem 0;
+      }
+
+      .story-title {
+        font-size: 2.5rem;
+      }
+
+      .story-grid {
+        gap: 4rem;
+      }
+
+      .story-image {
+        min-height: 400px;
+      }
+
+      .values-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+      }
+
+      .values-title {
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .value-card {
+        padding: 2rem;
+      }
+
+      .team-section {
+        padding: 4rem 0;
+      }
+
+      .team-title {
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .team-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2.5rem;
+      }
+
+      .team-avatar {
+        max-width: 150px;
+      }
+
+      .team-avatar span {
+        font-size: 2.5rem;
+      }
+
+      .ring-divider {
+        height: 64px;
+        background-size: 80px 64px;
+      }
+    }
+
+    /* Large Desktop */
+    @media (min-width: 1280px) {
+      .hero-title {
+        font-size: 4.5rem;
+      }
+
+      .story-grid {
+        gap: 5rem;
+      }
+
+      .values-grid {
+        gap: 2.5rem;
+      }
+
+      .team-grid {
+        gap: 3rem;
+      }
     }
   </style>
 </head>
 
-<body class="antialiased">
+<body>
   <!-- ===== Header / Nav ===== -->
-  <header class="bg-cream/95 backdrop-blur border-b border-coffee/15 sticky top-0 z-50">
-    <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-      <a href="index.html" class="flex items-center gap-2">
-        <img src="assets/images/logo.png" alt="Cosy Cup Cafe logo" class="w-10 h-10 rounded-full object-cover border border-caramel" />
-        <span class="font-display text-xl font-bold text-dark-brown">Cosy Cup Cafe</span>
+  <header class="header">
+    <nav class="nav-container">
+      <a href="index.html" class="logo-link">
+        <img src="assets/images/logo.png" alt="Cosy Cup Cafe logo" class="logo-img" />
+        <span class="logo-text">Cosy Cup Cafe</span>
       </a>
 
-      <div class="hidden md:flex items-center gap-8">
-        <a href="index.html" class="text-sm font-semibold text-[var(--charcoal)]/80 hover:text-[var(--gold)] transition">Home</a>
-        <a href="menu.html" class="text-sm font-semibold text-[var(--charcoal)]/80 hover:text-[var(--gold)] transition">Menu</a>
-        <a href="about.html" class="text-sm font-semibold text-[var(--gold)]">About</a>
-        <a href="contact.html" class="text-sm font-semibold text-[var(--charcoal)]/80 hover:text-[var(--gold)] transition">Contact</a>
-        
-          href="orderpage.html"
-          class="bg-[var(--primary)] hover:bg-[var(--espresso)] text-[var(--cream)] text-sm font-semibold px-5 py-2.5 rounded-full transition shadow-sm"
-          >Order Online</a
-        >
+      <!-- Desktop Navigation -->
+      <div class="nav-desktop">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="menu.html" class="nav-link">Menu</a>
+        <a href="about.html" class="nav-link nav-link-active">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="orderpage.html" class="order-btn">Order Online</a>
       </div>
 
-      <button
-        id="menuBtn"
-        class="md:hidden text-3xl text-(--charcoal)"
-        aria-expanded="false"
-        aria-controls="mobileMenu"
-        aria-label="Toggle navigation menu"
-      >
-        ☰
+      <!-- Hamburger Menu Button -->
+      <button id="menuBtn" class="menu-toggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
     </nav>
 
-    <div id="mobileMenu" class="hidden md:hidden bg-cream border-t border-coffee/15 px-6 py-4 space-y-1">
-      <a href="index.html" class="block py-3 border-b border-coffee/10 font-medium hover:text-(--gold)">Home</a>
-      <a href="menu.html" class="block py-3 border-b border-coffee/10 font-medium hover:text-(--gold)">Menu</a>
-      <a href="about.html" class="block py-3 border-b border-coffee/10 font-medium text-(--gold)">About</a>
-      <a href="contact.html" class="block py-3 border-b border-coffee/10 font-medium hover:text-(--gold)">Contact</a>
-      <a href="orderpage.html" class="block py-3 font-semibold text-(--gold)">Order Online →</a>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="about.html" class="active">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="orderpage.html" class="mobile-order-btn">Order Online →</a>
     </div>
   </header>
 
   <main>
-    <section class="px-6 py-16 md:py-24">
-      <div class="max-w-4xl mx-auto text-center">
-        <p class="text-sm tracking-widest uppercase text-[var(--cinnamon)] font-medium mb-4">Our Story</p>
-        <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-semibold leading-tight">
-          Every cup starts with<br class="hidden sm:block"> a good conversation.
-        </h1>
-        <p class="mt-6 text-base md:text-lg text-[var(--charcoal)]/75 max-w-2xl mx-auto">
-          Coffee is at the heart of everything we do. For us, it is more than a drink —
-          it is the reason neighbours become regulars and regulars become friends.
-        </p>
-      </div>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <p class="hero-tag">Our Story</p>
+      <h1 class="hero-title">
+        Every cup starts with<br> a good conversation.
+      </h1>
+      <p class="hero-description">
+        Coffee is at the heart of everything we do. For us, it is more than a drink —
+        it is the reason neighbours become regulars and regulars become friends.
+      </p>
     </section>
 
     <div class="ring-divider" aria-hidden="true"></div>
 
-    <section class="px-6 py-16 section-soft">
-      <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
-        <div class="order-2 md:order-1">
-          <h2 class="font-display text-3xl font-semibold mb-4">How it started</h2>
-          <p class="text-(--charcoal)/80 leading-relaxed mb-4">
+    <!-- Story Section -->
+    <section class="story-section section-soft">
+      <div class="story-grid">
+        <div class="story-content">
+          <h2 class="story-title">How it started</h2>
+          <p class="story-text">
             Cosy Cup Cafe opened its doors in Nairobi with one roaster, four tables,
             and a stubborn belief that great coffee shouldn't be complicated. We started
             by sourcing single-origin beans directly from smallholder farms, roasting in
             small batches so every cup tastes intentional.
           </p>
-          <p class="text-[var(--charcoal)]/80 leading-relaxed">
+          <p class="story-text">
             Years later, the tables have multiplied, but the standard hasn't changed:
             fresh roast, honest prices, and a team that remembers your order.
           </p>
         </div>
-        <div class="order-1 md:order-2">
-          <div class="aspect-[4/3] rounded-lg bg-[var(--espresso)]/10 border border-[var(--espresso)]/15 flex items-center justify-center">
-          </div>
+        <div class="story-image">
+          <!-- Image placeholder -->
         </div>
       </div>
     </section>
 
     <div class="ring-divider" aria-hidden="true"></div>
 
-    <section class="px-6 py-16 bg-(--dark-brown) text-(--white)">
-      <div class="max-w-6xl mx-auto">
-        <h2 class="font-display text-3xl font-semibold text-center mb-12">What we stand for</h2>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-(--white)/10 border border-(--white)/20 rounded-lg p-6 hover:bg-(--white)/20 transition-colors duration-200">
-            <h3 class="font-display text-xl font-semibold mb-2 text-(--caramel)">Sourced with care</h3>
-            <p class="text-(--white)/80 text-sm leading-relaxed">
+    <!-- Values Section -->
+    <section class="values-section">
+      <div class="values-content">
+        <h2 class="values-title">What we stand for</h2>
+        <div class="values-grid">
+          <div class="value-card">
+            <h3 class="value-title">Sourced with care</h3>
+            <p class="value-description">
               Direct relationships with growers, fair prices, and full transparency on where every bean comes from.
             </p>
           </div>
-          <div class="bg-(--white)/10 border border-(--white)/20 rounded-lg p-6 hover:bg-(--white)/20 transition-colors duration-200">
-            <h3 class="font-display text-xl font-semibold mb-2 text-(--caramel)">Brewed for connection</h3>
-            <p class="text-(--white)/80 text-sm leading-relaxed">
+          <div class="value-card">
+            <h3 class="value-title">Brewed for connection</h3>
+            <p class="value-description">
               A counter designed for lingering — this is where study groups, first dates, and old friends meet.
             </p>
           </div>
-          <div class="bg-(--white)/10 border border-(--white)/20 rounded-lg p-6 hover:bg-(--white)/20 transition-colors duration-200 sm:col-span-2 lg:col-span-1">
-            <h3 class="font-display text-xl font-semibold mb-2 text-(--caramel)">Perfected by hand</h3>
-            <p class="text-(--white)/80 text-sm leading-relaxed">
+          <div class="value-card">
+            <h3 class="value-title">Perfected by hand</h3>
+            <p class="value-description">
               Small-batch roasting and baristas trained to taste-test every batch before it reaches your cup.
             </p>
           </div>
@@ -165,61 +706,60 @@
 
     <div class="ring-divider" aria-hidden="true"></div>
 
-    <section class="px-6 py-16 section-soft">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="font-display text-3xl font-semibold text-center mb-12">The people behind the counter</h2>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <article class="group text-center focus-ring rounded-lg" tabindex="0">
-        <div class="aspect-square rounded-full bg-(--primary)/20 flex items-center justify-center mb-4 group-hover:bg-(--primary)/30 transition-colors duration-200">
-          <span class="font-display text-2xl text-(--primary)">V</span>
-        </div>
-        <h3 class="font-semibold">Victor</h3>
-        <p class="text-sm text-(--charcoal)/60">Head Roaster</p>
-      </article>
+    <!-- Team Section -->
+    <section class="team-section section-soft">
+      <h2 class="team-title">The people behind the counter</h2>
+      <div class="team-grid">
+        <article class="team-member focus-ring" tabindex="0">
+          <div class="team-avatar">
+            <span>V</span>
+          </div>
+          <h3 class="team-name">Victor</h3>
+          <p class="team-role">Head Roaster</p>
+        </article>
 
-      <article class="group text-center focus-ring rounded-lg" tabindex="0">
-        <div class="aspect-square rounded-full bg-(--primary)/20 flex items-center justify-center mb-4 group-hover:bg-[var(--primary)]/30 transition-colors duration-200">
-          <span class="font-display text-2xl text-(--primary)">M</span>
-        </div>
-        <h3 class="font-semibold">Millicent</h3>
-        <p class="text-sm text-(--charcoal)/60">Founder & Barista</p>
-      </article>
+        <article class="team-member focus-ring" tabindex="0">
+          <div class="team-avatar">
+            <span>M</span>
+          </div>
+          <h3 class="team-name">Millicent</h3>
+          <p class="team-role">Founder &amp; Barista</p>
+        </article>
 
-      <article class="group text-center focus-ring rounded-lg" tabindex="0">
-        <div class="aspect-square rounded-full bg-(--primary)/20 flex items-center justify-center mb-4 group-hover:bg-[var(--primary)]/30 transition-colors duration-200">
-          <span class="font-display text-2xl text-(--primary)">M</span>
-        </div>
-        <h3 class="font-semibold">Mervyn</h3>
-        <p class="text-sm text-(--charcoal)/60">Front of House Lead</p>
-      </article>
+        <article class="team-member focus-ring" tabindex="0">
+          <div class="team-avatar">
+            <span>M</span>
+          </div>
+          <h3 class="team-name">Mervyn</h3>
+          <p class="team-role">Front of House Lead</p>
+        </article>
 
-      <article class="group text-center focus-ring rounded-lg" tabindex="0">
-        <div class="aspect-square rounded-full bg-[var(--primary)]/20 flex items-center justify-center mb-4 group-hover:bg-[var(--primary)]/30 transition-colors duration-200">
-          <span class="font-display text-2xl text-(--primary)">B</span>
-        </div>
-        <h3 class="font-semibold">Bedria</h3>
-        <p class="text-sm text-[var(--charcoal)]/60">Pastry Chef</p>
-      </article>
+        <article class="team-member focus-ring" tabindex="0">
+          <div class="team-avatar">
+            <span>B</span>
+          </div>
+          <h3 class="team-name">Bedria</h3>
+          <p class="team-role">Pastry Chef</p>
+        </article>
 
-      <article class="group text-center focus-ring rounded-lg" tabindex="0">
-        <div class="aspect-square rounded-full bg-[var(--primary)]/20 flex items-center justify-center mb-4 group-hover:bg-[var(--primary)]/30 transition-colors duration-200">
-          <span class="font-display text-2xl text-[var(--primary)]">H</span>
-        </div>
-        <h3 class="font-semibold">Henry</h3>
-        <p class="text-sm text-[var(--charcoal)]/60">Barista</p>
-      </article>
-    </div>
-  </div>
-</section>
+        <article class="team-member focus-ring" tabindex="0">
+          <div class="team-avatar">
+            <span>H</span>
+          </div>
+          <h3 class="team-name">Henry</h3>
+          <p class="team-role">Barista</p>
+        </article>
+      </div>
+    </section>
   </main>
 
-  <footer class="bg-[var(--espresso)] text-[var(--white)]/70 text-sm px-6 py-8">
-    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+  <footer class="footer">
+    <div class="footer-content">
       <p>&copy; 2026 Cosy Cup Cafe. All rights reserved.</p>
-      <div class="flex gap-6">
-        <a href="menu.html" class="hover:text-[var(--caramel)] focus-ring rounded">Menu</a>
-        <a href="orderpage.html" class="hover:text-[var(--caramel)] focus-ring rounded">Order</a>
-        <a href="contact.html" class="hover:text-[var(--caramel)] focus-ring rounded">Contact</a>
+      <div class="footer-links">
+        <a href="menu.html">Menu</a>
+        <a href="orderpage.html">Order</a>
+        <a href="contact.html">Contact</a>
       </div>
     </div>
   </footer>
@@ -227,10 +767,22 @@
   <script>
     const menuBtn = document.getElementById("menuBtn");
     const mobileMenu = document.getElementById("mobileMenu");
+
     menuBtn.addEventListener("click", () => {
-      const isOpen = !mobileMenu.classList.contains("hidden");
-      mobileMenu.classList.toggle("hidden");
+      const isOpen = mobileMenu.classList.contains("open");
+      
+      mobileMenu.classList.toggle("open");
+      menuBtn.classList.toggle("open");
       menuBtn.setAttribute("aria-expanded", String(!isOpen));
+    });
+
+    const mobileLinks = mobileMenu.querySelectorAll("a");
+    mobileLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.remove("open");
+        menuBtn.classList.remove("open");
+        menuBtn.setAttribute("aria-expanded", "false");
+      });
     });
   </script>
 </body>
