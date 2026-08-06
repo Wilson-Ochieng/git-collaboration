@@ -7,310 +7,630 @@
 
   <title>Contact Us | Cosy Cup Cafe</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./src/style.css">
 
+  <style>
+    :root {
+      --primary: #6F4E37;
+      --dark-brown: #3E2723;
+      --cream: #FFF8E7;
+      --caramel: #C68E17;
+      --white: #FFFFFF;
+      --light-beige: #F5E6D3;
+      --gold: #C68E17;
+      --charcoal: #3E2723;
+      --espresso: #3E2723;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--cream);
+      color: var(--dark-brown);
+      margin: 0;
+      padding: 0;
+    }
+
+    .font-display {
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* ===== Header Styles ===== */
+    .header {
+      background-color: rgba(255, 248, 231, 0.95);
+      backdrop-filter: blur(4px);
+      border-bottom: 1px solid rgba(111, 78, 55, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-container {
+      max-width: 80rem;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 9999px;
+      object-fit: cover;
+      border: 1px solid var(--caramel);
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--dark-brown);
+    }
+
+    /* Desktop Navigation */
+    .nav-desktop {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: rgba(62, 39, 35, 0.8);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--caramel);
+    }
+
+    .nav-link-active {
+      color: var(--caramel);
+    }
+
+    .order-btn {
+      background-color: var(--primary);
+      color: var(--cream);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.625rem 1.25rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .order-btn:hover {
+      background-color: var(--dark-brown);
+    }
+
+    /* Hamburger Menu Button */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 3rem;
+      height: 3rem;
+      position: relative;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 1.75rem;
+      height: 2px;
+      background-color: var(--dark-brown);
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    .menu-toggle.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .menu-toggle.open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .menu-toggle.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+      background-color: var(--cream);
+      border-top: 1px solid rgba(111, 78, 55, 0.15);
+      padding: 1rem 1.5rem;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(111, 78, 55, 0.1);
+      font-weight: 500;
+      text-decoration: none;
+      color: var(--dark-brown);
+      transition: color 0.2s ease;
+    }
+
+    .mobile-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .mobile-menu a:hover {
+      color: var(--caramel);
+    }
+
+    .mobile-menu .active {
+      color: var(--caramel);
+    }
+
+    .mobile-order-btn {
+      display: block;
+      margin-top: 0.5rem;
+      padding: 0.75rem;
+      background-color: var(--primary);
+      color: var(--cream);
+      text-align: center;
+      border-radius: 9999px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-order-btn:hover {
+      background-color: var(--dark-brown);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-desktop {
+        display: none;
+      }
+      
+      .menu-toggle {
+        display: flex;
+      }
+    }
+
+    /* Hero Section */
+    .hero-section {
+      position: relative;
+      background-image: url('/src/images/coffee7.jpeg');
+      background-size: cover;
+      background-position: center;
+      height: 450px;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: white;
+      text-align: center;
+      padding: 0 1.25rem;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      font-family: 'Playfair Display', serif;
+    }
+
+    @media (min-width: 768px) {
+      .hero-title {
+        font-size: 3.75rem;
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 1.125rem;
+      max-width: 42rem;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      position: relative;
+      background-image: url('/src/images/coffee6.jpeg');
+      background-size: cover;
+      background-position: center;
+      padding: 4rem 0;
+    }
+
+    .contact-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .contact-content {
+      position: relative;
+      z-index: 10;
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .contact-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .contact-card {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+    }
+
+    .contact-card-title {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #78350F;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .contact-info p {
+      margin: 0;
+    }
+
+    .contact-info .label {
+      font-weight: 600;
+    }
+
+    /* Form Styles */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .form-input {
+      width: 100%;
+      border: 1px solid #D1D5DB;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .form-input:focus {
+      outline: 2px solid #78350F;
+      outline-offset: 2px;
+    }
+
+    .form-textarea {
+      width: 100%;
+      border: 1px solid #D1D5DB;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      font-family: 'Poppins', sans-serif;
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-textarea:focus {
+      outline: 2px solid #78350F;
+      outline-offset: 2px;
+    }
+
+    .submit-btn {
+      background-color: #78350F;
+      color: white;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      width: fit-content;
+    }
+
+    .submit-btn:hover {
+      background-color: #451A03;
+    }
+
+    /* Map Section */
+    .map-section {
+      position: relative;
+      background-image: url('/src/images/coffee-call.jpeg');
+      background-size: cover;
+      background-position: center;
+      padding: 4rem 0;
+    }
+
+    .map-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .map-content {
+      position: relative;
+      z-index: 10;
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .map-title {
+      font-size: 1.875rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: white;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .map-container {
+      border-radius: 0.75rem;
+      overflow: hidden;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .map-iframe {
+      width: 100%;
+      height: 450px;
+      border: none;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #78350F;
+      color: white;
+      padding: 2.5rem 0;
+      text-align: center;
+    }
+
+    .footer-title {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      font-size: 1.125rem;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      color: white;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .social-link:hover {
+      color: #FCD34D;
+    }
+
+    .footer-copy {
+      margin-top: 1.5rem;
+      font-size: 0.875rem;
+    }
+
+    @media (max-width: 640px) {
+      .social-links {
+        gap: 1rem;
+        font-size: 1rem;
+      }
+    }
+
+    /* Fix for bg classes */
+    .bg-stone-50 { background-color: #FAFAF9; }
+    .text-stone-800 { color: #292524; }
+  </style>
 </head>
 
-
-<body class="bg-stone-50 text-stone-800">
-  <!--header /navigation  -->
-
-
-<header class="bg-cream/95 backdrop-blur border-b border-coffee/15 sticky top-0 z-50">
-    <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-      <a href="index.html" class="flex items-center gap-2">
-        <img src="assets/images/logo.png" alt="Cosy Cup Cafe logo" class="w-10 h-10 rounded-full object-cover border border-caramel" />
-        <span class="font-display text-xl font-bold text-dark-brown">Cosy Cup Cafe</span>
+<body>
+  <!-- ===== Header / Nav ===== -->
+  <header class="header">
+    <nav class="nav-container">
+      <a href="index.html" class="logo-link">
+        <img src="assets/images/logo.png" alt="Cosy Cup Cafe logo" class="logo-img" />
+        <span class="logo-text">Cosy Cup Cafe</span>
       </a>
 
-      <div class="hidden md:flex items-center gap-8">
-        <a href="index.html" class="text-sm font-semibold text-(--charcoal)/80 hover:text-(--gold) transition">Home</a>
-        <a href="menu.html" class="text-sm font-semibold text-(--charcoal)/80 hover:text-(--gold) transition">Menu</a>
-        <a href="about.html" class="text-sm font-semibold text-(--gold)">About</a>
-        <a href="contact.html" class="text-sm font-semibold text-(--charcoal)/80 hover:text-(--gold) transition">Contact</a>
-        
-  
+      <!-- Desktop Navigation -->
+      <div class="nav-desktop">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="menu.html" class="nav-link">Menu</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link nav-link-active">Contact</a>
+        <a href="orderpage.html" class="order-btn">Order Online</a>
       </div>
 
-      <button
-        id="menuBtn"
-        class="md:hidden text-3xl text-(--charcoal)"
-        aria-expanded="false"
-        aria-controls="mobileMenu"
-        aria-label="Toggle navigation menu"
-      >
-        ☰
+      <!-- Hamburger Menu Button -->
+      <button id="menuBtn" class="menu-toggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
     </nav>
 
-    <div id="mobileMenu" class="hidden md:hidden bg-cream border-t border-coffee/15 px-6 py-4 space-y-1">
-      <a href="index.html" class="block py-3 border-b border-coffee/10 font-medium hover:text-(--gold)">Home</a>
-      <a href="menu.html" class="block py-3 border-b border-coffee/10 font-medium hover:text-(--gold)">Menu</a>
-      <a href="about.html" class="block py-3 border-b border-coffee/10 font-medium text-(--gold)">About</a>
-      <a href="contact.html" class="block py-3 border-b border-coffee/10 font-medium hover:text-(--gold)">Contact</a>
-      <a href="orderpage.html" class="block py-3 font-semibold text-(--gold)">Order Online →</a>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="active">Contact</a>
+      <a href="orderpage.html" class="mobile-order-btn">Order Online →</a>
     </div>
   </header>
 
-
   <!-- Hero Section -->
-
-  <section class="relative bg-[url('/src/images/coffee7.jpeg')] bg-cover bg-center h-112.5">
-
-
-    <!-- Dark Overlay -->
-    <div class="absolute inset-0 bg-black/50"></div>
-
-
-
-    <!-- Hero Content -->
-    <div class="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-5build">
-
-
-      <h2 class="text-5xl font-bold mb-4">
-        Contact Us
-      </h2>
-
-
-      <p class="text-lg max-w-2xl">
+  <section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h2 class="hero-title">Contact Us</h2>
+      <p class="hero-subtitle">
         We'd love to hear from you. Visit Cosy Cup Cafe,
         enjoy your favourite coffee, or send us a message.
       </p>
-
-    
-
     </div>
-
-
   </section>
 
-
-
-
-
-
-
-
-
   <!-- Contact Information and Form -->
-  <section class="relative bg-[url('/src/images/coffee6.jpeg')] bg-cover bg-center py-16">
-
-    <!-- Dark overlay -->
-    <div class="absolute inset-0 bg-black/40"></div>
-
-
-    <!-- Content -->
-    <div class="relative z-10 max-w-7xl mx-auto px-6">
-
-
-      <div class="grid md:grid-cols-2 gap-10">
-
-
-
+  <section class="contact-section">
+    <div class="contact-overlay"></div>
+    <div class="contact-content">
+      <div class="contact-grid">
         <!-- Contact Information -->
-
-        <div class="bg-white/90 rounded-xl shadow-lg p-8">
-
-
-          <h2 class="text-3xl font-bold mb-6 text-amber-900">
-            Contact Information
-          </h2>
-
-
-          <div class="space-y-6">
-
-
+        <div class="contact-card">
+          <h2 class="contact-card-title">Contact Information</h2>
+          <div class="contact-info">
             <p>
-              <span class="font-semibold">
-                📍 Address:
-              </span>
+              <span class="label">📍 Address:</span>
               <br>
               Kenyatta Avenue, Nairobi, Kenya
             </p>
-
-
             <p>
-              <span class="font-semibold">
-                ☎ Phone:
-              </span>
+              <span class="label">☎ Phone:</span>
               <br>
               +254 700 123 456
             </p>
-
-
             <p>
-              <span class="font-semibold">
-                ✉ Email:
-              </span>
+              <span class="label">✉ Email:</span>
               <br>
               info@cosycupcafe.com
             </p>
-
-
             <p>
-              <span class="font-semibold">
-                🕒 Opening Hours:
-              </span>
+              <span class="label">🕒 Opening Hours:</span>
               <br>
               Monday - Friday: 7AM - 9PM
               <br>
               Saturday - Sunday: 8AM - 10PM
             </p>
-
-
           </div>
-
-
         </div>
-
-
-
-
 
         <!-- Contact Form -->
-
-        <div class="bg-white/90 rounded-xl shadow-lg p-8">
-
-
-          <h2 class="text-3xl font-bold mb-6 text-amber-900">
-            Send Us A Message
-          </h2>
-
-
-          <form class="space-y-5">
-
-
-            <input type="text" placeholder="Full Name" class="w-full border border-gray-300 rounded-lg p-3">
-
-
-            <input type="email" placeholder="Email Address" class="w-full border border-gray-300 rounded-lg p-3">
-
-
-            <input type="text" placeholder="Subject" class="w-full border border-gray-300 rounded-lg p-3">
-
-
-            <textarea rows="5" placeholder="Your Message"
-              class="w-full border border-gray-300 rounded-lg p-3"></textarea>
-
-
-            <button class="bg-amber-800 text-white px-8 py-3 rounded-lg hover:bg-amber-900">
-
-              Send Message
-
-            </button>
-
-
+        <div class="contact-card">
+          <h2 class="contact-card-title">Send Us A Message</h2>
+          <form class="contact-form">
+            <input type="text" placeholder="Full Name" class="form-input">
+            <input type="email" placeholder="Email Address" class="form-input">
+            <input type="text" placeholder="Subject" class="form-input">
+            <textarea rows="5" placeholder="Your Message" class="form-textarea"></textarea>
+            <button type="submit" class="submit-btn">Send Message</button>
           </form>
-
-
         </div>
-
-
       </div>
-
-
     </div>
-
-
   </section>
 
-
-
   <!-- Map Section -->
-
-  <section class="relative bg-cover bg-center py-16" style="background-image: url('/src/images/coffee-call.jpeg');">
-
-
-    <!-- Dark Overlay -->
-    <div class="absolute inset-0 bg-black/40"></div>
-
-
-
-    <!-- Map Content -->
-
-    <div class="relative z-10 max-w-7xl mx-auto px-6">
-
-
-      <h2 class="text-3xl font-bold text-center mb-8 text-white">
-        Find Cosy Cup Cafe
-      </h2>
-
-
-
-      <div class="rounded-xl overflow-hidden shadow-lg">
-
-
-        <iframe class="w-full h-112.5"
+  <section class="map-section">
+    <div class="map-overlay"></div>
+    <div class="map-content">
+      <h2 class="map-title">Find Cosy Cup Cafe</h2>
+      <div class="map-container">
+        <iframe class="map-iframe"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.816043016825!2d36.819765774829214!3d-1.2842929987035039!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f11eb883941b3%3A0x8cacd67f5f26ef68!2sArtcaff%C3%A9%20Restaurant%20Kenyatta%20Avenue!5e0!3m2!1sen!2ske!4v1784804553953!5m2!1sen!2ske"
           loading="lazy" referrerpolicy="strict-origin-when-cross-origin">
         </iframe>
       </div>
-
-
     </div>
-
-
   </section>
 
-
-
-  <!-- Social Links Footer -->
-
-  <footer class="bg-amber-900 text-white py-10 text-center">
-
-
-    <h2 class="text-3xl font-bold mb-6">
-      Follow Us
-    </h2>
-
-
-
-    <div class="flex justify-center gap-8 text-lg">
-
-
-      <a href="#" class="hover:text-amber-300 transition">
-        Facebook
-      </a>
-
-
-      <a href="#" class="hover:text-amber-300 transition">
-        Instagram
-      </a>
-
-
-      <a href="#" class="hover:text-amber-300 transition">
-        X (Twitter)
-      </a>
-
-
-      <a href="#" class="hover:text-amber-300 transition">
-        TikTok
-      </a>
-
-
+  <!-- Footer -->
+  <footer class="footer">
+    <h2 class="footer-title">Follow Us</h2>
+    <div class="social-links">
+      <a href="#" class="social-link">Facebook</a>
+      <a href="#" class="social-link">Instagram</a>
+      <a href="#" class="social-link">X (Twitter)</a>
+      <a href="#" class="social-link">TikTok</a>
     </div>
-
-
-
-    <p class="mt-6 text-sm">
-      © 2026 Cosy Cup Cafe. All rights reserved.
-    </p>
-
-
-
+    <p class="footer-copy">© 2026 Cosy Cup Cafe. All rights reserved.</p>
   </footer>
 
-  <!-- Social Links Footer -->
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
 
+    menuBtn.addEventListener("click", () => {
+      const isOpen = mobileMenu.classList.contains("open");
+      
+      // Toggle mobile menu
+      mobileMenu.classList.toggle("open");
+      
+      // Toggle hamburger animation
+      menuBtn.classList.toggle("open");
+      
+      // Update aria-expanded
+      menuBtn.setAttribute("aria-expanded", String(!isOpen));
+    });
 
-
-
-
-
-
-
-
-
+    // Close mobile menu when a link is clicked
+    const mobileLinks = mobileMenu.querySelectorAll("a");
+    mobileLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.remove("open");
+        menuBtn.classList.remove("open");
+        menuBtn.setAttribute("aria-expanded", "false");
+      });
+    });
+  </script>
 </body>
 
 </html>
